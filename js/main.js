@@ -3,12 +3,21 @@
 
     var btn = document.getElementById('btnAdd');
 
+
+    // Spinner
+    var spinner = function () {
+        setTimeout(function () {
+            if ($('#spinner').length > 0) {
+                $('#spinner').removeClass('show');
+            }
+        }, 1);
+    };
+    spinner();
+
     // Get the current page URL
     var currentPage = window.location.href;
-
     // Get all navigation links
     var navLinks = document.querySelectorAll('.navbar-nav .nav-item');
-
     // Iterate over each navigation link
     navLinks.forEach(function (link) {
         var href = link.querySelector('.nav-link').getAttribute('href');
@@ -20,16 +29,6 @@
             link.classList.remove('active');
         }
     });
-
-    // Spinner
-    var spinner = function () {
-        setTimeout(function () {
-            if ($('#spinner').length > 0) {
-                $('#spinner').removeClass('show');
-            }
-        }, 1);
-    };
-    spinner();
 
 
     // Back to top button

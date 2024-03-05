@@ -1,4 +1,4 @@
-<? include_once("header.php");
+<?php include_once("header.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -194,4 +194,4 @@ while($row = mfa($result)){
     </div>
 </div>
 <!-- Widgets End -->
-<? include_once("footer.php") ?>
+<?php include_once("footer.php") ?>

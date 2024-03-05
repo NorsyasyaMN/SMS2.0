@@ -1,4 +1,4 @@
-<? include_once("header.php") ?>
+<?php include_once("header.php") ?>
 <div class="container-fluid pt-4 px-4">
     <h2>Application Details</h2>
 </div>
@@ -106,4 +106,4 @@
     </form>
 </div>
 <!-- Widgets End -->
-<? include_once("footer.php") ?>
+<?php include_once("footer.php") ?>
