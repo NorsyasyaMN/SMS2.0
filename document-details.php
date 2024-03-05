@@ -19,9 +19,9 @@
         </div>
         <div class="d-flex justify-content-between">
             <a class="btn btn-sm btn-outline-dark" href="document.php">Cancel</a>
-            <a class="btn btn-sm btn-primary" href="document.php">Save changes</a>
+            <a class="btn btn-sm btn-primary w-auto" href="document.php">Save changes</a>
         </div>
     </div>
 </div>
 <!-- Widgets End -->
-<? include_once("footer.php") ?>
+<?php include_once("footer.php") ?>

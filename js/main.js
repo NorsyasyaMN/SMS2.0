@@ -3,7 +3,6 @@
 
     var btn = document.getElementById('btnAdd');
 
-
     // Spinner
     var spinner = function () {
         setTimeout(function () {
