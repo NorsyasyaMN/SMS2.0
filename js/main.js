@@ -76,7 +76,6 @@
         nav: false
     });
 
-
     // btn.onclick = function () {
     //     var tb = document.getElementById('option'), val = tb.value;
     //     if (val.length) {

@@ -1,7 +1,31 @@
 <?php
 include_once("config.php");
 $ver = rand();
-$current_url = "http://localhost/SMS2.0/"
+$current_url = "http://localhost/SMS2.0/";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $num = $_POST["num"];
+    $pass = $_POST["pass"];
+    $rpass = $_POST["rpass"];
+    $user = $_POST["user"];
+
+    if ($rpass == $pass) {
+        $result = mq("INSERT INTO `register`(`name`, `email`, `num`, `pass`, `user`, `img`, `cover_img`, `bio`, `stud`, `location`) VALUES ('$name','$email','$num','$pass','$user','','','', '','')");
+        if ($result === TRUE){
+            $alert ='<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data save successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+
+        }
+        else{
+            $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Error uploading data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        }
+    }
+    else{
+        $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Password is not the same<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,6 +70,7 @@ $current_url = "http://localhost/SMS2.0/"
         </div>
         <!-- Spinner End -->
 
+        <?=$alert?>
         <section class="vh-100" style="background-color: #9A616D;">
             <div class="container py-5 h-100">
                 <div class="row d-flex justify-content-center align-items-center h-100">
@@ -65,13 +90,13 @@ $current_url = "http://localhost/SMS2.0/"
                                             <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
 
                                             <div class="form-outline mb-4">
-                                                <input type="email" id="form2Example17" class="form-control form-control-lg" />
-                                                <label class="form-label" for="form2Example17">Email address</label>
+                                                <input type="email" id="email" class="form-control form-control-lg" name="email"/>
+                                                <label class="form-label" for="email">Email address</label>
                                             </div>
 
                                             <div class="form-outline mb-4">
-                                                <input type="password" id="form2Example27" class="form-control form-control-lg" />
-                                                <label class="form-label" for="form2Example27">Password</label>
+                                                <input type="password" id="password" class="form-control form-control-lg" name="pass"/>
+                                                <label class="form-label" for="password">Password</label>
                                             </div>
 
                                             <div class="pt-1 mb-4">

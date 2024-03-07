@@ -1,61 +1,6 @@
 <?php include_once("header.php");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    $name = $_POST["fullname"];
-    $email = $_POST["email"];
-    $bio = $_POST["bio"];
-    $stud = $_POST["stud"];
-    $phone = $_POST["phone"];
-    $loc = $_POST["loc"];
-
-    // Check if both profile and header images are uploaded
-    if (isset($_FILES["profileImage"]) && isset($_FILES["headerImage"])) {
-        $profile = $_FILES["profileImage"];
-        $header = $_FILES["headerImage"];
-
-        // Function to handle photo upload
-        function uploadPhoto($photo)
-        {
-            if ($photo["error"] == UPLOAD_ERR_OK) {
-                $file_name = basename($photo["name"]);
-                $file_tmp = $photo["tmp_name"];
-                $file_type = $photo["type"];
-                $file_size = $photo["size"];
-
-                // Store file in uploads directory
-                $upload_dir = "uploads/";
-                $target_file = $upload_dir . $file_name;
-                move_uploaded_file($file_tmp, $target_file);
-
-                return $target_file; // Return uploaded file path
-            } else {
-                return false; // Return false if upload failed
-            }
-        }
-
-        // Upload profile photo
-        $profilePath = uploadPhoto($profile);
-        // Upload header photo
-        $headerPath = uploadPhoto($header);
-
-        // Check if both uploads were successful
-        if ($profilePath !== false && $headerPath !== false) {
-            // Insert file paths into database (adjust SQL query as needed)
-            $result = mq("INSERT INTO `a_profile`(`img`, `cover_img`, `name`, `email`, `bio`, `stud`, `phone`, `location`) VALUES ('$profilePath','$headerPath','$name','$email','$bio','$stud','$phone','$loc')");
-            if ($result === TRUE) {
-                echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data save successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-            }
-        } else {
-            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Error uploading data.</div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-        }
-    } else {
-        echo "Please select both profile and header images.";
-    }
-}
-
-$result = mq('SELECT * FROM a_profile WHERE a_id = 2');
+$result = mq('SELECT * FROM register WHERE id = 2');
 while($row = mfa($result)){
     $profileImg = $row['img'];
     $headerImg = $row['cover_img'];
@@ -63,7 +8,7 @@ while($row = mfa($result)){
     $email = $row['email'];
     $bio = $row['bio'];
     $stud = $row['stud'];
-    $phone = $row['phone'];
+    $phone = $row['num'];
     $location = $row['location'];
 }
 
@@ -103,7 +48,7 @@ while($row = mfa($result)){
         <div class="col-sm-12 col-md-12 col-xl-12">
             <div class="h-100 bg-light rounded p-4">
                 <div class="border-bottom py-2 mb-4">
-                    <h5 class="mb-0">About Us</h5>
+                    <h5 class="mb-0">About Me</h5>
                     <!-- <a href="">Show All</a> -->
                 </div>
                 <div class="row g-4">
