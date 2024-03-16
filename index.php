@@ -1,7 +1,16 @@
-<?php include_once("header.php");
-
-$result = mq('SELECT * FROM register WHERE id = 2');
-while($row = mfa($result)){
+<?php
+session_start();
+if (isset($_SESSION['id'])){
+    $n_id = $_SESSION['id'];
+}
+include_once("header.php");
+$stmt = "SELECT * FROM register WHERE id = '$n_id'";
+$result = mq($stmt);
+if (!$result) {
+    die('Query execution failed: ' . mysqli_error($conn));
+}
+while ($row = mfa($result)) {
+    $id = $row['id'];
     $profileImg = $row['img'];
     $headerImg = $row['cover_img'];
     $name = $row['name'];
@@ -11,30 +20,31 @@ while($row = mfa($result)){
     $phone = $row['num'];
     $location = $row['location'];
 }
-
-
 ?>
 <div class="container-fluid pt-4 px-4">
     <h2>Profile Overview</h2>
 </div>
 <!-- Profile Start-->
+<?php
+?>
 <div class="container-fluid pt-3 px-4">
     <div>
         <div class="upper">
-            <img src="<?=$headerImg?>" class="img-fluid">
+            <img src="<?= $headerImg ?>" class="img-fluid">
         </div>
         <div class="user">
             <div class="profile">
-                <img src="<?=$profileImg?>" class="rounded-circle" width="80">
+                <img src="<?= $profileImg ?>" class="rounded-circle" width="80">
             </div>
         </div>
     </div>
     <div class="bg-light pt-5 d-flex justify-content-between px-3">
         <div>
-            <h4 class="mb-0"><?=$name?></h4>
+            <h4 class="mb-0"><?= $name ?></h4>
             <span class="text-muted d-block mb-2">Los Angles</span>
         </div>
         <div>
+            <?php $_SESSION['id'] = $id?>
             <a href="profile-details.php"><button class="btn btn-primary btn-sm follow">Edit profile</button></a>
         </div>
     </div>
@@ -54,23 +64,23 @@ while($row = mfa($result)){
                 <div class="row g-4">
                     <div class="col-sm-12 col-md-12 col-xl-12 py-2">
                         <h5>Bio</h5>
-                        <p><?=$bio?></p>
+                        <p><?= $bio ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-12 py-2">
                         <h5>Studies</h5>
-                        <p><?=$stud?></p>
+                        <p><?= $stud ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Phone</h5>
-                        <p><?=$phone?></p>
+                        <p><?= $phone ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Email</h5>
-                        <p><?=$email?></p>
+                        <p><?= $email ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Location</h5>
-                        <p><?=$location?></p>
+                        <p><?= $location ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Website</h5>

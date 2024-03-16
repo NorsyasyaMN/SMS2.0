@@ -64,8 +64,16 @@ $current_url = "http://localhost/SMS2.0/"
                                             <div class="d-flex flex-row align-items-center mb-4">
                                                 <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
-                                                    <label class="form-label" for="name">Your Name</label>
+                                                    <label class="form-label" for="name">Fullname</label>
                                                     <input type="text" id="name" class="form-control" name="name"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="d-flex flex-row align-items-center mb-4">
+                                                <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                                                <div class="form-outline flex-fill mb-0">
+                                                    <label class="form-label" for="name">Username</label>
+                                                    <input type="text" id="uname" class="form-control" name="uname"/>
                                                 </div>
                                             </div>
 

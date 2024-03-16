@@ -1,16 +1,8 @@
-<?php include_once("header.php");
-
-$result = mq('SELECT * FROM register WHERE id = 2');
-while ($row = mfa($result)) {
-    $profileImg = $row['img'];
-    $headerImg = $row['cover_img'];
-    $name = $row['name'];
-    $email = $row['email'];
-    $bio = $row['bio'];
-    $stud = $row['stud'];
-    $phone = $row['num'];
-    $location = $row['location'];
-}
+<?php
+session_start();
+global $n_id;
+echo $n_id;
+include_once("header.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -20,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stud_r = $_POST["stud"];
     $phone_r = $_POST["phone"];
     $loc_r = $_POST["loc"];
+    $status = 0;
 
     // Function to handle photo upload
     function uploadPhoto($photo)
@@ -41,69 +34,66 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-
-    // Check if both profile and header images are uploaded
-    if (isset($_FILES["profileImage"]) && isset($_FILES["headerImage"])) {
-        $profile = $_FILES["profileImage"];
-        $header = $_FILES["headerImage"];
-
-        // Upload profile photo
-        $profilePath = uploadPhoto($profile);
-        // Upload header photo
-        $headerPath = uploadPhoto($header);
-
-        // Check if both uploads were successful
-        if ($profilePath !== false && $headerPath !== false) {
-            // Insert file paths into database (adjust SQL query as needed)
-            $result = mq("UPDATE `register` SET `name`='$name_r',`email`='$email_r',`num`='$phone_r',`img`='$profilePath',`cover_img`='$headerPath',`bio`='$bio_r',`stud`='$stud_r',`location`='$loc_r' WHERE id = 2");
-            if ($result === TRUE) {
-                echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data save successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-            }
-        } else {
-            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error uploading data.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-        }
-    } 
-    
-    
-    elseif (isset($_FILES["profileImage"])) {
-        $profile = $_FILES["profileImage"];
-        $profilePath = uploadPhoto($profile);
+    // Check if profile image is set
+    if (isset($_FILES["profileImage"]) && $_FILES["profileImage"]["error"] == 0) {
+        $profilePath = uploadPhoto($_FILES["profileImage"]);
         if ($profilePath !== false) {
-            // Insert file paths into database (adjust SQL query as needed)
-            $result = mq("UPDATE `register` SET `name`='$name_r',`email`='$email_r',`num`='$phone_r',`img`='$profilePath',`cover_img`='$headerImg',`bio`='$bio_r',`stud`='$stud_r',`location`='$loc_r' WHERE id = 2");
-            if ($result === TRUE) {
-                echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data save successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            // Profile image is set, update database with profile image
+
+            $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `img`='$profilePath', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $n_id");
+            if ($result == TRUE) {
+                $status = 1;
             }
         } else {
-            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error uploading profile.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-        }
-    } 
-    
-    elseif (isset($_FILES["headerImage"])) {
-        $header = $_FILES["headerImage"];
-        $headerPath = uploadPhoto($header);
-        if ($headerPath !== false) {
-            // Insert file paths into database (adjust SQL query as needed)
-            $result = mq("UPDATE `register` SET `name`='$name_r',`email`='$email_r',`num`='$phone_r',`img`='$profileImg',`cover_img`='$headerPath',`bio`='$bio_r',`stud`='$stud_r',`location`='$loc_r' WHERE id = 2");
-            if ($result === TRUE) {
-                echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data save successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-            }
-        } else {
-            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error uploading header.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            // Display error message if profile image upload fails
+            $status = 0;
+            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error uploading profile image.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }
     }
-    
-    
-    else {
-        // No files uploaded
-        echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">No files uploaded.
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+
+    // Check if header image is set
+    if (isset($_FILES["headerImage"]) && $_FILES["headerImage"]["error"] == 0) {
+        $headerPath = uploadPhoto($_FILES["headerImage"]);
+        if ($headerPath !== false) {
+            // Header image is set, update database with header image
+            $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `cover_img`='$headerPath', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $n_id");
+            if ($result == TRUE) {
+                $status = 1;
+            }
+        } else {
+            // Display error message if header image upload fails
+            $status = 0;
+            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error uploading header image.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        }
+    } else {
+        $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $n_id");
+        if ($result == TRUE) {
+            $status = 1;
+        } else {
+            // Display error message if database update fails
+            $status = 0;
+            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error updating data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        }
+    }
+
+    if ($status == 1) {
+        echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data saved successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
     }
 }
-
+if (isset($_SESSION['id'])) {
+    $stmt = "SELECT * FROM register WHERE id = '$n_id'";
+    $result = mq($stmt);
+    while ($row = mfa($result)) {
+        $profileImg = $row['img'];
+        $headerImg = $row['cover_img'];
+        $name = $row['name'];
+        $email = $row['email'];
+        $bio = $row['bio'];
+        $stud = $row['stud'];
+        $phone = $row['num'];
+        $location = $row['location'];
+    }
+}
 ?>
 <div class="container-fluid pt-4 px-4">
     <h2>Applicant Details</h2>

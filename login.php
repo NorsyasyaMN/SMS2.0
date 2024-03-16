@@ -1,29 +1,50 @@
 <?php
+session_start();
 include_once("config.php");
 $ver = rand();
 $current_url = "http://localhost/SMS2.0/";
+$alert = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $name = $_POST["name"];
-    $email = $_POST["email"];
-    $num = $_POST["num"];
-    $pass = $_POST["pass"];
-    $rpass = $_POST["rpass"];
-    $user = $_POST["user"];
+    // this part is from register.php which is another file
+    if (isset($_POST['name']) && isset($_POST['uname']) && isset($_POST['email']) && isset($_POST['num']) && isset($_POST['pass']) && isset($_POST['rpass']) && isset($_POST['user'])) {
+        $name = $_POST["name"];
+        $uname = $_POST["uname"];
+        $email = $_POST["email"];
+        $num = $_POST["num"];
+        $pass = $_POST["pass"];
+        $rpass = $_POST["rpass"];
+        $user = $_POST["user"];
 
-    if ($rpass == $pass) {
-        $result = mq("INSERT INTO `register`(`name`, `email`, `num`, `pass`, `user`, `img`, `cover_img`, `bio`, `stud`, `location`) VALUES ('$name','$email','$num','$pass','$user','','','', '','')");
-        if ($result === TRUE){
-            $alert ='<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data save successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-
-        }
-        else{
-            $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Error uploading data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        if ($rpass == $pass) {
+            $result = mq("INSERT INTO `register`(`name`, `uname`,`email`, `num`, `pass`, `user`, `img`, `cover_img`, `bio`, `stud`, `location`) VALUES ('$name', '$uname','$email','$num','$pass','$user','','','', '','')");
+            if ($result === TRUE) {
+                $alert = '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data save successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            } else {
+                $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Error uploading data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            }
+        } else {
+            $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Password is not the same<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }
     }
-    else{
-        $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Password is not the same<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+
+
+    //this part is from login.php which is this file
+    if (isset($_POST['pass_r']) && isset($_POST['email_r'])) {
+        $email = $_POST['email_r'];
+        $pass = $_POST['pass_r'];
+        $result = mq("SELECT * FROM register WHERE email = '$email' AND pass = '$pass'");
+        if ($result) {
+            while ($row = mfa($result)) {
+                $id = $row['id'];
+            }
+            $_SESSION['id'] = $id;
+            header('Location: index.php');
+            // echo "ID: " . $id; // Debugging statemen
+        } else {
+            $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Failed to login<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        }
     }
 }
 ?>
@@ -70,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <!-- Spinner End -->
 
-        <?=$alert?>
+        <?= $alert ?>
         <section class="vh-100" style="background-color: #9A616D;">
             <div class="container py-5 h-100">
                 <div class="row d-flex justify-content-center align-items-center h-100">
@@ -80,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="col-md-6 col-lg-7 d-flex align-items-center">
                                     <div class="card-body p-4 p-lg-5 text-black">
 
-                                        <form>
+                                        <form action="login.php" method="post" enctype="multipart/form-data">
 
                                             <div class="d-flex align-items-center mb-3 pb-1">
                                                 <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
@@ -90,17 +111,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
 
                                             <div class="form-outline mb-4">
-                                                <input type="email" id="email" class="form-control form-control-lg" name="email"/>
+                                                <input type="email" id="email" class="form-control form-control-lg" name="email_r" />
                                                 <label class="form-label" for="email">Email address</label>
                                             </div>
 
                                             <div class="form-outline mb-4">
-                                                <input type="password" id="password" class="form-control form-control-lg" name="pass"/>
+                                                <input type="password" id="password" class="form-control form-control-lg" name="pass_r" />
                                                 <label class="form-label" for="password">Password</label>
                                             </div>
 
                                             <div class="pt-1 mb-4">
-                                                <button class="btn btn-dark btn-lg btn-block" type="button">Login</button>
+                                                <button class="btn btn-dark btn-lg btn-block" type="submit" name="submit">Login</button>
                                             </div>
 
                                             <a class="small text-muted" href="#!">Forgot password?</a>

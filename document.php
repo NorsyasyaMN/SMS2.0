@@ -1,4 +1,35 @@
-<?php include_once("header.php") ?>
+<?php 
+include_once("header.php");
+$id = $_SESSION['id'];
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    $name = $_POST["name"];
+
+    // Check if file is selected
+    if (isset($_FILES['file'])) {
+        $file = $_FILES['file'];
+
+        // File properties
+        $file_name = $file['name'];
+        $file_tmp = $file['tmp_name'];
+    }
+
+    $target_dir = "files/";
+    $target_file = $target_dir . $file_name;
+
+    if (move_uploaded_file($file_tmp, $target_file)) {
+        // File uploaded successfully, now insert into database
+        $result = mq("INSERT INTO `file`(`u_id`, `name`, `doc`) VALUES ('$id','$name','$target_file')");
+        if ($result) {
+            echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data saved successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        } else {
+            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error uploading file.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        }
+    } else {
+        echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error uploading data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';;
+    }
+}
+?>
 <div class="container-fluid pt-4 px-4">
     <h2>Document</h2>
 </div>
