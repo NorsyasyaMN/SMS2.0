@@ -1,9 +1,10 @@
-<?php 
+<?php
 include_once("header.php");
-$id = $_SESSION['id'];
+$count = 1;
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $name = $_POST["name"];
+    $date = date("Y-m-d");
 
     // Check if file is selected
     if (isset($_FILES['file'])) {
@@ -19,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (move_uploaded_file($file_tmp, $target_file)) {
         // File uploaded successfully, now insert into database
-        $result = mq("INSERT INTO `file`(`u_id`, `name`, `doc`) VALUES ('$id','$name','$target_file')");
+        $result = mq("INSERT INTO `file`(`u_id`, `name`, `doc`, `date`) VALUES ('$d_id','$name','$target_file', '$date')");
         if ($result) {
             echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data saved successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         } else {
@@ -45,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <h4 class="mb-0">List of document</h4>
             <div>
                 <a href="#"><i class="fas fa-trash-alt fs-4"></i></a>
-                <a href="document-details.php"><i class="fas fa-plus-square fs-4"></i></a>
+                <a href="<?= $current_url ?>document-details.php/<?= $id ?>"><i class="fas fa-plus-square fs-4"></i></a>
             </div>
         </div>
         <div class="table-responsive">
@@ -60,41 +61,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td><input class="form-check-input" type="checkbox"></td>
-                        <td>INV-0123</td>
-                        <td class="d-none d-md-table-cell d-xl-table-cell">01 Jan 43</td>
-                        <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><input class="form-check-input" type="checkbox"></td>
-                        <td>INV-0123</td>
-                        <td class="d-none d-md-table-cell d-xl-table-cell">01 Jan 45</td>
-                        <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td><input class="form-check-input" type="checkbox"></td>
-                        <td>INV-0123</td>
-                        <td class="d-none d-md-table-cell d-xl-table-cell">01 Jan 45</td>
-                        <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td><input class="form-check-input" type="checkbox"></td>
-                        <td>INV-0123</td>
-                        <td class="d-none d-md-table-cell d-xl-table-cell">01 Jan 46</td>
-                        <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td><input class="form-check-input" type="checkbox"></td>
-                        <td>INV-0123</td>
-                        <td class="d-none d-md-table-cell d-xl-table-cell">01 Jan 47</td>
-                        <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                    </tr>
+                    <?php
+                    $stmt = "SELECT * FROM `file` WHERE u_id = '$d_id'";
+                    $result = mq($stmt);
+                    if ($result) {
+                        while ($row = mfa($result)) {
+                            $name = $row['name'];
+                            $file = $current_url . $row['doc'];
+                            $date = $row['date']; ?>
+                            <tr>
+                                <td><?=$count?></td>
+                                <td><input class="form-check-input" type="checkbox"></td>
+                                <td><?=$name?></td>
+                                <td class="d-none d-md-table-cell d-xl-table-cell"><?=$date?></td>
+                                <td><a class="btn btn-sm btn-primary" href="<?=$file?>" target="_blank">Detail</a></td>
+                            </tr>
+                            <?php $count++;
+                        } ?><?php
+                        } else {
+                            die('Query execution failed: ' . mysqli_error($conn));
+                        }
+                            ?>
                 </tbody>
             </table>
         </div>
