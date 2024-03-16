@@ -1,5 +1,4 @@
 <?php
-session_start();
 include_once("config.php");
 $ver = rand();
 $current_url = "http://localhost/SMS2.0/";
@@ -31,21 +30,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
     //this part is from login.php which is this file
-    if (isset($_POST['pass_r']) && isset($_POST['email_r'])) {
+    if (isset($_POST['pass_r']) && isset($_POST['email_r']) || isset($_POST['email_r']) && isset($_POST['pass_r'])) {
         $email = $_POST['email_r'];
         $pass = $_POST['pass_r'];
-        $result = mq("SELECT * FROM register WHERE email = '$email' AND pass = '$pass'");
-        if ($result) {
-            while ($row = mfa($result)) {
-                $id = $row['id'];
-            }
-            $_SESSION['id'] = $id;
-            header('Location: index.php');
-            // echo "ID: " . $id; // Debugging statemen
+        $stmt = "SELECT id FROM register WHERE email = '$email' AND pass = '$pass'";
+        $result = mq($stmt);
+        if ($result) { // Check if there are any rows returned
+            $row = mfa($result);
+            $id = $row['id'];
+            $e_id = encode($id);
+            // Set session variable and redirect the user
+            header('Location: index.php/' . $e_id);
         } else {
+            // Display error message if login fails
             $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Failed to login<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }
     }
+    
 }
 ?>
 <!DOCTYPE html>
@@ -111,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                             <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
 
                                             <div class="form-outline mb-4">
-                                                <input type="email" id="email" class="form-control form-control-lg" name="email_r" />
+                                                <input type="email" id="email" class="form-control form-control-lg" name="email_r" autofocus />
                                                 <label class="form-label" for="email">Email address</label>
                                             </div>
 

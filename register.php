@@ -1,8 +1,7 @@
 <?php
 include_once("config.php");
 $ver = rand();
-$current_url = "http://localhost/SMS2.0/"
-
+$current_url = "http://localhost/SMS2.0/";
 
 ?>
 <!DOCTYPE html>

@@ -1,24 +1,21 @@
 <?php
-session_start();
-if (isset($_SESSION['id'])){
-    $n_id = $_SESSION['id'];
-}
 include_once("header.php");
-$stmt = "SELECT * FROM register WHERE id = '$n_id'";
+$stmt = "SELECT * FROM register WHERE id = '$d_id'";
 $result = mq($stmt);
-if (!$result) {
-    die('Query execution failed: ' . mysqli_error($conn));
+if ($result){
+    while ($row = mfa($result)) {
+        $profileImg = $row['img'];
+        $headerImg = $row['cover_img'];
+        $name = $row['name'];
+        $email = $row['email'];
+        $bio = $row['bio'];
+        $stud = $row['stud'];
+        $phone = $row['num'];
+        $location = $row['location'];
+    }
 }
-while ($row = mfa($result)) {
-    $id = $row['id'];
-    $profileImg = $row['img'];
-    $headerImg = $row['cover_img'];
-    $name = $row['name'];
-    $email = $row['email'];
-    $bio = $row['bio'];
-    $stud = $row['stud'];
-    $phone = $row['num'];
-    $location = $row['location'];
+else{
+    die('Query execution failed: ' . mysqli_error($conn));
 }
 ?>
 <div class="container-fluid pt-4 px-4">
@@ -30,11 +27,11 @@ while ($row = mfa($result)) {
 <div class="container-fluid pt-3 px-4">
     <div>
         <div class="upper">
-            <img src="<?= $headerImg ?>" class="img-fluid">
+            <img src="<?=$current_url?>/<?= $headerImg ?>" class="img-fluid">
         </div>
         <div class="user">
             <div class="profile">
-                <img src="<?= $profileImg ?>" class="rounded-circle" width="80">
+                <img src="<?=$current_url?>/<?= $profileImg ?>" class="rounded-circle" width="80">
             </div>
         </div>
     </div>
@@ -44,8 +41,7 @@ while ($row = mfa($result)) {
             <span class="text-muted d-block mb-2">Los Angles</span>
         </div>
         <div>
-            <?php $_SESSION['id'] = $id?>
-            <a href="profile-details.php"><button class="btn btn-primary btn-sm follow">Edit profile</button></a>
+            <a href="<?=$current_url?>profile-details.php/<?=$id?>"><button class="btn btn-primary btn-sm follow">Edit profile</button></a>
         </div>
     </div>
 </div>
@@ -96,7 +92,7 @@ while ($row = mfa($result)) {
                     <a href="">Show All</a>
                 </div>
                 <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                    <img class="rounded-circle flex-shrink-0" src="<?=$current_url?>/img/user.jpg" alt="" style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 justify-content-between">
                             <h6 class="mb-0">Jhon Doe</h6>
@@ -106,7 +102,7 @@ while ($row = mfa($result)) {
                     </div>
                 </div>
                 <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                    <img class="rounded-circle flex-shrink-0" src="<?=$current_url?>/img/user.jpg" alt="" style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 justify-content-between">
                             <h6 class="mb-0">Jhon Doe</h6>
@@ -116,7 +112,7 @@ while ($row = mfa($result)) {
                     </div>
                 </div>
                 <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                    <img class="rounded-circle flex-shrink-0" src="<?=$current_url?>/img/user.jpg" alt="" style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 justify-content-between">
                             <h6 class="mb-0">Jhon Doe</h6>
@@ -126,7 +122,7 @@ while ($row = mfa($result)) {
                     </div>
                 </div>
                 <div class="d-flex align-items-center pt-3">
-                    <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                    <img class="rounded-circle flex-shrink-0" src="<?=$current_url?>/img/user.jpg" alt="" style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 justify-content-between">
                             <h6 class="mb-0">Jhon Doe</h6>

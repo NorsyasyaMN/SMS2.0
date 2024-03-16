@@ -1,7 +1,4 @@
 <?php
-session_start();
-global $n_id;
-echo $n_id;
 include_once("header.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -40,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($profilePath !== false) {
             // Profile image is set, update database with profile image
 
-            $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `img`='$profilePath', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $n_id");
+            $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `img`='$profilePath', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id");
             if ($result == TRUE) {
                 $status = 1;
             }
@@ -56,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $headerPath = uploadPhoto($_FILES["headerImage"]);
         if ($headerPath !== false) {
             // Header image is set, update database with header image
-            $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `cover_img`='$headerPath', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $n_id");
+            $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `cover_img`='$headerPath', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id");
             if ($result == TRUE) {
                 $status = 1;
             }
@@ -66,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error uploading header image.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }
     } else {
-        $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $n_id");
+        $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id");
         if ($result == TRUE) {
             $status = 1;
         } else {
@@ -80,20 +77,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data saved successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
     }
 }
-if (isset($_SESSION['id'])) {
-    $stmt = "SELECT * FROM register WHERE id = '$n_id'";
-    $result = mq($stmt);
-    while ($row = mfa($result)) {
-        $profileImg = $row['img'];
-        $headerImg = $row['cover_img'];
-        $name = $row['name'];
-        $email = $row['email'];
-        $bio = $row['bio'];
-        $stud = $row['stud'];
-        $phone = $row['num'];
-        $location = $row['location'];
-    }
+
+$stmt = "SELECT * FROM register WHERE id = '$d_id'";
+$result = mq($stmt);
+while ($row = mfa($result)) {
+    $profileImg = $row['img'];
+    $headerImg = $row['cover_img'];
+    $name = $row['name'];
+    $email = $row['email'];
+    $bio = $row['bio'];
+    $stud = $row['stud'];
+    $phone = $row['num'];
+    $location = $row['location'];
 }
+
 ?>
 <div class="container-fluid pt-4 px-4">
     <h2>Applicant Details</h2>
@@ -101,7 +98,7 @@ if (isset($_SESSION['id'])) {
 
 <!-- Widgets Start -->
 <div class="container-fluid pt-4 px-4">
-    <form action="profile-details.php" method="post" enctype="multipart/form-data">
+    <form action="" method="post" enctype="multipart/form-data">
         <!-- General Settings -->
         <div class="mb-3 bg-light rounded p-4">
             <h5>Applicant Information</h5>
@@ -111,7 +108,7 @@ if (isset($_SESSION['id'])) {
                 <label class="form-label col-sm-2">Profile Photo:</label>
                 <div class="col-sm-10">
                     <div class="d-flex align-items-center">
-                        <img class="rounded-circle me-3" src="<?= $profileImg ?>" alt="" style="width: 40px; height: 40px;">
+                        <img class="rounded-circle me-3" src="<?=$current_url?>/<?= $profileImg ?>" alt="" style="width: 40px; height: 40px;">
                         <input type="file" name="profileImage" id="profileImage" accept="image/*">
                         <a class="btn btn-outline-primary btn-sm follow w-auto me-3">Remove</a>
                     </div>
@@ -169,7 +166,7 @@ if (isset($_SESSION['id'])) {
                 </div>
             </div>
             <div class="d-flex justify-content-between ">
-                <a class="btn btn-sm btn-outline-dark w-auto" href="index.php">Cancel</a>
+                <a class="btn btn-sm btn-outline-dark w-auto" href="<?=$current_url?>index.php/<?= $id ?>">Cancel</a>
                 <button class="btn btn-sm btn-primary w-auto" type="submit" name="submit">Save changes</button>
             </div>
         </div>

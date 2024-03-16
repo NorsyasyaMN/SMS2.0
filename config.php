@@ -1,4 +1,5 @@
 <?php
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -9,16 +10,62 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-function mq($sql){
+function mq($sql)
+{
     global $conn;
     return mysqli_query($conn, $sql);
 }
 
-function mnr($a){
+function mnr($a)
+{
     return mysqli_num_rows($a);
 }
 
-function mfa($a){
+function mfa($a)
+{
     return mysqli_fetch_assoc($a);
 }
-?>
+function encode($a)
+{
+    $s_id = strval($a);
+    $e_id = base64_encode($s_id);
+    return $e_id;
+}
+function decode($a)
+{
+    $s_id = base64_decode($a);
+    $d_id = intval($s_id);
+    return $d_id;
+}
+function cleanURL($a)
+{
+    $url = $_SERVER['REQUEST_URI'];
+
+    // Remove the script name (index.php) from the URL path
+    $url_without_script = str_replace('SMS2.0/' . $a . '/', '', $url);
+
+    // Get the URL path segments
+    $segments = explode('/', trim($url_without_script, '/'));
+
+    // Extract the value from the URL path
+    $value = isset($segments[0]) ? $segments[0] : null;
+
+    return $value;
+}
+function filename()
+{
+    $current_url = $_SERVER['REQUEST_URI'];
+
+    // Remove any query string parameters from the URL
+    $url_parts = explode('?', $current_url);
+    
+    // Split the URL path by "/"
+    $path_parts = explode('/', $url_parts[0]);
+    
+    // Remove any empty segments
+    $path_parts = array_filter($path_parts);
+    
+    // Get the second-to-last part of the URL path
+    $filename = isset($path_parts[count($path_parts) - 1]) ? $path_parts[count($path_parts) - 1] : null;
+    return $filename;
+}
