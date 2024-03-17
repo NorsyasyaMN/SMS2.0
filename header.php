@@ -138,7 +138,7 @@ while ($row = mfa($result)) {
                             <span class="d-none d-lg-inline-flex"><?= $uname ?></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-darkblue border-0 rounded-0 rounded-bottom m-0">
-                            <a href="index.php" class="dropdown-item">My Profile</a>
+                            <a href="<?= $current_url ?>index.php/<?=$id?>" class="dropdown-item">My Profile</a>
                             <!-- <a href="#" class="dropdown-item">Settings</a> -->
                             <a href="<?=$current_url?>login.php" class="dropdown-item" onclick="<?php session_destroy(); ?>">Log Out</a>
                         </div>

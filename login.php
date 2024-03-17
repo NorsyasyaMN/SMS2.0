@@ -30,23 +30,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
     //this part is from login.php which is this file
-    if (isset($_POST['pass_r']) && isset($_POST['email_r']) || isset($_POST['email_r']) && isset($_POST['pass_r'])) {
+    if (isset($_POST['pass_r']) && isset($_POST['email_r'])) {
         $email = $_POST['email_r'];
         $pass = $_POST['pass_r'];
-        $stmt = "SELECT id FROM register WHERE email = '$email' AND pass = '$pass'";
+        $stmt = "SELECT id FROM `register` WHERE email = '$email' AND pass = '$pass'";
         $result = mq($stmt);
-        if ($result) { // Check if there are any rows returned
-            $row = mfa($result);
-            $id = $row['id'];
-            $e_id = encode($id);
-            // Set session variable and redirect the user
-            header('Location: index.php/' . $e_id);
+        if ($result) {
+            if (mnr($result) > 0) {
+                // Check if there are any rows returned
+                $row = mfa($result);
+                $id = $row['id'];
+                $e_id = encode($id);
+                // Set session variable and redirect the user
+                header('Location: index.php/' . $e_id);
+            } else {
+                // Display error message if login fails
+                $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Wrong Credentials<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            }
         } else {
             // Display error message if login fails
             $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Failed to login<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }
     }
-    
 }
 ?>
 <!DOCTYPE html>
