@@ -1,6 +1,7 @@
 <?php
 include_once("header.php");
 $count = 1;
+$s_stmt = '';
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (isset($_POST["submit"])) {
@@ -50,6 +51,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">No document selected.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }
     }
+
+    if (isset($_POST['search'])) {
+        
+        $search = $_POST['name'];
+        $s_stmt = "AND LOWER(name) LIKE LOWER('%$search%')";
+    }
 }
 ?>
 <div class="container-fluid pt-4 px-4">
@@ -58,17 +65,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <!-- Widgets Start -->
 <div class="container-fluid pt-4 px-4">
-    <div class="d-flex mb-4">
-        <input class="form-control bg-transparent" type="text" placeholder="Search">
-        <button type="button" class="btn btn-primary ms-2">Search</button>
-    </div>
+    <form method="POST" action="">
+        <div class="d-flex mb-4">
+            <input class="form-control bg-transparent" type="text" placeholder="Search" name="name">
+            <button type="submit" name="search" class="btn btn-primary ms-2" >Search</button>
+        </div> 
+    </form>
     <div class="bg-light text-center rounded p-4">
         <form method="POST" action="">
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <h4 class="mb-0 text-nowrap">List of document</h4>
                 <div>
-                    <button class="btn btn-primary" name="delete_selected" type="submit"><i class="fas fa-trash-alt"></i></button>
-                    <a href="<?= $current_url ?>document-details.php/<?= $id ?>"><i class="fas fa-plus-square fs-4"></i></a>
+                    <button class="btn btn-primary w-auto" name="delete_selected" type="submit" style="padding: 1px 6px;"><i class="fas fa-trash-alt"></i></button>
+                    <a class="btn btn-primary w-auto" style="padding: 1px 6px;" href="<?= $current_url ?>document-details.php/<?= $id ?>"><i class="fas fa-plus-square"></i></a>
                 </div>
             </div>
             <div class="table-responsive">
@@ -84,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </thead>
                     <tbody>
                         <?php
-                        $stmt = "SELECT * FROM `file` WHERE u_id = '$d_id'";
+                        $stmt = "SELECT * FROM `file` WHERE u_id = '$d_id' $s_stmt";
                         $result = mq($stmt);
                         if ($result) {
                             while ($row = mfa($result)) {
