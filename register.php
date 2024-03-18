@@ -64,7 +64,7 @@ $current_url = "http://localhost/SMS2.0/";
                                                 <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
                                                     <label class="form-label" for="name">Fullname</label>
-                                                    <input type="text" id="name" class="form-control" name="name"/>
+                                                    <input type="text" id="name" class="form-control" name="name" required/>
                                                 </div>
                                             </div>
 
@@ -72,7 +72,7 @@ $current_url = "http://localhost/SMS2.0/";
                                                 <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
                                                     <label class="form-label" for="name">Username</label>
-                                                    <input type="text" id="uname" class="form-control" name="uname"/>
+                                                    <input type="text" id="uname" class="form-control" name="uname" required/>
                                                 </div>
                                             </div>
 
@@ -80,7 +80,7 @@ $current_url = "http://localhost/SMS2.0/";
                                                 <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
                                                     <label class="form-label" for="email">Your Email</label>
-                                                    <input type="email" id="email" class="form-control" name="email"/>
+                                                    <input type="email" id="email" class="form-control" name="email" required/>
                                                 </div>
                                             </div>
 
@@ -88,7 +88,7 @@ $current_url = "http://localhost/SMS2.0/";
                                                 <i class="fas fa-phone fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
                                                     <label class="form-label" for="num">Your Number</label>
-                                                    <input type="number" id="num" class="form-control" name="num" />
+                                                    <input type="number" id="num" class="form-control" name="num" required/>
                                                 </div>
                                             </div>
 
@@ -96,7 +96,7 @@ $current_url = "http://localhost/SMS2.0/";
                                                 <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
                                                     <label class="form-label" for="pass">Password</label>
-                                                    <input type="password" id="pass" class="form-control" name="pass"/>
+                                                    <input type="password" id="pass" class="form-control" name="pass" required/>
                                                 </div>
                                             </div>
 
@@ -104,14 +104,14 @@ $current_url = "http://localhost/SMS2.0/";
                                                 <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
                                                     <label class="form-label" for="rpass">Repeat your password</label>
-                                                    <input type="password" id="rpass" class="form-control" name="rpass"/>
+                                                    <input type="password" id="rpass" class="form-control" name="rpass" required/>
                                                 </div>
                                             </div>
                                             <div class="d-flex flex-row align-items-center mb-4">
                                                 <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
                                                     <label class="form-label" for="user">Register as</label>
-                                                    <select class="form-select" id="user" aria-label="Floating label select example" name="user">
+                                                    <select class="form-select" id="user" aria-label="Floating label select example" name="user" required>
                                                         <option>Select user</option>
                                                         <option value="Applicant">Applicant</option>
                                                         <option value="Scholarship Provider">Scholarship Provider</option>
@@ -127,7 +127,7 @@ $current_url = "http://localhost/SMS2.0/";
                                             </div>
 
                                             <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                                <button type="submit" name="submit" class="btn btn-primary btn-lg w-auto">Register</button>
+                                                <button type="submit" name="register" class="btn btn-primary btn-lg w-auto">Register</button>
                                             </div>
 
                                         </form>

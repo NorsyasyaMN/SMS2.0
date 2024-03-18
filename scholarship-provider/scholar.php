@@ -1,4 +1,23 @@
-<? include_once("header.php") ?>
+<?php
+include_once("header.php");
+$stmt = "SELECT * FROM register WHERE id = '$d_id'";
+$result = mq($stmt);
+if ($result){
+    while ($row = mfa($result)) {
+        $profileImg = $row['img'];
+        $headerImg = $row['cover_img'];
+        $name = $row['name'];
+        $email = $row['email'];
+        $bio = $row['bio'];
+        $stud = $row['stud'];
+        $phone = $row['num'];
+        $location = $row['location'];
+    }
+}
+else{
+    die('Query execution failed: ' . mysqli_error($conn));
+} 
+?>
 <div class="container-fluid pt-4 px-4">
     <h2>Scholarship Details</Details>
     </h2>
@@ -7,11 +26,11 @@
 <div class="container-fluid pt-3 px-4">
     <div>
         <div class="upper">
-            <img src="https://i.imgur.com/Qtrsrk5.jpg" class="img-fluid">
+            <img src="<?=$file_url?>/<?= $headerImg ?>" class="img-fluid">
         </div>
         <div class="user">
             <div class="profile">
-                <img src="https://i.imgur.com/JgYD2nQ.jpg" class="rounded-circle" width="80">
+                <img src="<?=$file_url?>/<?= $profileImg ?>" class="rounded-circle" width="80">
             </div>
         </div>
     </div>
@@ -21,7 +40,7 @@
             <span class="text-muted d-block mb-2">Los Angles</span>
         </div>
         <div>
-            <a href="profile-details.php"><button class="btn btn-primary btn-sm follow w-auto">Edit Scholarship</button></a>
+            <a href="<?= $current_url ?>profile-details.php/<?=$id?>"><button class="btn btn-primary btn-sm follow w-auto">Edit Scholarship</button></a>
         </div>
     </div>
 </div>
@@ -40,25 +59,23 @@
                 <div class="row g-4">
                     <div class="col-sm-12 col-md-12 col-xl-12 py-2">
                         <h5>Bio</h5>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspen disse var ius
-                            enim ineros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor
-                            interdum nulla, ut commodo diam libero vitae erat.</p>
+                        <p><?= $bio ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-12 py-2">
                         <h5>Studies</h5>
-                        <p>Theme designer at Bootstrap.</p>
+                        <p><?= $stud ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Phone</h5>
-                        <p>0123456789</p>
+                        <p><?= $phone ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Email</h5>
-                        <p>test.edu@gmail.com</p>
+                        <p><?= $email ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Location</h5>
-                        <p>Kuala Lumpur, WP Kuala Lumpur</p>
+                        <p><?= $location ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Website</h5>
@@ -74,7 +91,7 @@
                     <a href="">Show All</a>
                 </div>
                 <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="../img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                    <img class="rounded-circle flex-shrink-0" src="<?=$file_url?>img/user.jpg" alt="" style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 justify-content-between">
                             <h6 class="mb-0">Jhon Doe</h6>
@@ -84,7 +101,7 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="../img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                    <img class="rounded-circle flex-shrink-0" src="<?=$file_url?>img/user.jpg" alt="" style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 justify-content-between">
                             <h6 class="mb-0">Jhon Doe</h6>
@@ -94,7 +111,7 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="../img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                    <img class="rounded-circle flex-shrink-0" src="<?=$file_url?>img/user.jpg" alt="" style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 justify-content-between">
                             <h6 class="mb-0">Jhon Doe</h6>
@@ -104,7 +121,7 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center pt-3">
-                    <img class="rounded-circle flex-shrink-0" src="../img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                    <img class="rounded-circle flex-shrink-0" src="<?=$file_url?>img/user.jpg" alt="" style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 justify-content-between">
                             <h6 class="mb-0">Jhon Doe</h6>
@@ -140,10 +157,10 @@
                         </ul>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6">
-                        <img class="img-fluid" src="../img/sample1.jpg">
+                        <img class="img-fluid" src="<?=$file_url?>img/sample1.jpg">
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6">
-                        <img class="img-fluid" src="../img/sample1.jpg">
+                        <img class="img-fluid" src="<?=$file_url?>img/sample1.jpg">
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6">
                         <div class="pb-3">
@@ -227,4 +244,4 @@
     </div>
 </div>
 <!-- Widgets End -->
-<? include_once("footer.php") ?>
+<?php include_once("footer.php") ?>

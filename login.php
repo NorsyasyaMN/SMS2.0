@@ -7,7 +7,7 @@ $alert = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // this part is from register.php which is another file
-    if (isset($_POST['name']) && isset($_POST['uname']) && isset($_POST['email']) && isset($_POST['num']) && isset($_POST['pass']) && isset($_POST['rpass']) && isset($_POST['user'])) {
+    if (isset($_POST['register'])) {
         $name = $_POST["name"];
         $uname = $_POST["uname"];
         $email = $_POST["email"];
@@ -33,16 +33,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST['pass_r']) && isset($_POST['email_r'])) {
         $email = $_POST['email_r'];
         $pass = $_POST['pass_r'];
-        $stmt = "SELECT id FROM `register` WHERE email = '$email' AND pass = '$pass'";
+        $stmt = "SELECT * FROM `register` WHERE email = '$email' AND pass = '$pass'";
         $result = mq($stmt);
         if ($result) {
             if (mnr($result) > 0) {
                 // Check if there are any rows returned
                 $row = mfa($result);
                 $id = $row['id'];
+                $user = $row['user'];
                 $e_id = encode($id);
+
+                if($user == 'Applicant'){
+                    header('Location: index.php/' . $e_id);
+                }
+                if($user == 'Scholarship Provider'){
+                    header('Location: scholarship-provider/scholar.php/' . $e_id);
+                }
                 // Set session variable and redirect the user
-                header('Location: index.php/' . $e_id);
             } else {
                 // Display error message if login fails
                 $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Wrong Credentials<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
@@ -131,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                             </div>
 
                                             <a class="small text-muted" href="#!">Forgot password?</a>
-                                            <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="#!" style="color: #393f81;">Register here</a></p>
+                                            <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="register.php" style="color: #393f81;">Register here</a></p>
                                             <a href="#!" class="small text-muted">Terms of use.</a>
                                             <a href="#!" class="small text-muted">Privacy policy</a>
                                         </form>

@@ -1,9 +1,28 @@
 <?php
+include_once("../config.php");
 $ver = rand();
-$current_url = "http://localhost/SMS2.0/scholarship-provider/"
+$current_url = "http://localhost/SMS2.0/scholarship-provider/";
+$file_url = "http://localhost/SMS2.0/";
+
+$filename = filename_s();
+$id = cleanURL_s($filename);
+$d_id = decode($id);
+global $d_id;
+global $id;
+
+$stmt = "SELECT * FROM register WHERE id = '$d_id'";
+$result = mq($stmt);
+if (!$result) {
+    die('Query execution failed: ' . mysqli_error($conn));
+}
+while ($row = mfa($result)) {
+    $profileImg = $row['img'];
+    $uname = $row['uname'];
+    $user = $row['user'];
+}
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 
 <head>
     <meta charset="utf-8">
@@ -13,7 +32,7 @@ $current_url = "http://localhost/SMS2.0/scholarship-provider/"
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <!-- <link href="../img/favicon.ico" rel="icon"> -->
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,14 +44,14 @@ $current_url = "http://localhost/SMS2.0/scholarship-provider/"
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="../lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+    <link href="<?=$file_url?>lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="<?=$file_url?>lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="../css/bootstrap.min.css?ver=<?= $ver ?>" rel="stylesheet">
+    <link href="<?=$file_url?>css/bootstrap.min.css?ver=<?= $ver ?>" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="../css/style.css?ver=<?= $ver ?>" rel="stylesheet">
+    <link href="<?=$file_url?>css/style.css?ver=<?= $ver ?>" rel="stylesheet">
 </head>
 
 <body>
@@ -54,28 +73,28 @@ $current_url = "http://localhost/SMS2.0/scholarship-provider/"
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
-                        <img class="rounded-circle" src="../img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                        <img class="rounded-circle" src="<?=$file_url?><?= $profileImg ?>" alt="" style="width: 40px; height: 40px;">
                         <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
                         </div>
                     </div>
                     <div class="ms-3">
-                        <h6 class="mb-0">Jhon Doe</h6>
+                        <h6 class="mb-0"><?= $uname ?></h6>
                         <span>Admin</span>
                     </div>
                 </div>
                 <div class="w-100">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a href="<?= $current_url ?>index.php" class="nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                            <a href="<?= $current_url ?>scholar.php/<?=$id?>" class="nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= $current_url ?>applicant.php" class="nav-link"><i class="fa fa-th me-2"></i>Applicants List</a>
+                            <a href="<?= $current_url ?>applicant.php/<?=$id?>" class="nav-link"><i class="fa fa-th me-2"></i>Applicants List</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= $current_url ?>document.php" class="nav-link"><i class="fa fa-keyboard me-2"></i>Document</a>
+                            <a href="<?= $current_url ?>document.php/<?=$id?>" class="nav-link"><i class="fa fa-keyboard me-2"></i>Document</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= $current_url ?>user.php" class="nav-link"><i class="fa fa-table me-2"></i>Users</a>
+                            <a href="<?= $current_url ?>user.php/<?=$id?>" class="nav-link"><i class="fa fa-table me-2"></i>Users</a>
                         </li>
                     </ul>
                 </div>
@@ -117,13 +136,13 @@ $current_url = "http://localhost/SMS2.0/scholarship-provider/"
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img class="rounded-circle me-lg-2" src="../img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                            <span class="d-none d-lg-inline-flex">John Doe</span>
+                            <img class="rounded-circle me-lg-2" src="<?=$file_url?><?= $profileImg ?>" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex"><?= $uname ?></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-darkblue border-0 rounded-0 rounded-bottom m-0">
-                            <a href="#" class="dropdown-item">My Profile</a>
-                            <a href="#" class="dropdown-item">Settings</a>
-                            <a href="#" class="dropdown-item">Log Out</a>
+                            <a href="<?= $current_url ?>scholar.php" class="dropdown-item">My Profile</a>
+                            <!-- <a href="#" class="dropdown-item">Settings</a> -->
+                            <a href="<?=$file_url?>login.php" onclick="<?php session_destroy(); ?>" class="dropdown-item">Log Out</a>
                         </div>
                     </div>
                 </div>

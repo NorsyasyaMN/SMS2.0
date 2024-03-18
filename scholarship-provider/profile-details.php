@@ -1,11 +1,102 @@
-<? include_once("header.php") ?>
+<?php include_once("header.php");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $name_r = $_POST["fullname"];
+    $email_r = $_POST["email"];
+    $bio_r = $_POST["bio"];
+    $stud_r = $_POST["stud"];
+    $phone_r = $_POST["phone"];
+    $loc_r = $_POST["loc"];
+    $status = 0;
+
+    // Function to handle photo upload
+    function uploadPhoto($photo)
+    {
+        if ($photo["error"] == UPLOAD_ERR_OK) {
+            $file_name = basename($photo["name"]);
+            $file_tmp = $photo["tmp_name"];
+            $file_type = $photo["type"];
+            $file_size = $photo["size"];
+
+            // Store file in uploads directory
+            $upload_dir = "uploads/";
+            $target_file = $upload_dir . $file_name;
+            move_uploaded_file($file_tmp, $target_file);
+
+            return $target_file; // Return uploaded file path
+        } else {
+            return false; // Return false if upload failed
+        }
+    }
+
+    // Check if profile image is set
+    if (isset($_FILES["profileImage"]) && $_FILES["profileImage"]["error"] == 0) {
+        $profilePath = uploadPhoto($_FILES["profileImage"]);
+        if ($profilePath !== false) {
+            // Profile image is set, update database with profile image
+
+            $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `img`='$profilePath', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id");
+            if ($result == TRUE) {
+                $status = 1;
+            }
+        } else {
+            // Display error message if profile image upload fails
+            $status = 0;
+            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error uploading profile image.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        }
+    }
+
+    // Check if header image is set
+    if (isset($_FILES["headerImage"]) && $_FILES["headerImage"]["error"] == 0) {
+        $headerPath = uploadPhoto($_FILES["headerImage"]);
+        if ($headerPath !== false) {
+            // Header image is set, update database with header image
+            $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `cover_img`='$headerPath', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id");
+            if ($result == TRUE) {
+                $status = 1;
+            }
+        } else {
+            // Display error message if header image upload fails
+            $status = 0;
+            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error uploading header image.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        }
+    } else {
+        $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id");
+        if ($result == TRUE) {
+            $status = 1;
+        } else {
+            // Display error message if database update fails
+            $status = 0;
+            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error updating data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        }
+    }
+
+    if ($status == 1) {
+        echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data saved successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+    }
+}
+
+$stmt = "SELECT * FROM register WHERE id = '$d_id'";
+$result = mq($stmt);
+while ($row = mfa($result)) {
+    $profileImg = $row['img'];
+    $headerImg = $row['cover_img'];
+    $name = $row['name'];
+    $email = $row['email'];
+    $bio = $row['bio'];
+    $stud = $row['stud'];
+    $phone = $row['num'];
+    $location = $row['location'];
+}
+?>
 <div class="container-fluid pt-4 px-4">
     <h2>Applicant Details</h2>
 </div>
 
 <!-- Widgets Start -->
 <div class="container-fluid pt-4 px-4">
-    <form>
+    <form action="" method="post" enctype="multipart/form-data">
         <!-- General Settings -->
         <div class="mb-3 bg-light rounded p-4">
             <h5>Applicant Information</h5>
@@ -15,9 +106,9 @@
                 <label class="form-label col-sm-2">Profile Photo:</label>
                 <div class="col-sm-10">
                     <div class="d-flex align-items-center">
-                        <img class="rounded-circle me-3" src="../img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                        <a href="#"><button class="btn btn-outline-primary btn-sm follow w-auto me-3">Change</button></a>
-                        <a href="#"><button class="btn btn-outline-primary btn-sm follow w-auto me-3">Remove</button></a>
+                        <img class="rounded-circle me-3" src="<?= $file_url ?>/<?= $profileImg ?>" alt="" style="width: 40px; height: 40px;">
+                        <input type="file" name="profileImage" id="profileImage" accept="image/*">
+                        <a class="btn btn-outline-primary btn-sm follow w-auto me-3">Remove</a>
                     </div>
                 </div>
             </div>
@@ -26,7 +117,7 @@
                 <div class="col-sm-10">
                     <div id="drag-drop-area" class="mb-3">
                         <p>Drag & drop your file here or <label for="file-input" class="text-primary">browse</label>.</p>
-                        <input type="file" id="file-input" accept="image/*">
+                        <input type="file" name="headerImage" id="headerImage" accept="image/*">
                     </div>
                 </div>
             </div>
@@ -158,4 +249,4 @@
 </div>
 <!-- Widgets End -->
 
-<? include_once("footer.php") ?>
+<?php include_once("footer.php") ?>

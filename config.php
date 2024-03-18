@@ -37,6 +37,7 @@ function decode($a)
     $d_id = intval($s_id);
     return $d_id;
 }
+
 function cleanURL($a)
 {
     $url = $_SERVER['REQUEST_URI'];
@@ -52,7 +53,42 @@ function cleanURL($a)
 
     return $value;
 }
+
 function filename()
+{
+    $current_url = $_SERVER['REQUEST_URI'];
+
+    // Remove any query string parameters from the URL
+    $url_parts = explode('?', $current_url);
+    
+    // Split the URL path by "/"
+    $path_parts = explode('/', $url_parts[0]);
+    
+    // Remove any empty segments
+    $path_parts = array_filter($path_parts);
+    
+    // Get the second-to-last part of the URL path
+    $filename = isset($path_parts[count($path_parts) - 1]) ? $path_parts[count($path_parts) - 1] : null;
+    return $filename;
+}
+
+function cleanURL_s($a)
+{
+    $url = $_SERVER['REQUEST_URI'];
+
+    // Remove the script name (index.php) from the URL path
+    $url_without_script = str_replace('SMS2.0/scholarship-provider/' . $a . '/', '', $url);
+
+    // Get the URL path segments
+    $segments = explode('/', trim($url_without_script, '/'));
+
+    // Extract the value from the URL path
+    $value = isset($segments[0]) ? $segments[0] : null;
+
+    return $value;
+}
+
+function filename_s()
 {
     $current_url = $_SERVER['REQUEST_URI'];
 
