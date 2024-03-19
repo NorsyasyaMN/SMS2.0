@@ -36,9 +36,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $profilePath = uploadPhoto($_FILES["profileImage"]);
         if ($profilePath !== false) {
             // Profile image is set, update database with profile image
-
-            $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `img`='$profilePath', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id");
-            if ($result == TRUE) {
+            $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r' WHERE id = $d_id");
+            $result_s = mq("UPDATE `applicant` SET `img`='$profilePath', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id");
+            if ($result == TRUE && $result_s == TRUE) {
                 $status = 1;
             }
         } else {
@@ -49,12 +49,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Check if header image is set
-    if (isset($_FILES["headerImage"]) && $_FILES["headerImage"]["error"] == 0) {
+    elseif (isset($_FILES["headerImage"]) && $_FILES["headerImage"]["error"] == 0) {
         $headerPath = uploadPhoto($_FILES["headerImage"]);
         if ($headerPath !== false) {
             // Header image is set, update database with header image
-            $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `cover_img`='$headerPath', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id");
-            if ($result == TRUE) {
+            $stmt = "UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r' WHERE id = $d_id";
+            $stmt_s = "UPDATE `applicant` SET `cover_img`='$headerPath', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id";
+            $result = mq($stmt);
+            $result_s = mq($stmt_s);
+            if ($result == TRUE && $result_s == TRUE) {
                 $status = 1;
             }
         } else {
@@ -62,9 +65,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $status = 0;
             echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error uploading header image.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }
-    } else {
-        $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id");
-        if ($result == TRUE) {
+    } 
+    
+    else {
+        $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r' WHERE id = $d_id");
+        $result_s = mq("UPDATE `applicant` SET `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id");
+        if ($result == TRUE && $result_s == TRUE) {
             $status = 1;
         } else {
             // Display error message if database update fails
@@ -78,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$stmt = "SELECT * FROM register WHERE id = '$d_id'";
+$stmt = "SELECT * FROM applicant INNER JOIN register ON applicant.u_id = register.id WHERE u_id = '$d_id'";
 $result = mq($stmt);
 while ($row = mfa($result)) {
     $profileImg = $row['img'];
@@ -108,7 +114,7 @@ while ($row = mfa($result)) {
                 <label class="form-label col-sm-2">Profile Photo:</label>
                 <div class="col-sm-10">
                     <div class="d-flex align-items-center">
-                        <img class="rounded-circle me-3" src="<?=$current_url?>/<?= $profileImg ?>" alt="" style="width: 40px; height: 40px;">
+                        <img class="rounded-circle me-3" src="<?= $current_url ?>/<?= $profileImg ?>" alt="" style="width: 40px; height: 40px;">
                         <input type="file" name="profileImage" id="profileImage" accept="image/*">
                         <a class="btn btn-outline-primary btn-sm follow w-auto me-3">Remove</a>
                     </div>
@@ -166,7 +172,7 @@ while ($row = mfa($result)) {
                 </div>
             </div>
             <div class="d-flex justify-content-between ">
-                <a class="btn btn-sm btn-outline-dark w-auto" href="<?=$current_url?>index.php/<?= $id ?>">Cancel</a>
+                <a class="btn btn-sm btn-outline-dark w-auto" href="<?= $current_url ?>index.php/<?= $id ?>">Cancel</a>
                 <button class="btn btn-sm btn-primary w-auto" type="submit" name="submit">Save changes</button>
             </div>
         </div>

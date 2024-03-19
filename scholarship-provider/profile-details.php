@@ -230,7 +230,7 @@ while ($row = mfa($result)) {
                 </div>
             </div>
         </div>
-        <div class="mb-3 bg-light rounded p-4">
+        <!-- <div class="mb-3 bg-light rounded p-4">
             <h5>Document Needed</h5>
             <p>How many document needed to be upload by the applicant, seperate it by comma</p>
             <hr>
@@ -240,7 +240,7 @@ while ($row = mfa($result)) {
                     <input class="form-control" id="document" class="document" name="document" placeholder="Document"></input>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="d-flex justify-content-between ">
             <a class="btn btn-sm btn-outline-dark w-auto" href="index.php">Cancel</a>
             <a class="btn btn-sm btn-primary w-auto" href="index.php">Save changes</a>

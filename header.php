@@ -9,7 +9,7 @@ global $d_id;
 global $id;
 
 $current_url = "http://localhost/SMS2.0/";
-$stmt = "SELECT * FROM register WHERE id = '$d_id'";
+$stmt = "SELECT * FROM applicant INNER JOIN register ON applicant.u_id = register.id WHERE u_id = '$d_id'";
 $result = mq($stmt);
 if (!$result) {
     die('Query execution failed: ' . mysqli_error($conn));

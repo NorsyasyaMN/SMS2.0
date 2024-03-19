@@ -1,17 +1,24 @@
 <?php
 include_once("header.php");
-$stmt = "SELECT * FROM register WHERE id = '$d_id'";
+$stmt = "SELECT * FROM scholarship INNER JOIN register ON scholarship.u_id = register.id WHERE u_id = '$d_id'";
 $result = mq($stmt);
 if ($result){
     while ($row = mfa($result)) {
+        $email = $row['email'];
         $profileImg = $row['img'];
         $headerImg = $row['cover_img'];
-        $name = $row['name'];
-        $email = $row['email'];
+        $name = $row['org_name'];
+        $scholar_name = $row['scholar_name'];
         $bio = $row['bio'];
-        $stud = $row['stud'];
-        $phone = $row['num'];
         $location = $row['location'];
+        $field = $row['field'];
+        $level = $row['level'];
+        $criteria = $row['criteria'];
+        $img1 = $row['img1'];
+        $high = $row['high'];
+        $awards = $row['award'];
+        $img2 = $row['img2'];
+        $doc = $row['doc'];
     }
 }
 else{
@@ -62,8 +69,12 @@ else{
                         <p><?= $bio ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-12 py-2">
-                        <h5>Studies</h5>
-                        <p><?= $stud ?></p>
+                        <h5>Field</h5>
+                        <p><?= $field?></p>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-xl-12 py-2">
+                        <h5>Level</h5>
+                        <p><?= $level ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Phone</h5>
@@ -142,18 +153,7 @@ else{
                     <div class="col-sm-12 col-md-6 col-xl-6">
                         <h5>Criteria</h5>
                         <ul class="ps-3">
-                            <li>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </li>
-                            <li>
-                                <p>Suspen disse var iusenim ineros elementum tristique.</p>
-                            </li>
-                            <li>
-                                <p>Suspen disse var iusenim ineros elementum tristique.</p>
-                            </li>
-                            <li>
-                                <p>Suspen disse var iusenim ineros elementum tristique.</p>
-                            </li>
+                            <p><?=$criteria?></p>
                         </ul>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6">
@@ -165,37 +165,11 @@ else{
                     <div class="col-sm-12 col-md-6 col-xl-6">
                         <div class="pb-3">
                             <h5>Highlights</h5>
-                            <ul class="ps-3">
-                                <li>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </li>
-                                <li>
-                                    <p>Suspen disse var iusenim ineros elementum tristique.</p>
-                                </li>
-                                <li>
-                                    <p>Suspen disse var iusenim ineros elementum tristique.</p>
-                                </li>
-                                <li>
-                                    <p>Suspen disse var iusenim ineros elementum tristique.</p>
-                                </li>
-                            </ul>
+                            <p><?=$high?></p>
                         </div>
                         <div class="pb-3">
                             <h5>Awards</h5>
-                            <ul class="ps-3">
-                                <li>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </li>
-                                <li>
-                                    <p>Suspen disse var iusenim ineros elementum tristique.</p>
-                                </li>
-                                <li>
-                                    <p>Suspen disse var iusenim ineros elementum tristique.</p>
-                                </li>
-                                <li>
-                                    <p>Suspen disse var iusenim ineros elementum tristique.</p>
-                                </li>
-                            </ul>
+                            <p><?=$awards?></p>
                         </div>
                     </div>
                 </div>

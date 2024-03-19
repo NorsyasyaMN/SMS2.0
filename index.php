@@ -1,6 +1,6 @@
 <?php
 include_once("header.php");
-$stmt = "SELECT * FROM register WHERE id = '$d_id'";
+$stmt = "SELECT * FROM applicant INNER JOIN register ON applicant.u_id = register.id WHERE u_id = '$d_id'";
 $result = mq($stmt);
 if ($result){
     while ($row = mfa($result)) {
