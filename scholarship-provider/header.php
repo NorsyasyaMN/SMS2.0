@@ -10,7 +10,7 @@ $d_id = decode($id);
 global $d_id;
 global $id;
 
-$stmt = "SELECT * FROM register WHERE id = '$d_id'";
+$stmt = "SELECT * FROM scholarship INNER JOIN register ON scholarship.u_id = register.id WHERE u_id = '$d_id'";
 $result = mq($stmt);
 if (!$result) {
     die('Query execution failed: ' . mysqli_error($conn));
@@ -79,7 +79,7 @@ while ($row = mfa($result)) {
                     </div>
                     <div class="ms-3">
                         <h6 class="mb-0"><?= $uname ?></h6>
-                        <span>Admin</span>
+                        <span><?=$user?></span>
                     </div>
                 </div>
                 <div class="w-100">

@@ -2,12 +2,17 @@
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $name_r = $_POST["fullname"];
-    $email_r = $_POST["email"];
+    $oname_r = $_POST["o_name"];
+    $sname_r = $_POST["s_name"];
     $bio_r = $_POST["bio"];
-    $stud_r = $_POST["stud"];
-    $phone_r = $_POST["phone"];
     $loc_r = $_POST["loc"];
+    $phone_r = $_POST["phone"];
+    $email_r = $_POST["email"];
+    $field_r = $_POST["field"];
+    $level_r = $_POST["level"];
+    $criteria =$_POST["criteria"];
+    $high =$_POST["high"];
+    $award =$_POST["award"];
     $status = 0;
 
     // Function to handle photo upload
@@ -77,17 +82,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$stmt = "SELECT * FROM register WHERE id = '$d_id'";
+$stmt = "SELECT * FROM scholarship INNER JOIN register ON scholarship.u_id = register.id WHERE u_id = '$d_id'";
 $result = mq($stmt);
 while ($row = mfa($result)) {
+    $email = $row['email'];
+    $phone = $row['num'];
     $profileImg = $row['img'];
     $headerImg = $row['cover_img'];
-    $name = $row['name'];
-    $email = $row['email'];
+    $org_name = $row['org_name'];
+    $scholar_name = $row['scholar_name'];
     $bio = $row['bio'];
-    $stud = $row['stud'];
-    $phone = $row['num'];
     $location = $row['location'];
+    $field = $row['field'];
+    $level = $row['level'];
+    $criteria = $row['criteria'];
+    $img1 = $row['img1'];
+    $high = $row['high'];
+    $award = $row['award'];
+    $img2 = $row['img2'];
 }
 ?>
 <div class="container-fluid pt-4 px-4">
@@ -130,25 +142,37 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Organization Name:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter organization name" name="org" value="MMU Organization">
+                    <input class="form-control" placeholder="Enter organization name" name="o_name" value="<?=$org_name?>">
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Scholarship Name:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter scholarship name" name="scholarship" value="MMU Scholarship">
+                    <input class="form-control" placeholder="Enter scholarship name" name="s_name" value="<?=$scholar_name?>">
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Bio:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter bio" name="bio" value="Chase your dream">
+                    <input class="form-control" placeholder="Enter bio" name="bio" value="<?=$bio?>">
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Location:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter your location" name="loc" value="No. 36, Jalan Lengkok, Seremban 59200, Negeri Sembilan">
+                    <input class="form-control" placeholder="Enter your location" name="loc" value="<?=$location?>">
+                </div>
+            </div>
+            <div class="pb-3 row">
+                <label class="form-label col-sm-2">Phone:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" placeholder="Enter your number" name="phone" value="<?=$phone?>">
+                </div>
+            </div>
+            <div class="pb-3 row">
+                <label class="form-label col-sm-2">Email:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" placeholder="Enter your email" name="email" value="<?=$email?>">
                 </div>
             </div>
             <div class="pb-3 row">
@@ -184,7 +208,7 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Criteria:</label>
                 <div class="col-sm-10">
-                    <textarea id="editor" class="editor" name="editor" placeholder="Enter your text here..."></textarea>
+                    <textarea id="editor" class="editor" name="criteria" placeholder="Enter your text here..."></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
@@ -199,7 +223,13 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Highlights:</label>
                 <div class="col-sm-10">
-                    <textarea id="editor" class="editor" name="editor" placeholder="Enter your text here..."></textarea>
+                    <textarea id="editor" class="editor" name="high" placeholder="Enter your text here..."></textarea>
+                </div>
+            </div>
+            <div class="pb-3 row">
+                <label class="form-label col-sm-2">Highlights:</label>
+                <div class="col-sm-10">
+                    <textarea id="editor" class="editor" name="award" placeholder="Enter your text here..."></textarea>
                 </div>
             </div>
             <div class="pb-3 row">

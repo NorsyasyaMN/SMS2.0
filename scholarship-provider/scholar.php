@@ -5,6 +5,7 @@ $result = mq($stmt);
 if ($result){
     while ($row = mfa($result)) {
         $email = $row['email'];
+        $phone = $row['num'];
         $profileImg = $row['img'];
         $headerImg = $row['cover_img'];
         $name = $row['org_name'];
@@ -68,11 +69,11 @@ else{
                         <h5>Bio</h5>
                         <p><?= $bio ?></p>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-xl-12 py-2">
+                    <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Field</h5>
                         <p><?= $field?></p>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-xl-12 py-2">
+                    <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Level</h5>
                         <p><?= $level ?></p>
                     </div>
