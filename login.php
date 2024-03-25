@@ -113,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <!-- Spinner End -->
 
         <?= $alert ?>
-        <section class="vh-100" style="background-color: #9A616D;">
+        <section style="background-color: #9A616D;">
             <div class="container py-5 h-100">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col col-xl-10">
