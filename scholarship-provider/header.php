@@ -52,6 +52,8 @@ while ($row = mfa($result)) {
 
     <!-- Template Stylesheet -->
     <link href="<?=$file_url?>css/style.css?ver=<?= $ver ?>" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<?=$file_url?>css/virtual-select.min.css?ver=<?= $ver ?>">
+
 </head>
 
 <body>

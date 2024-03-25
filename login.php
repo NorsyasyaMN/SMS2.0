@@ -47,13 +47,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 if ($user == 'Applicant') {
 
                     $stmt_check = "SELECT u_id FROM `applicant` WHERE u_id = $id";
-                    echo "$stmt_check";
                     $result_check = mq($stmt_check);
                     if ($result_check) {
                         if (mnr($result_check) > 0) {
                             header('Location: index.php/' . $e_id);
-                        }
-                        else {
+                        } else {
                             $stmt_a = "INSERT INTO `applicant`(`u_id`, `img`, `cover_img`, `bio`, `stud`, `location`) VALUES ('$id','','','','','')";
                             $result_a = mq($stmt_a);
                             if ($result_a) {
@@ -63,10 +61,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     }
                 }
                 if ($user == 'Scholarship Provider') {
-                    $stmt_s = "INSERT INTO `scholarship`(`u_id`, `img`, `cover_img`, `org_name`, `scholar_name`, `bio`, `location`, `field`, `level`, `criteria`, `img1`, `high`, `award`, `img2`, `doc`) VALUES ('$id','','','','','','','','','','','','','','')";
-                    $result_s = mq($stmt_s);
-                    if ($result_s) {
-                        header('Location: scholarship-provider/scholar.php/' . $e_id);
+
+                    $stmt_check = "SELECT u_id FROM `scholarship` WHERE u_id = $id";
+                    $result_check = mq($stmt_check);
+                    if ($result_check) {
+                        if (mnr($result_check) > 0) {
+                            header('Location: scholarship-provider/scholar.php/' . $e_id);
+                        } else {
+                            $stmt_s = "INSERT INTO `scholarship`(`u_id`, `img`, `cover_img`, `org_name`, `scholar_name`, `bio`, `location`, `field`, `level`, `criteria`, `img1`, `high`, `award`, `img2`, `doc`) VALUES ('$id','','','','','','','','','','','','','','')";
+                            $result_s = mq($stmt_s);
+                            if ($result_s) {
+                                header('Location: scholarship-provider/scholar.php/' . $e_id);
+                            }
+                        }
                     }
                 }
                 // Set session variable and redirect the user

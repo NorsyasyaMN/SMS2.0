@@ -2,6 +2,7 @@
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+    $name_r = $_POST["name"];
     $oname_r = $_POST["o_name"];
     $sname_r = $_POST["s_name"];
     $bio_r = $_POST["bio"];
@@ -13,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $criteria = $_POST["criteria"];
     $high = $_POST["high"];
     $award = $_POST["award"];
+    $doc = $_POST["native-select"];
     $status = 0;
 
     // Check if profile image is set
@@ -49,8 +51,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
+    if (isset($_FILES["photo1"]) && $_FILES["photo1"]["error"] == 0) {
+        $photo1 = uploadPhoto($_FILES["photo1"]);
+        if ($photo1 !== false) {
+            // Header image is set, update database with header image
+            $stmt_q = "UPDATE `scholarship` SET `img1`='$photo1' WHERE u_id = $d_id ";
+            $result_q = mq($stmt_q);
+            if ($result_q == TRUE) {
+                $status = 1;
+            }
+        } else {
+            // Display error message if header image upload fails
+            $status = 0;
+            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error uploading header image.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        }
+    }
+
+    if (isset($_FILES["photo2"]) && $_FILES["photo2"]["error"] == 0) {
+        $photo2 = uploadPhoto($_FILES["photo2"]);
+        if ($photo2 !== false) {
+            // Header image is set, update database with header image
+            $stmt_r = "UPDATE `scholarship` SET `img2`='$photo2' WHERE u_id = $d_id ";
+            $result_r = mq($stmt_r);
+            if ($result_r == TRUE) {
+                $status = 1;
+            }
+        } else {
+            // Display error message if header image upload fails
+            $status = 0;
+            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error uploading header image.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        }
+    }
+
     $stmt_x = "UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r' WHERE id = $d_id ";
-    $stmt_y = "UPDATE `scholarship` SET `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE u_id = $d_id";
+    $stmt_y = "UPDATE `scholarship` SET `org_name`= '$oname_r',`scholar_name`='$sname_r',`bio`='$bio_r',`location`='$loc_r',`field`='$field_r',`level`='$level_r',`criteria`='$criteria',`high`=' $high',`award`='$award',`doc`='$doc' WHERE u_id = $d_id";
     $result = mq($stmt_x);
     $result_s = mq($stmt_y);
     if ($result == TRUE && $result_s == TRUE) {
@@ -70,6 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $stmt = "SELECT * FROM scholarship INNER JOIN register ON scholarship.u_id = register.id WHERE u_id = '$d_id'";
 $result = mq($stmt);
 while ($row = mfa($result)) {
+    $name_r = $row['name'];
     $email = $row['email'];
     $phone = $row['num'];
     $profileImg = $row['img'];
@@ -85,6 +120,7 @@ while ($row = mfa($result)) {
     $high = $row['high'];
     $award = $row['award'];
     $img2 = $row['img2'];
+    $doc = $row['doc'];
 }
 ?>
 <div class="container-fluid pt-4 px-4">
@@ -125,6 +161,12 @@ while ($row = mfa($result)) {
             <p>Update some personal information. The data will never be publicly available.</p>
             <hr>
             <div class="pb-3 row">
+                <label class="form-label col-sm-2">Person Name:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" placeholder="Enter your name" name="name" value="<?= $name_r ?>">
+                </div>
+            </div>
+            <div class="pb-3 row">
                 <label class="form-label col-sm-2">Organization Name:</label>
                 <div class="col-sm-10">
                     <input class="form-control" placeholder="Enter organization name" name="o_name" value="<?= $org_name ?>">
@@ -163,25 +205,13 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Field Study Applicable:</label>
                 <div class="col-sm-10">
-                    <div class="d-none">
-                        <input class="form-control" placeholder="Add field" type='text' name='option' id='option' />
-                        <button class="btn btn-sm btn-primary w-auto" id='btnAdd'>Add Option</button>
-                    </div>
-                    <select class="form-select form-control bg-white" name="sel">
-                        <option value="">Other</option>
-                    </select>
+                    <input class="form-control" placeholder="Add field" type='text' name='field' value="<?= $field ?>" />
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Course Level Applicable:</label>
                 <div class="col-sm-10">
-                    <div class="d-none">
-                        <input class="form-control" placeholder="Add field" type='text' name='option' id='option2' />
-                        <button class="btn btn-sm btn-primary w-auto" id='btnAdd2'>Add Option</button>
-                    </div>
-                    <select class="form-select form-control bg-white" name="sel2">
-                        <option value="">Other</option>
-                    </select>
+                    <input class="form-control" placeholder="Add level" type='text' name='level' value="<?= $level ?>" />
                 </div>
             </div>
         </div>
@@ -193,7 +223,7 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Criteria:</label>
                 <div class="col-sm-10">
-                    <textarea class="editor" name="criteria" placeholder="Enter your text here..."></textarea>
+                    <textarea class="editor" name="criteria" placeholder="Enter your text here..." value=<?= $criteria ?>></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
@@ -201,20 +231,20 @@ while ($row = mfa($result)) {
                 <div class="col-sm-10">
                     <div id="drag-drop-area" class="mb-3">
                         <p>Drag & drop your file here or <label for="file-input" class="text-primary">browse</label>.</p>
-                        <input type="file" id="file-input" accept="image/*">
+                        <input type="file" name="photo1" id="file-input" accept="image/*">
                     </div>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Highlights:</label>
                 <div class="col-sm-10">
-                    <textarea class="editor" name="high" placeholder="Enter your text here..."></textarea>
+                    <textarea class="editor" name="high" placeholder="Enter your text here..." value=<?= $high ?>></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Highlights:</label>
                 <div class="col-sm-10">
-                    <textarea class="editor" name="award" placeholder="Enter your text here..."></textarea>
+                    <textarea class="editor" name="award" placeholder="Enter your text here..." value=<?= $award ?>></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
@@ -222,7 +252,7 @@ while ($row = mfa($result)) {
                 <div class="col-sm-10">
                     <div id="drag-drop-area" class="mb-3">
                         <p>Drag & drop your file here or <label for="file-input" class="text-primary">browse</label>.</p>
-                        <input type="file" id="file-input" accept="image/*">
+                        <input type="file" name="photo2" id="file-input" accept="image/*">
                     </div>
                 </div>
             </div>
@@ -235,7 +265,7 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Document Name:</label>
                 <div class="col-sm-10">
-                    <select id="multiple-checkboxes" class="form-select form-control bg-white select-btn" multiple="multiple">
+                    <select id="multipleSelect" multiple name="native-select" placeholder="Native Select" data-search="true" data-silent-initial-value-set="true" value="<?= $doc ?>">
                         <?php
                         $stmt_d = "SELECT * FROM `file` WHERE u_id = $d_id";
                         $result_d = mq($stmt_d);
@@ -265,17 +295,16 @@ while ($row = mfa($result)) {
             </div>
         </div> -->
         <div class="d-flex justify-content-between ">
-            <a class="btn btn-sm btn-outline-dark w-auto" href="index.php">Cancel</a>
-            <a class="btn btn-sm btn-primary w-auto" href="index.php">Save changes</a>
+            <a class="btn btn-sm btn-outline-dark w-auto" href="<?= $current_url ?>scholar.php/<?= $id ?>">Cancel</a>
+            <button class="btn btn-sm btn-primary w-auto" type="submit" name="submit">Save changes</button>
         </div>
     </form>
 </div>
 <!-- Widgets End -->
-<script>
-    const selectBtn = document.querySelector(".select-btn");
-
-    selectBtn.addEventListener("click", () => {
-        selectBtn.classList.toggle("open");
+<script type="text/javascript" src="<?= $file_url ?>js/virtual-select.min.js"></script>
+<script type="text/javascript">
+    VirtualSelect.init({
+        ele: '#multipleSelect'
     });
 </script>
 

@@ -158,10 +158,10 @@ else{
                         </ul>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6">
-                        <img class="img-fluid" src="<?=$file_url?>img/sample1.jpg">
+                        <img class="img-fluid" src="<?=$file_url?><?=$img1?>">
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6">
-                        <img class="img-fluid" src="<?=$file_url?>img/sample1.jpg">
+                        <img class="img-fluid" src="<?=$file_url?><?=$img2?>">
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6">
                         <div class="pb-3">
@@ -187,31 +187,24 @@ else{
                         </tr>
                     </thead>
                     <tbody>
+                    <?php
+                    $count = 1;
+                        $stmt = "SELECT * FROM `file` WHERE id IN ($doc)";
+                        $result = mq($stmt);
+                        if ($result) {
+                            while ($row = mfa($result)) {
+                                $doc_id = $row['id'];
+                                $name = $row['name'];
+                                $file = $current_url . $row['doc'];?>
                         <tr>
-                            <td>1</td>
-                            <td>INV-0123</td>
-                            <td><a class="btn btn-sm btn-primary" href="">Download</a></td>
+                            <td><?=$count?></td>
+                            <td><?=$name?></td>
+                            <td><a class="btn btn-sm btn-primary" href="<?=$file?>" target="_blank">View</a></td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>INV-0123</td>
-                            <td><a class="btn btn-sm btn-primary" href="">Download</a></td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>INV-0123</td>
-                            <td><a class="btn btn-sm btn-primary" href="">Download</a></td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>INV-0123</td>
-                            <td><a class="btn btn-sm btn-primary" href="">Download</a></td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>INV-0123</td>
-                            <td><a class="btn btn-sm btn-primary" href="">Download</a></td>
-                        </tr>
+                        <?php
+                        $count++;
+                        }
+                    }?>
                     </tbody>
                 </table>
             </div>
