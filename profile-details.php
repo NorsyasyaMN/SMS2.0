@@ -11,34 +11,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $loc_r = $_POST["loc"];
     $status = 0;
 
-    // Function to handle photo upload
-    function uploadPhoto($photo)
-    {
-        if ($photo["error"] == UPLOAD_ERR_OK) {
-            $file_name = basename($photo["name"]);
-            $file_tmp = $photo["tmp_name"];
-            $file_type = $photo["type"];
-            $file_size = $photo["size"];
-
-            // Store file in uploads directory
-            $upload_dir = "uploads/";
-            $target_file = $upload_dir . $file_name;
-            move_uploaded_file($file_tmp, $target_file);
-
-            return $target_file; // Return uploaded file path
-        } else {
-            return false; // Return false if upload failed
-        }
-    }
-
     // Check if profile image is set
     if (isset($_FILES["profileImage"]) && $_FILES["profileImage"]["error"] == 0) {
         $profilePath = uploadPhoto($_FILES["profileImage"]);
         if ($profilePath !== false) {
             // Profile image is set, update database with profile image
-            $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r' WHERE id = $d_id");
-            $result_s = mq("UPDATE `applicant` SET `img`='$profilePath', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id");
-            if ($result == TRUE && $result_s == TRUE) {
+            $stmt_c = "UPDATE `applicant` SET `img`='$profilePath' WHERE u_id = $d_id ";
+            $result_c = mq($stmt_c);
+            if ($result_c == TRUE) {
                 $status = 1;
             }
         } else {
@@ -49,15 +29,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Check if header image is set
-    elseif (isset($_FILES["headerImage"]) && $_FILES["headerImage"]["error"] == 0) {
+    if (isset($_FILES["headerImage"]) && $_FILES["headerImage"]["error"] == 0) {
         $headerPath = uploadPhoto($_FILES["headerImage"]);
         if ($headerPath !== false) {
             // Header image is set, update database with header image
-            $stmt = "UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r' WHERE id = $d_id";
-            $stmt_s = "UPDATE `applicant` SET `cover_img`='$headerPath', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id";
-            $result = mq($stmt);
+            $stmt_s = "UPDATE `applicant` SET `cover_img`='$headerPath' WHERE u_id = $d_id ";
             $result_s = mq($stmt_s);
-            if ($result == TRUE && $result_s == TRUE) {
+            if ($result_s == TRUE) {
                 $status = 1;
             }
         } else {
@@ -65,18 +43,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $status = 0;
             echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error uploading header image.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }
-    } 
-    
-    else {
-        $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r' WHERE id = $d_id");
-        $result_s = mq("UPDATE `applicant` SET `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id");
-        if ($result == TRUE && $result_s == TRUE) {
-            $status = 1;
-        } else {
-            // Display error message if database update fails
-            $status = 0;
-            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error updating data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-        }
+    }
+
+    $stmt_x = "UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r' WHERE id = $d_id ";
+    $stmt_y = "UPDATE `applicant` SET `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE u_id = $d_id";
+    $result = mq($stmt_x);
+    $result_s = mq($stmt_y);
+    if ($result == TRUE && $result_s == TRUE) {
+        $status = 1;
+    } else {
+        // Display error message if database update fails
+        $status = 0;
+        echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error updating data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
     }
 
     if ($status == 1) {

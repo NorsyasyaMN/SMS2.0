@@ -1,6 +1,11 @@
 (function ($) {
     "use strict";
 
+    $(document).ready(function() {
+        $('#multiple-checkboxes').multiselect({
+          includeSelectAllOption: true,
+        });
+    });
     // Spinner
     var spinner = function () {
         setTimeout(function () {
@@ -73,6 +78,7 @@
         loop: true,
         nav: false
     });
+
 
     // btn.onclick = function () {
     //     var tb = document.getElementById('option'), val = tb.value;
