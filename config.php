@@ -105,3 +105,23 @@ function filename_s()
     $filename = isset($path_parts[count($path_parts) - 1]) ? $path_parts[count($path_parts) - 1] : null;
     return $filename;
 }
+
+// Function to handle photo upload
+function uploadPhoto($photo)
+{
+    if ($photo["error"] == UPLOAD_ERR_OK) {
+        $file_name = basename($photo["name"]);
+        $file_tmp = $photo["tmp_name"];
+        $file_type = $photo["type"];
+        $file_size = $photo["size"];
+
+        // Store file in uploads directory
+        $upload_dir = "uploads/";
+        $target_file = $upload_dir . $file_name;
+        move_uploaded_file($file_tmp, $target_file);
+
+        return $target_file; // Return uploaded file path
+    } else {
+        return false; // Return false if upload failed
+    }
+}

@@ -10,39 +10,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email_r = $_POST["email"];
     $field_r = $_POST["field"];
     $level_r = $_POST["level"];
-    $criteria =$_POST["criteria"];
-    $high =$_POST["high"];
-    $award =$_POST["award"];
+    $criteria = $_POST["criteria"];
+    $high = $_POST["high"];
+    $award = $_POST["award"];
     $status = 0;
-
-    // Function to handle photo upload
-    function uploadPhoto($photo)
-    {
-        if ($photo["error"] == UPLOAD_ERR_OK) {
-            $file_name = basename($photo["name"]);
-            $file_tmp = $photo["tmp_name"];
-            $file_type = $photo["type"];
-            $file_size = $photo["size"];
-
-            // Store file in uploads directory
-            $upload_dir = "uploads/";
-            $target_file = $upload_dir . $file_name;
-            move_uploaded_file($file_tmp, $target_file);
-
-            return $target_file; // Return uploaded file path
-        } else {
-            return false; // Return false if upload failed
-        }
-    }
 
     // Check if profile image is set
     if (isset($_FILES["profileImage"]) && $_FILES["profileImage"]["error"] == 0) {
         $profilePath = uploadPhoto($_FILES["profileImage"]);
         if ($profilePath !== false) {
             // Profile image is set, update database with profile image
-
-            $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `img`='$profilePath', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id");
-            if ($result == TRUE) {
+            $stmt_c = "UPDATE `scholarship` SET `img`='$profilePath' WHERE u_id = $d_id ";
+            $result_c = mq($stmt_c);
+            if ($result_c == TRUE) {
                 $status = 1;
             }
         } else {
@@ -57,8 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $headerPath = uploadPhoto($_FILES["headerImage"]);
         if ($headerPath !== false) {
             // Header image is set, update database with header image
-            $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `cover_img`='$headerPath', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id");
-            if ($result == TRUE) {
+            $stmt_s = "UPDATE `scholarship` SET `cover_img`='$headerPath' WHERE u_id = $d_id ";
+            $result_s = mq($stmt_s);
+            if ($result_s == TRUE) {
                 $status = 1;
             }
         } else {
@@ -66,16 +47,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $status = 0;
             echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error uploading header image.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }
-    } else {
-        $result = mq("UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r', `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE id = $d_id");
-        if ($result == TRUE) {
-            $status = 1;
-        } else {
-            // Display error message if database update fails
-            $status = 0;
-            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error updating data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-        }
     }
+
+    $stmt_x = "UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r' WHERE id = $d_id ";
+    $stmt_y = "UPDATE `scholarship` SET `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE u_id = $d_id";
+    $result = mq($stmt_x);
+    $result_s = mq($stmt_y);
+    if ($result == TRUE && $result_s == TRUE) {
+        $status = 1;
+    } else {
+        // Display error message if database update fails
+        $status = 0;
+        echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error updating data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+    }
+
 
     if ($status == 1) {
         echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data saved successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
@@ -142,37 +127,37 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Organization Name:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter organization name" name="o_name" value="<?=$org_name?>">
+                    <input class="form-control" placeholder="Enter organization name" name="o_name" value="<?= $org_name ?>">
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Scholarship Name:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter scholarship name" name="s_name" value="<?=$scholar_name?>">
+                    <input class="form-control" placeholder="Enter scholarship name" name="s_name" value="<?= $scholar_name ?>">
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Bio:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter bio" name="bio" value="<?=$bio?>">
+                    <input class="form-control" placeholder="Enter bio" name="bio" value="<?= $bio ?>">
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Location:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter your location" name="loc" value="<?=$location?>">
+                    <input class="form-control" placeholder="Enter your location" name="loc" value="<?= $location ?>">
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Phone:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter your number" name="phone" value="<?=$phone?>">
+                    <input class="form-control" placeholder="Enter your number" name="phone" value="<?= $phone ?>">
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Email:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter your email" name="email" value="<?=$email?>">
+                    <input class="form-control" placeholder="Enter your email" name="email" value="<?= $email ?>">
                 </div>
             </div>
             <div class="pb-3 row">
@@ -182,7 +167,7 @@ while ($row = mfa($result)) {
                         <input class="form-control" placeholder="Add field" type='text' name='option' id='option' />
                         <button class="btn btn-sm btn-primary w-auto" id='btnAdd'>Add Option</button>
                     </div>
-                    <select class="form-select form-control bg-white" id="sel" name="sel">
+                    <select class="form-select form-control bg-white" name="sel">
                         <option value="">Other</option>
                     </select>
                 </div>
@@ -191,10 +176,10 @@ while ($row = mfa($result)) {
                 <label class="form-label col-sm-2">Course Level Applicable:</label>
                 <div class="col-sm-10">
                     <div class="d-none">
-                        <input class="form-control" placeholder="Add field" type='text' name='option' id='option' />
-                        <button class="btn btn-sm btn-primary w-auto" id='btnAdd'>Add Option</button>
+                        <input class="form-control" placeholder="Add field" type='text' name='option' id='option2' />
+                        <button class="btn btn-sm btn-primary w-auto" id='btnAdd2'>Add Option</button>
                     </div>
-                    <select class="form-select form-control bg-white" id="sel" name="sel">
+                    <select class="form-select form-control bg-white" name="sel2">
                         <option value="">Other</option>
                     </select>
                 </div>
@@ -208,7 +193,7 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Criteria:</label>
                 <div class="col-sm-10">
-                    <textarea id="editor" class="editor" name="criteria" placeholder="Enter your text here..."></textarea>
+                    <textarea class="editor" name="criteria" placeholder="Enter your text here..."></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
@@ -223,13 +208,13 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Highlights:</label>
                 <div class="col-sm-10">
-                    <textarea id="editor" class="editor" name="high" placeholder="Enter your text here..."></textarea>
+                    <textarea class="editor" name="high" placeholder="Enter your text here..."></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Highlights:</label>
                 <div class="col-sm-10">
-                    <textarea id="editor" class="editor" name="award" placeholder="Enter your text here..."></textarea>
+                    <textarea class="editor" name="award" placeholder="Enter your text here..."></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
@@ -250,12 +235,20 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Document Name:</label>
                 <div class="col-sm-10">
-                    <select id="role" class="form-select form-control bg-white">
-                        <option selected>Select Document</option>
-                        <option value="1">INV-0123</option>
-                        <option value="1">INV-0123</option>
-                        <option value="1">INV-0123</option>
-                        <option value="1">INV-0123</option>
+                    <select id="multiple-checkboxes" class="form-select form-control bg-white select-btn" multiple="multiple">
+                        <?php
+                        $stmt_d = "SELECT * FROM `file` WHERE u_id = $d_id";
+                        $result_d = mq($stmt_d);
+                        if (mnr($result_d) > 0) {
+                            while ($row = mfa($result_d)) {
+                                $name = $row['name'];
+                                $id = $row['id'];
+                        ?>
+                                <option value=<?= $id ?>><?= $name ?></option>
+
+                        <?php }
+                        }
+                        ?>
                     </select>
                 </div>
             </div>
@@ -278,5 +271,12 @@ while ($row = mfa($result)) {
     </form>
 </div>
 <!-- Widgets End -->
+<script>
+    const selectBtn = document.querySelector(".select-btn");
+
+    selectBtn.addEventListener("click", () => {
+        selectBtn.classList.toggle("open");
+    });
+</script>
 
 <?php include_once("footer.php") ?>
