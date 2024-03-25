@@ -17,7 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $user = $_POST["user"];
 
         if ($rpass == $pass) {
-            $result = mq("INSERT INTO `register`(`name`, `uname`,`email`, `num`, `pass`, `user`) VALUES ('$name', '$uname','$email','$num','$pass','$user')");
+            $stmt = "INSERT INTO `register`(`name`, `uname`,`email`, `num`, `pass`, `user`) VALUES ('$name', '$uname','$email','$num','$pass','$user')";
+            $result = mq($stmt);
             if ($result === TRUE) {
                 $alert = '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data save successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
             } else {
@@ -43,17 +44,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $user = $row['user'];
                 $e_id = encode($id);
 
-                if($user == 'Applicant'){
-                    $stmt_a = "INSERT INTO `applicant`(`u_id`, `img`, `cover_img`, `bio`, `stud`, `location`) VALUES ('$id','uploads/user.jpg','uploads/default.webp','','','')";
-                    $result_a = mq($stmt_a);
-                    if($result_a){
-                        header('Location: index.php/' . $e_id);
+                if ($user == 'Applicant') {
+
+                    $stmt_check = "SELECT u_id FROM `applicant` WHERE u_id = $id";
+                    echo "$stmt_check";
+                    $result_check = mq($stmt_check);
+                    if ($result_check) {
+                        if (mnr($result_check) > 0) {
+                            header('Location: index.php/' . $e_id);
+                        }
+                        else {
+                            $stmt_a = "INSERT INTO `applicant`(`u_id`, `img`, `cover_img`, `bio`, `stud`, `location`) VALUES ('$id','','','','','')";
+                            $result_a = mq($stmt_a);
+                            if ($result_a) {
+                                header('Location: index.php/' . $e_id);
+                            }
+                        }
                     }
                 }
-                if($user == 'Scholarship Provider'){
-                    $stmt_s = "INSERT INTO `scholarship`(`u_id`, `img`, `cover_img`, `org_name`, `scholar_name`, `bio`, `location`, `field`, `level`, `criteria`, `img1`, `high`, `award`, `img2`, `doc`) VALUES ('$id','uploads/user.jpg','uploads/default.webp','','','','','','','','','','','','')";
+                if ($user == 'Scholarship Provider') {
+                    $stmt_s = "INSERT INTO `scholarship`(`u_id`, `img`, `cover_img`, `org_name`, `scholar_name`, `bio`, `location`, `field`, `level`, `criteria`, `img1`, `high`, `award`, `img2`, `doc`) VALUES ('$id','','','','','','','','','','','','','','')";
                     $result_s = mq($stmt_s);
-                    if($result_s){
+                    if ($result_s) {
                         header('Location: scholarship-provider/scholar.php/' . $e_id);
                     }
                 }

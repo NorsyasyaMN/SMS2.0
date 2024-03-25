@@ -27,11 +27,11 @@ else{
 <div class="container-fluid pt-3 px-4">
     <div>
         <div class="upper">
-            <img src="<?=$current_url?>/<?= $headerImg ?>" class="img-fluid">
+            <img src="<?=$current_url?>/<?= ($headerImg == '') ? 'uploads/default.webp' : $headerImg; ?>" class="img-fluid">
         </div>
         <div class="user">
             <div class="profile">
-                <img src="<?=$current_url?>/<?= $profileImg ?>" class="rounded-circle" width="80">
+                <img src="<?=$current_url?>/<?= ($profileImg == '') ? 'uploads/user.jpg' : $profileImg; ?>" class="rounded-circle" width="80">
             </div>
         </div>
     </div>
@@ -60,23 +60,23 @@ else{
                 <div class="row g-4">
                     <div class="col-sm-12 col-md-12 col-xl-12 py-2">
                         <h5>Bio</h5>
-                        <p><?= $bio ?></p>
+                        <p><?= ($bio == '') ? 'none': $bio ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-12 py-2">
                         <h5>Studies</h5>
-                        <p><?= $stud ?></p>
+                        <p><?= ($stud == '') ? 'none': $stud ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Phone</h5>
-                        <p><?= $phone ?></p>
+                        <p><?= ($phone == '') ? 'none': $phone ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Email</h5>
-                        <p><?= $email ?></p>
+                        <p><?= ($email == '') ? 'none': $email ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Location</h5>
-                        <p><?= $location ?></p>
+                        <p><?= ($location == '') ? 'none': $location ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Website</h5>
