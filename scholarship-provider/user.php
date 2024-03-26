@@ -13,8 +13,8 @@
         <div class="d-flex align-items-center justify-content-between mb-4">
             <h4 class="mb-0">List of Users</h4>
             <div>
-                <a href="#"><i class="fas fa-trash-alt fs-4"></i></a>
-                <a href="user-details.php"><i class="fas fa-plus-square fs-4"></i></a>
+            <button class="btn btn-primary w-auto" name="delete_selected" type="submit" style="padding: 1px 6px;"><i class="fas fa-trash-alt"></i></button>
+                    <a class="btn btn-primary w-auto" style="padding: 1px 6px;" href="<?= $current_url ?>user-details.php/<?= $id ?>"><i class="fas fa-plus-square"></i></a>
             </div>
         </div>
         <div class="table-responsive">

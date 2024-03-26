@@ -32,8 +32,8 @@
             </div>
         </div>
         <div class="d-flex justify-content-between">
-            <a class="btn btn-sm btn-outline-dark w-auto" href="user.php">Cancel</a>
-            <a class="btn btn-sm btn-primary w-auto" href="user.php">Save changes</a>
+            <a class="btn btn-sm btn-outline-dark" href="<?= $current_url ?>user.php/<?= $id ?>">Cancel</a>
+            <button class="btn btn-sm btn-primary w-auto" type="submit" name="submit">Save changes</button>
         </div>
     </form>
 </div>

@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if profile image is set
     if (isset($_FILES["profileImage"]) && $_FILES["profileImage"]["error"] == 0) {
-        $profilePath = uploadPhoto($_FILES["profileImage"]);
+        $profilePath = uploadPhotoScholar($_FILES["profileImage"]);
         if ($profilePath !== false) {
             // Profile image is set, update database with profile image
             $stmt_c = "UPDATE `scholarship` SET `img`='$profilePath' WHERE u_id = $d_id ";
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if header image is set
     if (isset($_FILES["headerImage"]) && $_FILES["headerImage"]["error"] == 0) {
-        $headerPath = uploadPhoto($_FILES["headerImage"]);
+        $headerPath = uploadPhotoScholar($_FILES["headerImage"]);
         if ($headerPath !== false) {
             // Header image is set, update database with header image
             $stmt_s = "UPDATE `scholarship` SET `cover_img`='$headerPath' WHERE u_id = $d_id ";
@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (isset($_FILES["photo1"]) && $_FILES["photo1"]["error"] == 0) {
-        $photo1 = uploadPhoto($_FILES["photo1"]);
+        $photo1 = uploadPhotoScholar($_FILES["photo1"]);
         if ($photo1 !== false) {
             // Header image is set, update database with header image
             $stmt_q = "UPDATE `scholarship` SET `img1`='$photo1' WHERE u_id = $d_id ";
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (isset($_FILES["photo2"]) && $_FILES["photo2"]["error"] == 0) {
-        $photo2 = uploadPhoto($_FILES["photo2"]);
+        $photo2 = uploadPhotoScholar($_FILES["photo2"]);
         if ($photo2 !== false) {
             // Header image is set, update database with header image
             $stmt_r = "UPDATE `scholarship` SET `img2`='$photo2' WHERE u_id = $d_id ";
@@ -121,6 +121,7 @@ while ($row = mfa($result)) {
     $award = $row['award'];
     $img2 = $row['img2'];
     $doc = $row['doc'];
+    $num = explode(',', $doc);
 }
 ?>
 <div class="container-fluid pt-4 px-4">
@@ -223,7 +224,7 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Criteria:</label>
                 <div class="col-sm-10">
-                    <textarea class="editor" name="criteria" placeholder="Enter your text here..." value=<?= $criteria ?>></textarea>
+                    <textarea class="editor" name="criteria" placeholder="Enter your text here..."><?= $criteria ?></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
@@ -238,13 +239,13 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Highlights:</label>
                 <div class="col-sm-10">
-                    <textarea class="editor" name="high" placeholder="Enter your text here..." value=<?= $high ?>></textarea>
+                    <textarea class="editor" name="high" placeholder="Enter your text here..."><?= $high ?></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
-                <label class="form-label col-sm-2">Highlights:</label>
+                <label class="form-label col-sm-2">Awards:</label>
                 <div class="col-sm-10">
-                    <textarea class="editor" name="award" placeholder="Enter your text here..." value=<?= $award ?>></textarea>
+                    <textarea class="editor" name="award" placeholder="Enter your text here..."><?= $award ?></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
@@ -274,7 +275,7 @@ while ($row = mfa($result)) {
                                 $name = $row['name'];
                                 $id = $row['id'];
                         ?>
-                                <option value=<?= $id ?>><?= $name ?></option>
+                                <option value=<?= $id ?> <?= (in_array($id, $num)) ? "selected" : "" ?>><?= $name ?></option>
 
                         <?php }
                         }
@@ -306,6 +307,9 @@ while ($row = mfa($result)) {
     VirtualSelect.init({
         ele: '#multipleSelect'
     });
+</script>
+<script>
+
 </script>
 
 <?php include_once("footer.php") ?>

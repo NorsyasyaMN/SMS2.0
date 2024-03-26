@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $user = $_POST["user"];
 
         if ($rpass == $pass) {
-            $stmt = "INSERT INTO `register`(`name`, `uname`,`email`, `num`, `pass`, `user`) VALUES ('$name', '$uname','$email','$num','$pass','$user')";
+            $stmt = "INSERT INTO `register`(`u_id`,`name`, `uname`,`email`, `num`, `pass`, `user`) VALUES ('0','$name', '$uname','$email','$num','$pass','$user')";
             $result = mq($stmt);
             if ($result === TRUE) {
                 $alert = '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data save successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
