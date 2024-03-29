@@ -1,4 +1,4 @@
-<?php  $ver = rand(); ?>
+<?php $ver = rand(); ?>
 <!-- Footer Start -->
 <div class="container-fluid pt-4 px-4">
     <div class="bg-light rounded-top p-4">
@@ -27,16 +27,16 @@
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="<?=$current_url?>lib/chart/chart.min.js"></script>
-<script src="<?=$current_url?>lib/easing/easing.min.js"></script>
-<script src="<?=$current_url?>lib/waypoints/waypoints.min.js"></script>
-<script src="<?=$current_url?>lib/owlcarousel/owl.carousel.min.js"></script>
-<script src="<?=$current_url?>lib/tempusdominus/js/moment.min.js"></script>
-<script src="<?=$current_url?>lib/tempusdominus/js/moment-timezone.min.js"></script>
-<script src="<?=$current_url?>lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
+<script src="<?= $current_url ?>lib/chart/chart.min.js"></script>
+<script src="<?= $current_url ?>lib/easing/easing.min.js"></script>
+<script src="<?= $current_url ?>lib/waypoints/waypoints.min.js"></script>
+<script src="<?= $current_url ?>lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="<?= $current_url ?>lib/tempusdominus/js/moment.min.js"></script>
+<script src="<?= $current_url ?>lib/tempusdominus/js/moment-timezone.min.js"></script>
+<script src="<?= $current_url ?>lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+<script src="<?= $current_url ?>js/bootstrap-multiselect.js"></script>
 <!-- Template Javascript -->
-<script src="<?=$current_url?>js/main.js?ver=<?=$ver?>"></script>
+<script src="<?= $current_url ?>js/main.js?ver=<?= $ver ?>"></script>
 
 </body>
 

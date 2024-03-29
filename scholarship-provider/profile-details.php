@@ -222,7 +222,7 @@ while ($row = mfa($result)) {
                 <label class="form-label col-sm-2">Course Level Applicable:</label>
                 <div class="col-sm-10">
 
-                    <select id="multipleSelect" multiple name="level" placeholder="Native Select" data-search="true" data-silent-initial-value-set="true">
+                    <select id="multipleSelect" multiple name="level" placeholder="Select level" data-search="true" data-silent-initial-value-set="true">
                         <?php
                         $stmt_l = "SELECT * FROM `level`";
                         $result_l = mq($stmt_l);

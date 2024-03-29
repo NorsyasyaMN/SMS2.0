@@ -3,6 +3,29 @@ include_once("header.php");
 if (isset($_GET["s_id"])) {
     $s_id = $_GET["s_id"];
 }
+if($_SERVER["REQUEST_METHOD"] === "POST"){
+
+    if(isset($_POST["submit"])){
+        $a_name = $_POST["name"];
+        $a_email = $_POST["email"];
+        $a_phone = $_POST["phone"];
+        $a_loc = $_POST["loc"];
+        $a_gen = $_POST["gen"];
+        $a_ic = $_POST["ic"];
+        $a_occ = $_POST["occ"];
+        $a_doc = $_POST["doc"];
+
+        $stmt_i = "INSERT INTO `application`(`u_id`, `s_id`, `name`, `email`, `phone`, `loc`, `gen`, `ic`, `occ`, `doc`) VALUES ('$d_id','$s_id','$a_name','$a_email','$a_phone','$a_loc','$a_gen','$a_ic','$a_occ','$a_doc')";
+        $result_a = mq($stmt_i);
+        if($result){
+            echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Succesfully applied.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        }
+        else{
+            echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Error to applied the scholarship.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        }
+    }
+}
+
 $stmt = "SELECT * FROM scholarship INNER JOIN register ON scholarship.u_id = register.id WHERE scholarship.id = '$s_id'";
 $result = mq($stmt);
 if ($result) {

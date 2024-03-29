@@ -1,7 +1,6 @@
 <?php
 include_once("config.php");
 $ver = rand();
-
 $id = userID();
 $d_id = decode($id);
 global $d_id;
@@ -49,6 +48,7 @@ while ($row = mfa($result)) {
 
     <!-- Template Stylesheet -->
     <link href="<?=$current_url?>/css/style.css?ver=<?= $ver ?>" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<?=$current_url?>css/virtual-select.min.css?ver=<?= $ver ?>">
 </head>
 
 <body>
