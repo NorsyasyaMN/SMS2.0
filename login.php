@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $user = $_POST["user"];
 
         if ($rpass == $pass) {
-            $stmt = "INSERT INTO `register`(`u_id`,`name`, `uname`,`email`, `num`, `pass`, `user`) VALUES ('0','$name', '$uname','$email','$num','$pass','$user')";
+            $stmt = "INSERT INTO `register`(`name`, `uname`,`email`, `num`, `pass`, `user`) VALUES ('$name', '$uname','$email','$num','$pass','$user')";
             $result = mq($stmt);
             if ($result === TRUE) {
                 $alert = '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data save successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
@@ -39,11 +39,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($result) {
             if (mnr($result) > 0) {
                 // Check if there are any rows returned
-                $row = mfa($result);
-                $id = $row['id'];
-                $user = $row['user'];
-                $e_id = encode($id);
-
+                while ($row = mfa($result)) {
+                    $id = $row['id'];
+                    $user = $row['user'];
+                    $e_id = encode($id);
+                }
                 if ($user == 'Applicant') {
 
                     $stmt_check = "SELECT u_id FROM `applicant` WHERE u_id = $id";
@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 }
                 if ($user == 'Scholarship Provider') {
 
-                    $stmt_check = "SELECT u_id FROM `scholarship` WHERE u_id = $id";
+                    $stmt_check = "SELECT * FROM `scholarship` WHERE u_id = $id";
                     $result_check = mq($stmt_check);
                     if ($result_check) {
                         if (mnr($result_check) > 0) {
@@ -78,10 +78,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 }
                 // Set session variable and redirect the user
             } else {
-                // Display error message if login fails
-                $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Wrong Credentials<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                $stmt_x = "SELECT * FROM `user` INNER JOIN `register` ON user.p_id = register.id WHERE user.email = '$email' AND user.pass = '$pass'";
+                $result_x = mq($stmt_x);
+                if ($result_x) {
+                    if (mnr($result_x) > 0) {
+                        while ($row = mfa($result_x)) {
+                            $p_id = $row['p_id'];
+                        }
+                        $ep_id = encode($p_id);
+                        header('Location: scholarship-provider/scholar.php/' . $ep_id);
+                    } else {
+                        $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Wrong credentials<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                    }
+                } else {
+                    // Display error message if login fails
+                    $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Failed to login<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                }
             }
         } else {
+
             // Display error message if login fails
             $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Failed to login<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }

@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt = "DELETE FROM `file` WHERE id IN ($documentsToDelete)";
             $result = mq($stmt);
 
-            if ($stmt) {
+            if ($result) {
                 echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Succesfully deleted.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
             } else {
                 echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Error deleting document.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';

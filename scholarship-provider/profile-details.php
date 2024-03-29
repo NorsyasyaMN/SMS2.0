@@ -11,6 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email_r = $_POST["email"];
     $field_r = $_POST["field"];
     $level_r = $_POST["level"];
+    $cat_r = $_POST["cat"];
     $criteria = $_POST["criteria"];
     $high = $_POST["high"];
     $award = $_POST["award"];
@@ -22,7 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $profilePath = uploadPhotoScholar($_FILES["profileImage"]);
         if ($profilePath !== false) {
             // Profile image is set, update database with profile image
-            $stmt_c = "UPDATE `scholarship` SET `img`='$profilePath' WHERE u_id = $d_id ";
+            $profile_clean = str_replace("../", "", $profilePath);
+            $stmt_c = "UPDATE `scholarship` SET `img`='$profile_clean' WHERE u_id = $d_id ";
             $result_c = mq($stmt_c);
             if ($result_c == TRUE) {
                 $status = 1;
@@ -39,7 +41,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $headerPath = uploadPhotoScholar($_FILES["headerImage"]);
         if ($headerPath !== false) {
             // Header image is set, update database with header image
-            $stmt_s = "UPDATE `scholarship` SET `cover_img`='$headerPath' WHERE u_id = $d_id ";
+            $header_clean = str_replace("../", "", $headerPath);
+            $stmt_s = "UPDATE `scholarship` SET `cover_img`='$header_clean' WHERE u_id = $d_id ";
             $result_s = mq($stmt_s);
             if ($result_s == TRUE) {
                 $status = 1;
@@ -55,7 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $photo1 = uploadPhotoScholar($_FILES["photo1"]);
         if ($photo1 !== false) {
             // Header image is set, update database with header image
-            $stmt_q = "UPDATE `scholarship` SET `img1`='$photo1' WHERE u_id = $d_id ";
+            $photo1_clean = str_replace("../", "", $photo1);
+            $stmt_q = "UPDATE `scholarship` SET `img1`='$photo1_clean' WHERE u_id = $d_id ";
             $result_q = mq($stmt_q);
             if ($result_q == TRUE) {
                 $status = 1;
@@ -71,7 +75,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $photo2 = uploadPhotoScholar($_FILES["photo2"]);
         if ($photo2 !== false) {
             // Header image is set, update database with header image
-            $stmt_r = "UPDATE `scholarship` SET `img2`='$photo2' WHERE u_id = $d_id ";
+            $photo2_clean = str_replace("../", "", $photo2);
+            $stmt_r = "UPDATE `scholarship` SET `img2`='$photo2_clean' WHERE u_id = $d_id ";
             $result_r = mq($stmt_r);
             if ($result_r == TRUE) {
                 $status = 1;
@@ -84,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $stmt_x = "UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r' WHERE id = $d_id ";
-    $stmt_y = "UPDATE `scholarship` SET `org_name`= '$oname_r',`scholar_name`='$sname_r',`bio`='$bio_r',`location`='$loc_r',`field`='$field_r',`level`='$level_r',`criteria`='$criteria',`high`=' $high',`award`='$award',`doc`='$doc' WHERE u_id = $d_id";
+    $stmt_y = "UPDATE `scholarship` SET `org_name`= '$oname_r',`scholar_name`='$sname_r',`bio`='$bio_r',`location`='$loc_r',`field`='$field_r',`level`='$level_r', cat = '$cat_r',`criteria`='$criteria',`high`='$high',`award`='$award',`doc`='$doc' WHERE u_id = $d_id";
     $result = mq($stmt_x);
     $result_s = mq($stmt_y);
     if ($result == TRUE && $result_s == TRUE) {
@@ -92,7 +97,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         // Display error message if database update fails
         $status = 0;
-        echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error updating data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        die('Query execution failed: ' . mysqli_error($conn));
+        // echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error updating data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
     }
 
 
@@ -121,7 +127,10 @@ while ($row = mfa($result)) {
     $award = $row['award'];
     $img2 = $row['img2'];
     $doc = $row['doc'];
+    $cat = $row['cat'];
     $num = explode(',', $doc);
+    $num_l = explode(',', $level);
+    $num_c = explode(',', $cat);
 }
 ?>
 <div class="container-fluid pt-4 px-4">
@@ -140,7 +149,7 @@ while ($row = mfa($result)) {
                 <label class="form-label col-sm-2">Profile Photo:</label>
                 <div class="col-sm-10">
                     <div class="d-flex align-items-center">
-                        <img class="rounded-circle me-3" src="<?= $file_url ?>/<?= $profileImg ?>" alt="" style="width: 40px; height: 40px;">
+                        <img class="rounded-circle me-3" src="<?= $file_url ?><?= $profileImg ?>" alt="" style="width: 40px; height: 40px;">
                         <input type="file" name="profileImage" id="profileImage" accept="image/*">
                         <a class="btn btn-outline-primary btn-sm follow w-auto me-3">Remove</a>
                     </div>
@@ -212,7 +221,43 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Course Level Applicable:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Add level" type='text' name='level' value="<?= $level ?>" />
+
+                    <select id="multipleSelect" multiple name="level" placeholder="Native Select" data-search="true" data-silent-initial-value-set="true">
+                        <?php
+                        $stmt_l = "SELECT * FROM `level`";
+                        $result_l = mq($stmt_l);
+                        if (mnr($result_l) > 0) {
+                            while ($row = mfa($result_l)) {
+                                $name = $row['level'];
+                                $id = $row['id'];
+                        ?>
+                                <option value=<?= $id ?> <?= (in_array($id, $num_l)) ? "selected" : "" ?>><?= $name ?></option>
+
+                        <?php }
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
+            <div class="pb-3 row">
+                <label class="form-label col-sm-2">Scholarship Categories:</label>
+                <div class="col-sm-10">
+
+                    <select id="multipleSelect" multiple name="cat" placeholder="Select categories" data-search="true" data-silent-initial-value-set="true">
+                        <?php
+                        $stmt_c = "SELECT * FROM `cat`";
+                        $result_c = mq($stmt_c);
+                        if (mnr($result_c) > 0) {
+                            while ($row = mfa($result_c)) {
+                                $name = $row['cat'];
+                                $id = $row['id'];
+                        ?>
+                                <option value=<?= $id ?> <?= (in_array($id, $num_c)) ? "selected" : "" ?>><?= $name ?></option>
+
+                        <?php }
+                        }
+                        ?>
+                    </select>
                 </div>
             </div>
         </div>

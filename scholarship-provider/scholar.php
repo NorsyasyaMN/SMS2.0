@@ -2,7 +2,7 @@
 include_once("header.php");
 $stmt = "SELECT * FROM scholarship INNER JOIN register ON scholarship.u_id = register.id WHERE u_id = '$d_id'";
 $result = mq($stmt);
-if ($result){
+if ($result) {
     while ($row = mfa($result)) {
         $email = $row['email'];
         $phone = $row['num'];
@@ -20,11 +20,11 @@ if ($result){
         $awards = $row['award'];
         $img2 = $row['img2'];
         $doc = $row['doc'];
+        $cat = $row['cat'];
     }
-}
-else{
+} else {
     die('Query execution failed: ' . mysqli_error($conn));
-} 
+}
 ?>
 <div class="container-fluid pt-4 px-4">
     <h2>Scholarship Details</Details>
@@ -34,21 +34,21 @@ else{
 <div class="container-fluid pt-3 px-4">
     <div>
         <div class="upper">
-            <img src="<?=$file_url?>/<?= $headerImg ?>" class="img-fluid">
+            <img src="<?= $file_url ?><?= $headerImg ?>" class="img-fluid">
         </div>
         <div class="user">
             <div class="profile">
-                <img src="<?=$file_url?>/<?= $profileImg ?>" class="rounded-circle" width="80">
+                <img src="<?= $file_url ?><?= $profileImg ?>" class="rounded-circle" width="80">
             </div>
         </div>
     </div>
     <div class="bg-light pt-5 d-flex justify-content-between px-3">
         <div>
-            <h4 class="mb-0">MMU Scholarship</h4>
-            <span class="text-muted d-block mb-2">Los Angles</span>
+            <h4 class="mb-0"><?= $scholar_name ?></h4>
+            <span class="text-muted d-block mb-2"><?= $email ?></span>
         </div>
         <div>
-            <a href="<?= $current_url ?>profile-details.php/<?=$id?>"><button class="btn btn-primary btn-sm follow w-auto">Edit Scholarship</button></a>
+            <a href="<?= $current_url ?>profile-details.php/<?= $id ?>"><button class="btn btn-primary btn-sm follow w-auto">Edit Scholarship</button></a>
         </div>
     </div>
 </div>
@@ -71,11 +71,37 @@ else{
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Field</h5>
-                        <p><?= $field?></p>
+                        <p><?= $field ?></p>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Level</h5>
-                        <p><?= $level ?></p>
+                        <?php
+                        $stmt_l = "SELECT * FROM `level` WHERE id IN ($level)";
+                        $result_l = mq($stmt_l);
+                        $name_level  = array();
+                        if ($result_l) {
+                            while ($row = mfa($result_l)) {
+                                $name_level[] = $row['level'];
+                            }
+                            $combinedLevel = implode(", ", $name_level);
+                            echo "<p>$combinedLevel</p>";
+                        }
+                        ?>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-xl-6 py-2">
+                        <h5>Categories</h5>
+                        <?php
+                        $stmt_c = "SELECT * FROM `cat` WHERE id IN ($cat)";
+                        $result_c = mq($stmt_c);
+                        $name_cat  = array();
+                        if ($result_c) {
+                            while ($row = mfa($result_c)) {
+                                $name_cat[] = $row['cat'];
+                            }
+                            $combinedCat = implode(", ", $name_cat);
+                            echo "<p>$combinedCat</p>";
+                        }
+                        ?>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Phone</h5>
@@ -89,10 +115,6 @@ else{
                         <h5>Location</h5>
                         <p><?= $location ?></p>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-xl-6 py-2">
-                        <h5>Website</h5>
-                        <a>website.com.my</a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -103,7 +125,7 @@ else{
                     <a href="">Show All</a>
                 </div>
                 <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="<?=$file_url?>img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                    <img class="rounded-circle flex-shrink-0" src="<?= $file_url ?>img/user.jpg" alt="" style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 justify-content-between">
                             <h6 class="mb-0">Jhon Doe</h6>
@@ -113,7 +135,7 @@ else{
                     </div>
                 </div>
                 <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="<?=$file_url?>img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                    <img class="rounded-circle flex-shrink-0" src="<?= $file_url ?>img/user.jpg" alt="" style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 justify-content-between">
                             <h6 class="mb-0">Jhon Doe</h6>
@@ -123,7 +145,7 @@ else{
                     </div>
                 </div>
                 <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="<?=$file_url?>img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                    <img class="rounded-circle flex-shrink-0" src="<?= $file_url ?>img/user.jpg" alt="" style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 justify-content-between">
                             <h6 class="mb-0">Jhon Doe</h6>
@@ -133,7 +155,7 @@ else{
                     </div>
                 </div>
                 <div class="d-flex align-items-center pt-3">
-                    <img class="rounded-circle flex-shrink-0" src="<?=$file_url?>img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                    <img class="rounded-circle flex-shrink-0" src="<?= $file_url ?>img/user.jpg" alt="" style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 justify-content-between">
                             <h6 class="mb-0">Jhon Doe</h6>
@@ -154,23 +176,23 @@ else{
                     <div class="col-sm-12 col-md-6 col-xl-6">
                         <h5>Criteria</h5>
                         <ul class="ps-3">
-                            <p><?=$criteria?></p>
+                            <p><?= $criteria ?></p>
                         </ul>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6">
-                        <img class="img-fluid" src="<?=$file_url?><?=$img1?>">
+                        <img class="img-fluid" src="<?= $file_url ?><?= $img1 ?>">
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6">
-                        <img class="img-fluid" src="<?=$file_url?><?=$img2?>">
+                        <img class="img-fluid" src="<?= $file_url ?><?= $img2 ?>">
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6">
                         <div class="pb-3">
                             <h5>Highlights</h5>
-                            <p><?=$high?></p>
+                            <p><?= $high ?></p>
                         </div>
                         <div class="pb-3">
                             <h5>Awards</h5>
-                            <p><?=$awards?></p>
+                            <p><?= $awards ?></p>
                         </div>
                     </div>
                 </div>
@@ -187,24 +209,24 @@ else{
                         </tr>
                     </thead>
                     <tbody>
-                    <?php
-                    $count = 1;
+                        <?php
+                        $count = 1;
                         $stmt = "SELECT * FROM `file` WHERE id IN ($doc)";
                         $result = mq($stmt);
                         if ($result) {
                             while ($row = mfa($result)) {
                                 $doc_id = $row['id'];
                                 $name = $row['name'];
-                                $file = $current_url . $row['doc'];?>
-                        <tr>
-                            <td><?=$count?></td>
-                            <td><?=$name?></td>
-                            <td><a class="btn btn-sm btn-primary" href="<?=$file?>" target="_blank">View</a></td>
-                        </tr>
+                                $file = $file_url . $row['doc']; ?>
+                                <tr>
+                                    <td><?= $count ?></td>
+                                    <td><?= $name ?></td>
+                                    <td><a class="btn btn-sm btn-primary" href="<?= $file ?>" target="_blank">View</a></td>
+                                </tr>
                         <?php
-                        $count++;
-                        }
-                    }?>
+                                $count++;
+                            }
+                        } ?>
                     </tbody>
                 </table>
             </div>

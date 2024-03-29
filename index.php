@@ -38,7 +38,7 @@ else{
     <div class="bg-light pt-5 d-flex justify-content-between px-3">
         <div>
             <h4 class="mb-0"><?= $name ?></h4>
-            <span class="text-muted d-block mb-2">Los Angles</span>
+            <span class="text-muted d-block mb-2"><?=$email?></span>
         </div>
         <div>
             <a href="<?=$current_url?>profile-details.php/<?=$id?>"><button class="btn btn-primary btn-sm follow">Edit profile</button></a>

@@ -1,5 +1,4 @@
 <?php
-session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -38,38 +37,61 @@ function decode($a)
     return $d_id;
 }
 
-function cleanURL($a)
-{
-    $url = $_SERVER['REQUEST_URI'];
 
-    // Remove the script name (index.php) from the URL path
-    $url_without_script = str_replace('SMS2.0/' . $a . '/', '', $url);
-
-    // Get the URL path segments
-    $segments = explode('/', trim($url_without_script, '/'));
-
-    // Extract the value from the URL path
-    $value = isset($segments[0]) ? $segments[0] : null;
-
-    return $value;
-}
-
-function filename()
+function userID()
 {
     $current_url = $_SERVER['REQUEST_URI'];
 
-    // Remove any query string parameters from the URL
-    $url_parts = explode('?', $current_url);
-    
-    // Split the URL path by "/"
-    $path_parts = explode('/', $url_parts[0]);
-    
-    // Remove any empty segments
-    $path_parts = array_filter($path_parts);
-    
-    // Get the second-to-last part of the URL path
-    $filename = isset($path_parts[count($path_parts) - 1]) ? $path_parts[count($path_parts) - 1] : null;
-    return $filename;
+    // Check if url contains '?'
+    if (strpos($current_url, '?') !== false) {
+        // Remove any query string parameters from the URL
+        $url_parts = explode('?', $current_url);
+
+        // Split the URL path by "/"
+        $path_parts = explode('/', $url_parts[0]);
+
+        // Remove any empty segments
+        $path_parts = array_filter($path_parts);
+
+        // Get the second-to-last part of the URL path
+        $filename = isset($path_parts[count($path_parts)]) ? $path_parts[count($path_parts)] : null;
+
+        // Remove the script name (index.php) from the URL path
+        $url_without_script = str_replace('SMS2.0/' . $filename . '/', '', $current_url);
+
+        // Get the URL path segments
+        $segments = explode('/', trim($url_without_script, '/'));
+
+        // Extract the value from the URL path
+        $value = isset($segments[2]) ? $segments[2] : null;
+
+        // echo $url_without_script;
+        return $value;
+    } else {
+        // Remove any query string parameters from the URL
+        $url_parts = explode('?', $current_url);
+
+        // Split the URL path by "/"
+        $path_parts = explode('/', $url_parts[0]);
+
+        // Remove any empty segments
+        $path_parts = array_filter($path_parts);
+
+        // Get the second-to-last part of the URL path
+        $filename = isset($path_parts[count($path_parts) - 1]) ? $path_parts[count($path_parts) - 1] : null;
+
+       // Remove the script name (index.php) from the URL path
+       $url_without_script = str_replace('SMS2.0/' . $filename . '/', '', $current_url);
+
+       // Get the URL path segments
+       $segments = explode('/', trim($url_without_script, '/'));
+
+       // Extract the value from the URL path
+       $value = isset($segments[0]) ? $segments[0] : null;
+
+       // echo $url_without_script;
+       return $value;
+    }
 }
 
 function cleanURL_s($a)
@@ -94,13 +116,14 @@ function filename_s()
 
     // Remove any query string parameters from the URL
     $url_parts = explode('?', $current_url);
-    
+
+
     // Split the URL path by "/"
     $path_parts = explode('/', $url_parts[0]);
-    
+
     // Remove any empty segments
     $path_parts = array_filter($path_parts);
-    
+
     // Get the second-to-last part of the URL path
     $filename = isset($path_parts[count($path_parts) - 1]) ? $path_parts[count($path_parts) - 1] : null;
     return $filename;

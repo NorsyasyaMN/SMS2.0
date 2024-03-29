@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $file_tmp = $file['tmp_name'];
         }
 
-        $target_dir = "../files/";
+        $target_dir = "files/";
         $target_file = $target_dir . $file_name;
 
         if (move_uploaded_file($file_tmp, $target_file)) {
@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt = "DELETE FROM `file` WHERE id IN ($documentsToDelete)";
             $result = mq($stmt);
 
-            if ($stmt) {
+            if ($result) {
                 echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Succesfully deleted.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
             } else {
                 echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Error deleting document.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if (isset($_POST['search'])) {
-        
+
         $search = $_POST['name'];
         $s_stmt = "AND LOWER(name) LIKE LOWER('%$search%')";
     }
@@ -68,8 +68,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <form method="POST" action="">
         <div class="d-flex mb-4">
             <input class="form-control bg-transparent" type="text" placeholder="Search" name="name">
-            <button type="submit" name="search" class="btn btn-primary ms-2" >Search</button>
-        </div> 
+            <button type="submit" name="search" class="btn btn-primary ms-2">Search</button>
+        </div>
     </form>
     <div class="bg-light text-center rounded p-4">
         <form method="POST" action="">
@@ -99,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             while ($row = mfa($result)) {
                                 $doc_id = $row['id'];
                                 $name = $row['name'];
-                                $file = $current_url . $row['doc'];
+                                $file = $file_url . $row['doc'];
                                 $date = $row['date']; ?>
                                 <tr>
                                     <td><?= $count ?></td>

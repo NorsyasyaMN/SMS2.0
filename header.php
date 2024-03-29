@@ -2,12 +2,10 @@
 include_once("config.php");
 $ver = rand();
 
-$filename = filename();
-$id = cleanURL($filename);
+$id = userID();
 $d_id = decode($id);
 global $d_id;
 global $id;
-
 $current_url = "http://localhost/SMS2.0/";
 $stmt = "SELECT * FROM applicant INNER JOIN register ON applicant.u_id = register.id WHERE u_id = '$d_id'";
 $result = mq($stmt);
@@ -71,7 +69,7 @@ while ($row = mfa($result)) {
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
-                        <img class="rounded-circle" src="<?=$current_url?>/<?= ($profileImg == '') ? 'uploads/user.jpg' : $profileImg; ?>" alt="" style="width: 40px; height: 40px;">
+                        <img class="rounded-circle" src="<?=$current_url?><?= ($profileImg == '') ? 'uploads/user.jpg' : $profileImg; ?>" alt="" style="width: 40px; height: 40px;">
                         <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
                         </div>
                     </div>
