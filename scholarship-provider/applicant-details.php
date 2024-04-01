@@ -1,4 +1,30 @@
-<?php include_once("header.php") ?>
+<?php include_once("header.php");
+if (isset($_GET["u_id"])) {
+    $id_number = $_GET["u_id"];
+    $id_parts = explode('/', $id_number);
+
+    // Extract the first part which contains the number
+    $u_id = $id_parts[0];
+
+}
+$stmt = "SELECT * FROM `application` WHERE id = $u_id";
+$result = mq($stmt);
+if($result){
+    if(mnr($result) > 0){
+        while ($row = mfa($result)){
+            $name = $row['name'];
+            $email = $row['email'];
+            $phone = $row['phone'];
+            $loc = $row['loc'];
+            $gen = $row['gen'];
+            $ic = $row['ic'];
+            $occ = $row['occ'];
+            $doc = $row['doc'];
+            $status = $row['status'];
+        }
+    }
+}
+?>
 <div class="container-fluid pt-4 px-4">
     <h2>Applicant Details</h2>
 </div>
@@ -12,50 +38,50 @@
                 <p>Update some personal information. The data will never be publicly available.</p>
             </div>
             <div>
-                <button type="button" class="btn btn-success ms-2">Approved</button>
+                <button type="button" class="btn btn-success ms-2"><?=$status?></button>
             </div>
         </div>
         <hr>
         <div class="pb-3 row">
             <label class="form-label col-sm-2">Fullname:</label>
             <div class="col-sm-10">
-                <input class="form-control" value="Anis Nabilla Binti Suhaimi" disabled>
+                <input class="form-control" value="<?=$name?>" disabled>
             </div>
         </div>
         <div class="pb-3 row">
             <label class="form-label col-sm-2">Email:</label>
             <div class="col-sm-10">
-                <input class="form-control" value="anis@gmail.com" disabled>
+                <input class="form-control" value="<?=$email?>" disabled>
             </div>
         </div>
         <div class="pb-3 row">
             <label class="form-label col-sm-2">Phone:</label>
             <div class="col-sm-10">
-                <input class="form-control" value="0103456789" disabled>
+                <input class="form-control" value="<?=$phone?>" disabled>
             </div>
         </div>
         <div class="pb-3 row">
             <label class="form-label col-sm-2">Location:</label>
             <div class="col-sm-10">
-                <input class="form-control" value="No. 36, Jalan Lengkok, Seremban 59200, Negeri Sembilan" disabled>
+                <input class="form-control" value="<?=$loc?>" disabled>
             </div>
         </div>
         <div class="pb-3 row">
             <label class="form-label col-sm-2">Gender:</label>
             <div class="col-sm-10">
-                <input class="form-control" value="Female" disabled>
+                <input class="form-control" value="<?=$gen?>" disabled>
             </div>
         </div>
         <div class="pb-3 row">
             <label class="form-label col-sm-2">IC Number:</label>
             <div class="col-sm-10">
-                <input class="form-control" value="1234-14-0987" disabled>
+                <input class="form-control" value="<?=$ic?>" disabled>
             </div>
         </div>
         <div class="pb-3 row">
             <label class="form-label col-sm-2">Occupation:</label>
             <div class="col-sm-10">
-                <input class="form-control" value="Student" disabled>
+                <input class="form-control" value="<?=$occ?>" disabled>
             </div>
         </div>
         <div class="pb-3 row">
@@ -99,29 +125,29 @@
             <div class="col-sm-10">
                 <select id="role" class="form-select form-control bg-white">
                     <option selected>Status</option>
-                    <option value="1">Approved</option>
-                    <option value="1">Shortlisted</option>
-                    <option value="1">Pending</option>
-                    <option value="1">Rejected</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Shorlisted">Shortlisted</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Rejected">Rejected</option>
                 </select>
             </div>
         </div>
         <div class="pb-3 row">
             <label class="form-label col-sm-2">Remark:</label>
             <div class="col-sm-10">
-                <input class="form-control" placeholder="Remark">
+                <input class="form-control" placeholder="Remark" name="remark">
             </div>
         </div>
         <div class="pb-3 row">
             <label class="form-label col-sm-2">Interview Link:</label>
             <div class="col-sm-10">
-                <input class="form-control" placeholder="Interview link">
+                <input class="form-control" placeholder="Interview link" name="int">
             </div>
         </div>
         <div class="pb-3 row">
             <label class="form-label col-sm-2">Interview Time:</label>
             <div class="col-sm-10">
-                <input class="form-control" placeholder="Interview time">
+                <input class="form-control" placeholder="Interview time" name="int_time">
             </div>
         </div>
         <div class="pb-3 row">

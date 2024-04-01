@@ -116,37 +116,37 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Fullname:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter Fullname" name="fullname" value="<?= $name ?>">
+                    <input class="form-control" placeholder="Enter Fullname" name="fullname" value="<?= $name ?>" required>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Email:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter Email" name="email" type="email" value="<?= $email ?>">
+                    <input class="form-control" placeholder="Enter Email" name="email" type="email" value="<?= $email ?>" required>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Bio:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter bio" name="bio" value="<?= $bio ?>">
+                    <input class="form-control" placeholder="Enter bio" name="bio" value="<?= $bio ?>" required>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Studies:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter Studies" name="stud" value="<?= $stud ?>">
+                    <input class="form-control" placeholder="Enter Studies" name="stud" value="<?= $stud ?>" required>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Phone:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter Phone" name="phone" value="<?= $phone ?>">
+                    <input class="form-control" placeholder="Enter Phone" name="phone" value="<?= $phone ?>" required>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Location:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter location" name="loc" value="<?= $location ?>">
+                    <input class="form-control" placeholder="Enter location" name="loc" value="<?= $location ?>" required>
                 </div>
             </div>
             <div class="d-flex justify-content-between ">

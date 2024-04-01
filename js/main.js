@@ -1,11 +1,6 @@
 (function ($) {
     "use strict";
 
-    $(document).ready(function() {
-        $('#multiple-checkboxes').multiselect({
-          includeSelectAllOption: true,
-        });
-    });
     // Spinner
     var spinner = function () {
         setTimeout(function () {
@@ -78,22 +73,6 @@
         loop: true,
         nav: false
     });
-
-
-    // btn.onclick = function () {
-    //     var tb = document.getElementById('option'), val = tb.value;
-    //     if (val.length) {
-    //         var sel = document.getElementById('sel');
-    //         var opt = document.createElement('option');
-    //         opt.value = val;
-    //         opt.innerHTML = val;
-    //         sel.appendChild(opt);
-    //         tb.value = '';
-    //     }
-    // };
-
-
-
 
 })(jQuery);
 

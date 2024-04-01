@@ -1,11 +1,18 @@
 <?php
 include_once("header.php");
 if (isset($_GET["s_id"])) {
-    $s_id = $_GET["s_id"];
-}
-if($_SERVER["REQUEST_METHOD"] === "POST"){
+    $id_number = $_GET["s_id"];
+    $id_parts = explode('/', $id_number);
 
-    if(isset($_POST["submit"])){
+    // Extract the first part which contains the number
+    $s_id = $id_parts[0];
+
+}
+
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    if (isset($_POST["submit"])) {
         $a_name = $_POST["name"];
         $a_email = $_POST["email"];
         $a_phone = $_POST["phone"];
@@ -14,13 +21,23 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         $a_ic = $_POST["ic"];
         $a_occ = $_POST["occ"];
         $a_doc = $_POST["doc"];
+        $a_date = date("Y-m-d");
 
-        $stmt_i = "INSERT INTO `application`(`u_id`, `s_id`, `name`, `email`, `phone`, `loc`, `gen`, `ic`, `occ`, `doc`) VALUES ('$d_id','$s_id','$a_name','$a_email','$a_phone','$a_loc','$a_gen','$a_ic','$a_occ','$a_doc')";
-        $result_a = mq($stmt_i);
-        if($result){
-            echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Succesfully applied.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        $stmt_x = "SELECT * FROM scholarship WHERE id = $s_id";
+        $result_x = mq($stmt_x);
+        if ($result_x) {
+            if (mnr($result_x) > 0) {
+                while ($row = mfa($result_x)) {
+                    $u_id = $row["u_id"];
+                }
+            }
         }
-        else{
+
+        $stmt_i = "INSERT INTO `application`(`u_id`, `s_id`, `name`, `email`, `phone`, `loc`, `gen`, `ic`, `occ`, `doc`, `date`, `status`) VALUES ('$d_id','$u_id','$a_name','$a_email','$a_phone','$a_loc','$a_gen','$a_ic','$a_occ','$a_doc', '$a_date', 'Pending')";
+        $result_a = mq($stmt_i);
+        if ($result) {
+            echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Succesfully applied.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        } else {
             echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Error to applied the scholarship.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }
     }
@@ -75,7 +92,7 @@ if ($result) {
         </div>
         <div>
             <button><i class="far fa-bookmark" width="16" height="16"></i></button>
-            <a href="<?= $current_url ?>scholarship-application.php?s_id=<?=$s_id?>"><button class="btn btn-primary btn-sm follow w-auto">Apply Scholarship</button></a>
+            <a href="<?= $current_url ?>scholarship-application.php?s_id=<?= $s_id ?>/<?=$id?>"><button class="btn btn-primary btn-sm follow w-auto">Apply Scholarship</button></a>
         </div>
     </div>
 </div>

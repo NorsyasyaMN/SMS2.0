@@ -1,11 +1,11 @@
 <?php
+session_start();
 include_once("../config.php");
 $ver = rand();
 $current_url = "http://localhost/SMS2.0/scholarship-provider/";
 $file_url = "http://localhost/SMS2.0/";
 
-$filename = filename_s();
-$id = cleanURL_s($filename);
+$id = userSID();
 $d_id = decode($id);
 global $d_id;
 global $id;

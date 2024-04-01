@@ -9,13 +9,13 @@
         <form method="post" action="<?=$current_url?>document.php/<?= $id ?>"  enctype="multipart/form-data">
             <div class="pb-2">
                 <label for="document" class="form-label">Document Name:</label>
-                <input type="name" class="form-control" id="document" aria-describedby="document" name="name">
+                <input type="name" class="form-control" id="document" aria-describedby="document" name="name" required>
             </div>
             <div class="pb-2">
                 <label for="upload" class="form-label">Document Upload:</label>
                 <div id="drag-drop-area" class="mb-3">
                     <p>Drag & drop your file here or <label for="file-input" class="text-primary">browse</label>.</p>
-                    <input type="file" id="file-input" accept=".pdf" name="file">
+                    <input type="file" id="file-input" accept=".pdf" name="file" required>
                 </div>
             </div>
             <div class="d-flex justify-content-between">
