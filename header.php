@@ -41,15 +41,15 @@ while ($row = mfa($result)) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="<?=$current_url?>lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="<?=$current_url?>lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+    <link href="<?= $current_url ?>lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="<?= $current_url ?>lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="<?=$current_url?>css/bootstrap.min.css?ver=<?= $ver ?>" rel="stylesheet">
+    <link href="<?= $current_url ?>css/bootstrap.min.css?ver=<?= $ver ?>" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="<?=$current_url?>/css/style.css?ver=<?= $ver ?>" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="<?=$current_url?>css/virtual-select.min.css?ver=<?= $ver ?>">
+    <link href="<?= $current_url ?>/css/style.css?ver=<?= $ver ?>" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<?= $current_url ?>css/virtual-select.min.css?ver=<?= $ver ?>">
 </head>
 
 <body>
@@ -65,12 +65,13 @@ while ($row = mfa($result)) {
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar">
-                <a href="index.html" class="navbar-brand mx-4 mb-3">
-                    <h3 class="text-primary">SMS</h3>
+                <a href="<?= $current_url ?>index.php/<?= $id ?>" class="navbar-brand mx-4 mb-3 d-flex justify-content-between align-items-center">
+                    <img src="<?= $current_url ?>img/scholar.png" style="width:auto; height:50px">
+                    <h3 class="text-primary mb-0 ms-2">SMS</h3>
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
-                        <img class="rounded-circle" src="<?=$current_url?><?= ($profileImg == '') ? 'uploads/user.jpg' : $profileImg; ?>" alt="" style="width: 40px; height: 40px;">
+                        <img class="rounded-circle" src="<?= $current_url ?><?= ($profileImg == '') ? 'uploads/user.jpg' : $profileImg; ?>" alt="" style="width: 40px; height: 40px;">
                         <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
                         </div>
                     </div>
@@ -82,16 +83,16 @@ while ($row = mfa($result)) {
                 <div class="w-100">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a href="<?= $current_url ?>index.php/<?=$id?>" class="nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                            <a href="<?= $current_url ?>index.php/<?= $id ?>" class="nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= $current_url ?>application.php/<?=$id?>" class="nav-link"><i class="fa fa-th me-2"></i>Application History</a>
+                            <a href="<?= $current_url ?>application.php/<?= $id ?>" class="nav-link"><i class="fa fa-th me-2"></i>Application History</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= $current_url ?>document.php/<?=$id?>" class="nav-link"><i class="fa fa-keyboard me-2"></i>Document</a>
+                            <a href="<?= $current_url ?>document.php/<?= $id ?>" class="nav-link"><i class="fa fa-keyboard me-2"></i>Document</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= $current_url ?>scholarship.php/<?=$id?>" class="nav-link"><i class="fa fa-table me-2"></i>Scholarship</a>
+                            <a href="<?= $current_url ?>scholarship.php/<?= $id ?>" class="nav-link"><i class="fa fa-table me-2"></i>Scholarship</a>
                         </li>
                     </ul>
                 </div>
@@ -133,13 +134,13 @@ while ($row = mfa($result)) {
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img class="rounded-circle me-lg-2" src="<?=$current_url?>/<?= ($profileImg == '') ? 'uploads/user.jpg' : $profileImg; ?>" alt="" style="width: 40px; height: 40px;">
+                            <img class="rounded-circle me-lg-2" src="<?= $current_url ?>/<?= ($profileImg == '') ? 'uploads/user.jpg' : $profileImg; ?>" alt="" style="width: 40px; height: 40px;">
                             <span class="d-none d-lg-inline-flex"><?= $uname ?></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-darkblue border-0 rounded-0 rounded-bottom m-0">
-                            <a href="<?= $current_url ?>index.php/<?=$id?>" class="dropdown-item">My Profile</a>
+                            <a href="<?= $current_url ?>index.php/<?= $id ?>" class="dropdown-item">My Profile</a>
                             <!-- <a href="#" class="dropdown-item">Settings</a> -->
-                            <a href="<?=$current_url?>login.php" class="dropdown-item" onclick="<?php session_destroy(); ?>">Log Out</a>
+                            <a href="<?= $current_url ?>login.php" class="dropdown-item" onclick="<?php session_destroy(); ?>">Log Out</a>
                         </div>
                     </div>
                 </div>

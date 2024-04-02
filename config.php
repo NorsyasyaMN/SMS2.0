@@ -189,3 +189,4 @@ function uploadPhotoScholar($photo)
         return false; // Return false if upload failed
     }
 }
+

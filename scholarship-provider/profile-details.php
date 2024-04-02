@@ -97,8 +97,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         // Display error message if database update fails
         $status = 0;
-        die('Query execution failed: ' . mysqli_error($conn));
-        // echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error updating data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        // die('Query execution failed: ' . mysqli_error($conn));
+        echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error updating data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
     }
 
 
@@ -269,7 +269,7 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Criteria:</label>
                 <div class="col-sm-10">
-                    <textarea class="editor" name="criteria" placeholder="Enter your text here..."><?= $criteria ?></textarea>
+                    <textarea id="editor" name="criteria" placeholder="Enter your text here..."><?= $criteria ?></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
@@ -284,13 +284,13 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Highlights:</label>
                 <div class="col-sm-10">
-                    <textarea class="editor" name="high" placeholder="Enter your text here..."><?= $high ?></textarea>
+                    <textarea id="editor" name="high" placeholder="Enter your text here..."><?= $high ?></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Awards:</label>
                 <div class="col-sm-10">
-                    <textarea class="editor" name="award" placeholder="Enter your text here..."><?= $award ?></textarea>
+                    <textarea id="editor" name="award" placeholder="Enter your text here..."><?= $award ?></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
@@ -352,9 +352,6 @@ while ($row = mfa($result)) {
     VirtualSelect.init({
         ele: '#multipleSelect'
     });
-</script>
-<script>
-
 </script>
 
 <?php include_once("footer.php") ?>

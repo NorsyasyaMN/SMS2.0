@@ -38,7 +38,7 @@ $current_url = "http://localhost/SMS2.0/";
 </head>
 
 <body>
-    <div class="position-relative bg-white p-0" >
+    <div class="position-relative bg-white p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -47,16 +47,19 @@ $current_url = "http://localhost/SMS2.0/";
         </div>
         <!-- Spinner End -->
 
-        <section style="background-color: #9A616D;">
+        <section style="background-color: #212b36;">
             <div class="container py-5 px-5">
                 <div class="row d-flex justify-content-center align-items-center">
                     <div class="col-lg-12 col-xl-12">
                         <div class="card text-black" style="border-radius: 25px;">
                             <div class="card-body p-md-5">
                                 <div class="row justify-content-center">
-                                    <div class="col-md-6 col-lg-6 col-xl-5 order-2 order-lg-1">
-
-                                        <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Register</p>
+                                    <div class="col-md-7 col-lg-7 col-xl-6 order-2 order-lg-1">
+                                        <div class="d-flex align-items-center mb-3 pb-1">
+                                            <img src="<?= $current_url ?>img/scholar.png" style="width:auto; height:80px">
+                                            <h3 class="text-primary mb-0 ms-2" style="font-size: 40px">SMS</h3>
+                                        </div>
+                                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign up your account</h5>
 
                                         <form class="mx-1 mx-md-4" method="post" action="login.php">
 
@@ -64,7 +67,7 @@ $current_url = "http://localhost/SMS2.0/";
                                                 <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
                                                     <label class="form-label" for="name">Fullname</label>
-                                                    <input type="text" id="name" class="form-control" name="name" required/>
+                                                    <input type="text" id="name" class="form-control" name="name" oninput="convertToUppercase(this)" required />
                                                 </div>
                                             </div>
 
@@ -72,7 +75,7 @@ $current_url = "http://localhost/SMS2.0/";
                                                 <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
                                                     <label class="form-label" for="name">Username</label>
-                                                    <input type="text" id="uname" class="form-control" name="uname" required/>
+                                                    <input type="text" id="uname" class="form-control" oninput="convertToUppercase(this)" name="uname" required />
                                                 </div>
                                             </div>
 
@@ -80,7 +83,7 @@ $current_url = "http://localhost/SMS2.0/";
                                                 <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
                                                     <label class="form-label" for="email">Your Email</label>
-                                                    <input type="email" id="email" class="form-control" name="email" required/>
+                                                    <input type="email" id="email" class="form-control" name="email" required />
                                                 </div>
                                             </div>
 
@@ -88,7 +91,7 @@ $current_url = "http://localhost/SMS2.0/";
                                                 <i class="fas fa-phone fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
                                                     <label class="form-label" for="num">Your Number</label>
-                                                    <input type="number" id="num" class="form-control" name="num" required/>
+                                                    <input type="number" id="num" class="form-control" name="num" required />
                                                 </div>
                                             </div>
 
@@ -96,7 +99,7 @@ $current_url = "http://localhost/SMS2.0/";
                                                 <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
                                                     <label class="form-label" for="pass">Password</label>
-                                                    <input type="password" id="pass" class="form-control" name="pass" required/>
+                                                    <input type="password" id="pass" class="form-control" name="pass" required />
                                                 </div>
                                             </div>
 
@@ -104,7 +107,7 @@ $current_url = "http://localhost/SMS2.0/";
                                                 <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
                                                     <label class="form-label" for="rpass">Repeat your password</label>
-                                                    <input type="password" id="rpass" class="form-control" name="rpass" required/>
+                                                    <input type="password" id="rpass" class="form-control" name="rpass" required />
                                                 </div>
                                             </div>
                                             <div class="d-flex flex-row align-items-center mb-4">
@@ -120,20 +123,20 @@ $current_url = "http://localhost/SMS2.0/";
                                             </div>
 
                                             <div class="form-check d-flex justify-content-center mb-5">
-                                                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
-                                                <label class="form-check-label" for="form2Example3">
+                                                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" required />
+                                                <label class="form-check-label" for="form2Example3c">
                                                     I agree all statements in <a href="#!">Terms of service</a>
                                                 </label>
                                             </div>
-
+                                            <p class="mb-3 d-flex justify-content-center" style="color: #393f81;">Already have an account? <a href="login.php" style="color: #393f81;"> Login here</a></p>
                                             <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                                <button type="submit" name="register" class="btn btn-primary btn-lg w-auto">Register</button>
+                                                <button type="submit" name="register" class="btn btn-dark btn-lg w-auto">Register</button>
                                             </div>
 
                                         </form>
 
                                     </div>
-                                    <div class="col-md-6 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+                                    <div class="col-md-5 col-lg-5 col-xl-6 d-flex align-items-center order-1 order-lg-2">
                                         <img src="img/img1.webp" class="img-fluid" alt="Sample image" style="border-radius: 0 1rem 1rem 0;">
                                     </div>
                                 </div>
@@ -145,6 +148,7 @@ $current_url = "http://localhost/SMS2.0/";
         </section>
     </div>
 </body>
+
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>

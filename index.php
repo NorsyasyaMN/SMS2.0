@@ -62,7 +62,7 @@ else{
                         <h5>Bio</h5>
                         <p><?= ($bio == '') ? 'none': $bio ?></p>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-xl-12 py-2">
+                    <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Studies</h5>
                         <p><?= ($stud == '') ? 'none': $stud ?></p>
                     </div>
@@ -78,17 +78,17 @@ else{
                         <h5>Location</h5>
                         <p><?= ($location == '') ? 'none': $location ?></p>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-xl-6 py-2">
+                    <!-- <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Website</h5>
                         <a>website.com.my</a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 col-xl-6">
             <div class="h-100 bg-light rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-2">
-                    <h5 class="mb-0">Messages</h5>
+                    <h5 class="mb-0">List of Interview</h5>
                     <a href="">Show All</a>
                 </div>
                 <div class="d-flex align-items-center border-bottom py-3">

@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         }
 
-        $stmt_i = "INSERT INTO `application`(`u_id`, `s_id`, `name`, `email`, `phone`, `loc`, `gen`, `ic`, `occ`, `doc`, `date`, `status`) VALUES ('$d_id','$u_id','$a_name','$a_email','$a_phone','$a_loc','$a_gen','$a_ic','$a_occ','$a_doc', '$a_date', 'Pending')";
+        $stmt_i = "INSERT INTO `application`(`u_id`, `s_id`, `name`, `email`, `phone`, `loc`, `gen`, `ic`, `occ`, `doc`, `date`, `status`, `remark`, `iv_time`, `iv_link`, `iv_date`) VALUES ('$d_id','$u_id','$a_name','$a_email','$a_phone','$a_loc','$a_gen','$a_ic','$a_occ','$a_doc', '$a_date', 'Pending', '', '', '', '')";
         $result_a = mq($stmt_i);
         if ($result) {
             echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Succesfully applied.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';

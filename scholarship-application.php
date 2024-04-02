@@ -37,7 +37,7 @@ if ($result) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Fullname:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" type="name" placeholder="Fullname" name="name" value="<?= $u_name ?>" required>
+                    <input class="form-control" type="name" placeholder="Fullname" name="name" value="<?= $u_name ?>" oninput="convertToUppercase(this)" required>
                 </div>
             </div>
             <div class="pb-3 row">
@@ -84,7 +84,7 @@ if ($result) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Document to Upload:</label>
                 <div class="col-sm-10">
-                    <select id="multipleSelect" multiple name="doc" placeholder="Select Document" data-search="true" data-silent-initial-value-set="true" required>
+                    <select id="multipleSelect" multiple name="doc" placeholder="Select Document" data-search="true" data-silent-initial-value-set="true">
                         <?php
                         $stmt = "SELECT * FROM `file` WHERE u_id = '$d_id'";
                         $result = mq($stmt);
@@ -101,7 +101,7 @@ if ($result) {
                 </div>
             </div>
             <div class="d-flex justify-content-between">
-                <a class="btn btn-sm btn-outline-dark w-auto" href="<?= $current_url ?>scholarship-details.php?s_id=<?= $s_id ?>">Cancel</a>
+                <a class="btn btn-sm btn-outline-dark w-auto" href="<?= $current_url ?>scholarship-details.php?s_id=<?= $s_id ?>/<?=$id?>">Cancel</a>
                 <button class="btn btn-sm btn-primary w-auto" type="submit" name="submit">Submit</button>
             </div>
         </div>

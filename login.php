@@ -145,7 +145,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
         </div>
         <!-- Spinner End -->
-        <div class="container-fluid py-5 px-5" style="background-color: #9A616D;">
+        <div class="container-fluid py-5 px-5" style="background-color: #212b36;">
             <div class="row d-flex justify-content-center align-items-center">
                 <div class="col col-xl-10">
                     <?= $alert ?>
@@ -159,8 +159,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     <form action="login.php" method="post" enctype="multipart/form-data">
 
                                         <div class="d-flex align-items-center mb-3 pb-1">
-                                            <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
-                                            <span class="h1 fw-bold mb-0">Logo</span>
+                                            <img src="<?=$current_url?>img/scholar.png" style="width:auto; height:100px">
+                                            <h3 class="text-primary mb-0 ms-2" style="font-size: 80px">SMS</h3>
                                         </div>
 
                                         <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
@@ -179,7 +179,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                             <button class="btn btn-dark btn-lg btn-block" type="submit" name="submit">Login</button>
                                         </div>
 
-                                        <a class="small text-muted" href="#!">Forgot password?</a>
+                                        <!-- <a class="small text-muted" href="forgot-password.php">Forgot password?</a> -->
                                         <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="register.php" style="color: #393f81;">Register here</a></p>
                                         <a href="#!" class="small text-muted">Terms of use.</a>
                                         <a href="#!" class="small text-muted">Privacy policy</a>

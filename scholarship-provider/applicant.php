@@ -10,9 +10,9 @@
         <button type="button" class="btn btn-primary ms-2">Search</button>
     </div>
     <div class="bg-light text-center rounded p-4">
-        <div class="d-flex align-items-center justify-content-between mb-4">
+        <!-- <div class="d-flex align-items-center justify-content-between mb-4">
             <h4 class="mb-0">Approved Application</h4>
-        </div>
+        </div> -->
         <div class="table-responsive">
             <table class="table text-start align-middle table-hover mb-0">
                 <thead>

@@ -80,6 +80,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?
+                    $stmt = ""
+                    ?>
                     <tr>
                         <td>1</td>
                         <td>INV-0123</td>
