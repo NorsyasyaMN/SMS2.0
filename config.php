@@ -190,3 +190,17 @@ function uploadPhotoScholar($photo)
     }
 }
 
+function btnStatus($status){
+    if ($status == 'Approved') {
+        $btn = "btn-success";
+    } elseif ($status == 'Shortlisted') {
+        $btn = "btn-info";
+    } elseif ($status == 'Pending') {
+        $btn = "btn-warning";
+    } else {
+        $btn = "btn-danger";
+    }
+
+    return $btn;
+}
+

@@ -17,15 +17,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $user = $_POST["user"];
 
         if ($rpass == $pass) {
-            $stmt = "INSERT INTO `register`(`name`, `uname`,`email`, `num`, `pass`, `user`) VALUES ('$name', '$uname','$email','$num','$pass','$user')";
-            $result = mq($stmt);
-            if ($result === TRUE) {
-                $alert = '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data save successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-            } else {
-                $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Error uploading data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+
+            $stmt_check = "SELECT * FROM register WHERE email = '$email'";
+            $result_check = mq($stmt_check);
+            if ($result_check) {
+                if (mnr($result_check) > 0) {
+                    $alert = '<div class="alert alert-danger alert-dismissible fade show float-end col-4" role="alert">Email already registered!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                } else {
+                    $stmt = "INSERT INTO `register`(`name`, `uname`,`email`, `num`, `pass`, `user`) VALUES ('$name', '$uname','$email','$num','$pass','$user')";
+                    $result = mq($stmt);
+                    if ($result === TRUE) {
+                        $alert = '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data save successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                    } else {
+                        $alert = '<div class="alert alert-danger alert-dismissible fade show float-end col-4" role="alert">Error uploading data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                    }
+                }
             }
         } else {
-            $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Password is not the same<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            $alert = '<div class="alert alert-danger alert-dismissible fade show float-end col-4" role="alert">Password is not the same<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }
     }
 
@@ -88,17 +97,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $ep_id = encode($p_id);
                         header('Location: scholarship-provider/scholar.php/' . $ep_id);
                     } else {
-                        $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Wrong credentials<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                        $alert = '<div class="alert alert-danger alert-dismissible fade show float-end col-4" role="alert">Wrong credentials<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
                     }
                 } else {
                     // Display error message if login fails
-                    $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Failed to login<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                    $alert = '<div class="alert alert-danger alert-dismissible fade show float-end col-4" role="alert">Failed to login<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
                 }
             }
         } else {
 
             // Display error message if login fails
-            $alert = '<div class="alert alert-warning alert-dismissible fade show float-end col-4" role="alert">Failed to login<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            $alert = '<div class="alert alert-danger alert-dismissible fade show float-end col-4" role="alert">Failed to login<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }
     }
 }
@@ -159,7 +168,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     <form action="login.php" method="post" enctype="multipart/form-data">
 
                                         <div class="d-flex align-items-center mb-3 pb-1">
-                                            <img src="<?=$current_url?>img/scholar.png" style="width:auto; height:100px">
+                                            <img src="<?= $current_url ?>img/scholar.png" style="width:auto; height:100px">
                                             <h3 class="text-primary mb-0 ms-2" style="font-size: 80px">SMS</h3>
                                         </div>
 

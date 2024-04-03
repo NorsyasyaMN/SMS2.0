@@ -473,3 +473,11 @@
     border-radius: 5px;
 }
 
+.bookmark:hover{
+    color: #009cff;
+}
+
+.color-blue{
+    color: #009cff;
+}
+

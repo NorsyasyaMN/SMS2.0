@@ -39,7 +39,8 @@
                                 <td><?=$count?></td>
                                 <td><?=$name?></td>
                                 <td><?=$date?></td>
-                                <td><a class="btn btn-sm btn-success" href="<?= $current_url ?>applicant-details.php?u_id=<?=$u_id?>/<?= $id ?>"><?=$status?></a></td>
+                                <?php $btn = btnStatus($status)?>
+                                <td><a class="btn btn-sm <?=$btn?>" href="<?= $current_url ?>applicant-details.php?u_id=<?=$u_id?>/<?= $id ?>"><?=$status?></a></td>
                             </tr>
                     <?php $count++; 
                     }

@@ -103,7 +103,7 @@ include_once("header.php")
                             </div>
                         </div>
                         <div class="items-link items-link2 f-right">
-                            <a href="scholarship-details.php">Full Time</a>
+                            <a href="<?= $current_url ?>scholarship-details.php?s_id=<?=$s_id?>/<?= $id ?>">Full Time</a>
                             <span>7 hours ago</span>
                         </div>
                     </div>

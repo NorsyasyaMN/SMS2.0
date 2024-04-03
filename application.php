@@ -4,6 +4,7 @@
 </div>
 
 <!-- Widgets Start -->
+
 <div class="container-fluid pt-4 px-4">
     <div class="d-flex mb-4">
         <input class="form-control bg-transparent" type="text" placeholder="Search">
@@ -24,41 +25,38 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>INV-0123</td>
-                        <td>01 Jan 43</td>
-                        <td><a class="btn btn-sm btn-success" href="application-details.php">Approved</a></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>INV-0123</td>
-                        <td>01 Jan 45</td>
-                        <td><a class="btn btn-sm btn-warning" href="">Pending</a></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>INV-0123</td>
-                        <td>01 Jan 45</td>
-                        <td><a class="btn btn-sm btn-warning" href="">Pending</a></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>INV-0123</td>
-                        <td>01 Jan 46</td>
-                        <td><a class="btn btn-sm btn-warning" href="">Pending</a></td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>INV-0123</td>
-                        <td>01 Jan 47</td>
-                        <td><a class="btn btn-sm btn-warning" href="">Pending</a></td>
-                    </tr>
+                    <?
+                    $count = 1;
+                    $stmt = "SELECT * FROM `scholarship` INNER JOIN `application` ON scholarship.u_id = application.s_id WHERE application.u_id = $d_id";
+                    $result = mq($stmt);
+                    if ($result) {
+                        if (mnr($result) > 0) {
+                            while ($row = mfa($result)) {
+                                $s_id = $row['s_id'];
+                                $s_name = $row['scholar_name'];
+                                $date = $row['date'];
+                                $status = $row['status'];
+                    ?>
+                                <tr>
+                                    <td><?= $count ?></td>
+                                    <td><?= $s_name ?></td>
+                                    <td><?= $date ?></td>
+                                    <?php $btn = btnStatus($status)?>
+                                    <td><a class="btn btn-sm <?=$btn?>" href="<?= $current_url ?>application-details.php?s_id=<?=$s_id?>/<?= $id ?>"><?=$status?></a></td>
+                                </tr>
+
+                    <?php
+                                $count++;
+                            }
+                        }
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
 
 <div class="container-fluid pt-4 px-4">
     <div class="d-flex mb-4">
@@ -76,47 +74,22 @@
                         <th scope="col" width="30">No</th>
                         <th scope="col">Scholarship</th>
                         <th scope="col">Date</th>
-                        <th scope="col" width="30">Details</th>
+                        <th scope="col" width="30">Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?
-                    $stmt = ""
-                    ?>
                     <tr>
                         <td>1</td>
-                        <td>INV-0123</td>
-                        <td>01 Jan 43</td>
-                        <td><a class="btn btn-sm btn-primary" href="scholarship-details.php">Detail</a></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>INV-0123</td>
-                        <td>01 Jan 45</td>
-                        <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>INV-0123</td>
-                        <td>01 Jan 45</td>
-                        <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>INV-0123</td>
-                        <td>01 Jan 46</td>
-                        <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>INV-0123</td>
-                        <td>01 Jan 47</td>
-                        <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+                        <td>MMU Scholarship</td>
+                        <td>2024-03-30</td>
+                        <td><a class="btn btn-sm btn-primary" href="#">Detail</a></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+
 <!-- Widgets End -->
 <?php include_once("footer.php") ?>

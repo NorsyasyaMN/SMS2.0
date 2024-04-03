@@ -6,11 +6,30 @@ if (isset($_GET["s_id"])) {
 
     // Extract the first part which contains the number
     $s_id = $id_parts[0];
-
 }
 
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    if (isset($_POST["highlight"])) {
+
+        $stmt_check = "SELECT * FROM highlight WHERE s_id = $s_id AND u_id = $d_id";
+        $result_check = mq($stmt_check);
+        if ($result_check) {
+            if (mnr($result_check) > 0) {
+                $stmt_d = "DELETE FROM `highlight` WHERE s_id = $s_id AND u_id = $d_id";
+                $result_d = mq($stmt_d);
+            } else {
+                $stmt_h = "INSERT INTO `highlight` (`s_id`, `u_id`) VALUES ('$s_id','$d_id')";
+                $result_h = mq($stmt_h);
+                if ($result_h) {
+                    echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Succesfully highlighted.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                } else {
+                    echo '<div class="alert alert-warning alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Error to highlight the scholarship.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                }
+            }
+        }
+    }
 
     if (isset($_POST["submit"])) {
         $a_name = $_POST["name"];
@@ -38,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($result) {
             echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Succesfully applied.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         } else {
-            echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Error to applied the scholarship.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            echo '<div class="alert alert-warning alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Error to applied the scholarship.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }
     }
 }
@@ -68,6 +87,15 @@ if ($result) {
 } else {
     die('Query execution failed: ' . mysqli_error($conn));
 }
+
+$star = "";
+$stmt_s = "SELECT * FROM highlight WHERE s_id = $s_id AND u_id = $d_id";
+$result_s = mq($stmt_s);
+if ($result_s) {
+    if (mnr($result_s) > 0) {
+        $star = "star";
+    }
+}
 ?>
 <div class="container-fluid pt-4 px-4">
     <h2>Scholarship Details</Details>
@@ -90,14 +118,16 @@ if ($result) {
             <h4 class="mb-0"><?= $scholar_name ?></h4>
             <span class="text-muted d-block mb-2"><?= $email ?></span>
         </div>
-        <div>
-            <button><i class="far fa-bookmark" width="16" height="16"></i></button>
-            <a href="<?= $current_url ?>scholarship-application.php?s_id=<?= $s_id ?>/<?=$id?>"><button class="btn btn-primary btn-sm follow w-auto">Apply Scholarship</button></a>
+        <div class="d-flex">
+            <form id="starForm" method="post" action="">
+                <input type="hidden" name="highlight" value="<?= $s_id ?>">
+                <button id="starBtn"><i class="bi bi-star-fill bookmark <?= ($star === "star") ? "color-blue" : '' ?>" width="16" height="16"></i></button>
+            </form>
+            <a class="ps-2" href="<?= $current_url ?>scholarship-application.php?s_id=<?= $s_id ?>/<?= $id ?>"><button class="btn btn-primary btn-sm follow w-auto">Apply Scholarship</button></a>
         </div>
     </div>
 </div>
 <!-- Profile End -->
-
 
 <!-- Widgets Start -->
 <div class="container-fluid pt-4 px-4">
@@ -277,5 +307,11 @@ if ($result) {
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('starBtn').addEventListener('click', function() {
+        document.getElementById('starForm').submit();
+    });
+</script>
 <!-- Widgets End -->
 <?php include_once("footer.php") ?>

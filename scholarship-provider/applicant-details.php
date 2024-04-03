@@ -20,13 +20,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $int_time = $_POST["int_time"];
 
         $stmt_u = "UPDATE `application` SET `status`='$status', `remark`='$remark', `iv_link`='$int_link', `iv_date`='$int_date', 
-        `iv_time`='$int_time' WHERE u_id = $u_id AND s_id = $d_id";
+        `iv_time`='$int_time' WHERE id = $u_id AND s_id = $d_id";
         $result_u = mq($stmt_u);
-        if($result_u){
+        if ($result_u) {
             echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data updated successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-
-        }
-        else{
+        } else {
             echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error updating data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }
     }
@@ -46,6 +44,10 @@ if ($result) {
             $occ = $row['occ'];
             $doc = $row['doc'];
             $status = $row['status'];
+            $remark = $row['remark'];
+            $iv_link = $row['iv_link'];
+            $iv_date = $row['iv_date'];
+            $iv_time = $row['iv_time'];
         }
     }
 }
@@ -64,7 +66,8 @@ if ($result) {
                     <p>Update some personal information. The data will never be publicly available.</p>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-success ms-2"><?= $status ?></button>
+                    <? $btn = ($status == 'Approved') ? "btn-success" : (($status == 'Shortlisted') ? "btn-info" : (($status == 'Pending') ? "btn-warning"  : "btn-danger")); ?>
+                    <button type="button" class="btn <?= $btn ?> ms-2"><?= $status ?></button>
                 </div>
             </div>
             <hr>
@@ -89,7 +92,7 @@ if ($result) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Location:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" value="<?= $loc ?>" name=""disabled>
+                    <input class="form-control" value="<?= $loc ?>" name="" disabled>
                 </div>
             </div>
             <div class="pb-3 row">
@@ -137,37 +140,36 @@ if ($result) {
                 <label for="role" class="form-label col-sm-2">Status:</label>
                 <div class="col-sm-10">
                     <select id="role" name="status" class="form-select form-control bg-white">
-                        <option selected>Status</option>
-                        <option value="Approved">Approved</option>
-                        <option value="Shorlisted">Shortlisted</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Rejected">Rejected</option>
+                        <option value="Approved" <?= ($status == 'Approved') ? "selected" : "" ?>>Approved</option>
+                        <option value="Shortlisted" <?= ($status == 'Shortlisted') ? "selected" : "" ?>>Shortlisted</option>
+                        <option value="Pending" <?= ($status == 'Pending') ? "selected" : "" ?>>Pending</option>
+                        <option value="Rejected"  <?= ($status == 'Rejected') ? "selected" : "" ?>>Rejected</option>
                     </select>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Remark:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Remark" name="remark">
+                    <input class="form-control" placeholder="Remark" name="remark" value="<?= $remark ?>">
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Interview Link:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Interview link" name="int_link">
+                    <input class="form-control" placeholder="Interview link" name="int_link" value="<?= $iv_link ?>">
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Interview Time:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Interview time" name="int_time">
+                    <input class="form-control" placeholder="Interview time" name="int_time" value="<?= $iv_time ?>">
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Interview Date:</label>
                 <div class="col-sm-10">
-                    <div class="input-group date" >
-                        <input type="date" class="form-control" id="datepicker" name="int_date" />
+                    <div class="input-group date">
+                        <input type="date" class="form-control" id="datepicker" name="int_date" value="<?= $iv_date ?>">
                     </div>
                 </div>
             </div>
