@@ -12,6 +12,7 @@ if ($result){
         $stud = $row['stud'];
         $phone = $row['num'];
         $location = $row['location'];
+        $level  = $row['level'];
     }
 }
 else{
@@ -62,19 +63,49 @@ else{
                         <h5>Bio</h5>
                         <p><?= ($bio == '') ? 'none': $bio ?></p>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-xl-6 py-2">
+                    <div class="col-sm-12 col-md-6 col-xl-4 py-2">
                         <h5>Studies</h5>
-                        <p><?= ($stud == '') ? 'none': $stud ?></p>
+                        <?php
+                        if ($stud == '') {
+                            echo "<p>none</p>";
+                        } else {
+                            $stmt_f = "SELECT * FROM `field` WHERE id IN ($stud)";
+                            $result_f = mq($stmt_f);
+                            if ($result_f) {
+                                while ($row = mfa($result_f)) {
+                                    $name_field = $row['field'];
+                                }
+                                echo "<p>$name_field</p>";
+                            }
+                        }
+                        ?>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-xl-6 py-2">
+                    <div class="col-sm-12 col-md-6 col-xl-4 py-2">
+                        <h5>Level of Studies</h5>
+                        <?php
+                        if ($level == '') {
+                            echo "<p>none</p>";
+                        } else {
+                            $stmt_l = "SELECT * FROM `level` WHERE id IN ($level)";
+                            $result_l = mq($stmt_l);
+                            if ($result_l) {
+                                while ($row = mfa($result_l)) {
+                                    $name_level = $row['level'];
+                                }
+                                echo "<p>$name_level</p>";
+                            }
+                        }
+                        ?>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-xl-4 py-2">
                         <h5>Phone</h5>
                         <p><?= ($phone == '') ? 'none': $phone ?></p>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-xl-6 py-2">
+                    <div class="col-sm-12 col-md-6 col-xl-4 py-2">
                         <h5>Email</h5>
                         <p><?= ($email == '') ? 'none': $email ?></p>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-xl-6 py-2">
+                    <div class="col-sm-12 col-md-6 col-xl-4 py-2">
                         <h5>Location</h5>
                         <p><?= ($location == '') ? 'none': $location ?></p>
                     </div>

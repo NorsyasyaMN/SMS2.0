@@ -16,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $high = $_POST["high"];
     $award = $_POST["award"];
     $doc = $_POST["native-select"];
+    $date = $_POST["date"];
     $status = 0;
 
     // Check if profile image is set
@@ -89,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $stmt_x = "UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r' WHERE id = $d_id ";
-    $stmt_y = "UPDATE `scholarship` SET `org_name`= '$oname_r',`scholar_name`='$sname_r',`bio`='$bio_r',`location`='$loc_r',`field`='$field_r',`level`='$level_r', cat = '$cat_r',`criteria`='$criteria',`high`='$high',`award`='$award',`doc`='$doc' WHERE u_id = $d_id";
+    $stmt_y = "UPDATE `scholarship` SET `org_name`= '$oname_r',`scholar_name`='$sname_r',`bio`='$bio_r',`location`='$loc_r',`field`='$field_r',`level`='$level_r', cat = '$cat_r',`criteria`='$criteria',`high`='$high',`award`='$award',`doc`='$doc', `date` = '$date' WHERE u_id = $d_id";
     $result = mq($stmt_x);
     $result_s = mq($stmt_y);
     if ($result == TRUE && $result_s == TRUE) {
@@ -131,6 +132,8 @@ while ($row = mfa($result)) {
     $num = explode(',', $doc);
     $num_l = explode(',', $level);
     $num_c = explode(',', $cat);
+    $num_f = explode(',', $field);
+    $date = $row['date'];
 }
 ?>
 <div class="container-fluid pt-4 px-4">
@@ -149,7 +152,7 @@ while ($row = mfa($result)) {
                 <label class="form-label col-sm-2">Profile Photo:</label>
                 <div class="col-sm-10">
                     <div class="d-flex align-items-center">
-                        <img class="rounded-circle me-3" src="<?= $file_url ?><?= $profileImg ?>" alt="" style="width: 40px; height: 40px;">
+                        <img class="rounded-circle me-3" src="<?= $file_url ?>/<?= ($profileImg == '') ? 'uploads/user.jpg' : $profileImg; ?>" alt="" style="width: 40px; height: 40px;">
                         <input type="file" name="profileImage" id="profileImage" accept="image/*">
                         <a class="btn btn-outline-primary btn-sm follow w-auto me-3">Remove</a>
                     </div>
@@ -173,65 +176,79 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Person Name:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter your name" name="name" value="<?= $name_r ?>">
+                    <input class="form-control" placeholder="Enter your name" name="name" value="<?= $name_r ?>" required>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Organization Name:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter organization name" name="o_name" value="<?= $org_name ?>">
+                    <input class="form-control" placeholder="Enter organization name" name="o_name" value="<?= $org_name ?>" required>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Scholarship Name:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter scholarship name" name="s_name" value="<?= $scholar_name ?>">
+                    <input class="form-control" placeholder="Enter scholarship name" name="s_name" value="<?= $scholar_name ?>" required>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Bio:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter bio" name="bio" value="<?= $bio ?>">
+                    <textarea id="editor" placeholder="Enter bio here" name="bio" required><?= $bio ?></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Location:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter your location" name="loc" value="<?= $location ?>">
+                    <input class="form-control" placeholder="Enter your location" name="loc" value="<?= $location ?>" required>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Phone:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter your number" name="phone" value="<?= $phone ?>">
+                    <input class="form-control" placeholder="Enter your number" name="phone" value="<?= $phone ?>" required>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Email:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter your email" name="email" value="<?= $email ?>">
+                    <input class="form-control" placeholder="Enter your email" name="email" value="<?= $email ?>" required>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Field Study Applicable:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Add field" type='text' name='field' value="<?= $field ?>" />
+                    <select id="multipleSelect" multiple name="field" placeholder="Select field" data-search="true" data-silent-initial-value-set="true" required>
+                        <?php
+                        $stmt_f = "SELECT * FROM `field`";
+                        $result_f = mq($stmt_f);
+                        if (mnr($result_f) > 0) {
+                            while ($row = mfa($result_f)) {
+                                $name = $row['field'];
+                                $f_id = $row['id'];
+                        ?>
+                                <option value=<?= $f_id ?> <?= (in_array($f_id, $num_f)) ? "selected" : "" ?>><?= $name ?></option>
+
+                        <?php }
+                        }
+                        ?>
+                    </select>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Course Level Applicable:</label>
                 <div class="col-sm-10">
 
-                    <select id="multipleSelect" multiple name="level" placeholder="Select level" data-search="true" data-silent-initial-value-set="true">
+                    <select id="multipleSelect" multiple name="level" placeholder="Select level" data-search="true" data-silent-initial-value-set="true" required>
                         <?php
                         $stmt_l = "SELECT * FROM `level`";
                         $result_l = mq($stmt_l);
                         if (mnr($result_l) > 0) {
                             while ($row = mfa($result_l)) {
                                 $name = $row['level'];
-                                $id = $row['id'];
+                                $l_id = $row['id'];
                         ?>
-                                <option value=<?= $id ?> <?= (in_array($id, $num_l)) ? "selected" : "" ?>><?= $name ?></option>
+                                <option value=<?= $l_id ?> <?= (in_array($l_id, $num_l)) ? "selected" : "" ?>><?= $name ?></option>
 
                         <?php }
                         }
@@ -243,16 +260,16 @@ while ($row = mfa($result)) {
                 <label class="form-label col-sm-2">Scholarship Categories:</label>
                 <div class="col-sm-10">
 
-                    <select id="multipleSelect" multiple name="cat" placeholder="Select categories" data-search="true" data-silent-initial-value-set="true">
+                    <select id="multipleSelect" multiple name="cat" placeholder="Select categories" data-search="true" data-silent-initial-value-set="true" required>
                         <?php
                         $stmt_c = "SELECT * FROM `cat`";
                         $result_c = mq($stmt_c);
                         if (mnr($result_c) > 0) {
                             while ($row = mfa($result_c)) {
                                 $name = $row['cat'];
-                                $id = $row['id'];
+                                $c_id = $row['id'];
                         ?>
-                                <option value=<?= $id ?> <?= (in_array($id, $num_c)) ? "selected" : "" ?>><?= $name ?></option>
+                                <option value=<?= $c_id ?> <?= (in_array($c_id, $num_c)) ? "selected" : "" ?>><?= $name ?></option>
 
                         <?php }
                         }
@@ -267,9 +284,17 @@ while ($row = mfa($result)) {
             <p>Update some personal information. The data will never be publicly available.</p>
             <hr>
             <div class="pb-3 row">
+                <label class="form-label col-sm-2">Due Date:</label>
+                <div class="col-sm-10">
+                    <div class="input-group date">
+                        <input type="date" class="form-control" id="datepicker" name="date" value="<?= $date ?>">
+                    </div>
+                </div>
+            </div>
+            <div class="pb-3 row">
                 <label class="form-label col-sm-2">Criteria:</label>
                 <div class="col-sm-10">
-                    <textarea id="editor" name="criteria" placeholder="Enter your text here..."><?= $criteria ?></textarea>
+                    <textarea id="editor" name="criteria" placeholder="Enter your text here..." required><?= $criteria ?></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
@@ -284,13 +309,13 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Highlights:</label>
                 <div class="col-sm-10">
-                    <textarea id="editor" name="high" placeholder="Enter your text here..."><?= $high ?></textarea>
+                    <textarea id="editor" name="high" placeholder="Enter your text here..." required><?= $high ?></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Awards:</label>
                 <div class="col-sm-10">
-                    <textarea id="editor" name="award" placeholder="Enter your text here..."><?= $award ?></textarea>
+                    <textarea id="editor" name="award" placeholder="Enter your text here..." required><?= $award ?></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
@@ -311,16 +336,16 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Document Name:</label>
                 <div class="col-sm-10">
-                    <select id="multipleSelect" multiple name="native-select" placeholder="Native Select" data-search="true" data-silent-initial-value-set="true" value="<?= $doc ?>">
+                    <select id="multipleSelect" multiple name="native-select" placeholder="Native Select" data-search="true" data-silent-initial-value-set="true">
                         <?php
                         $stmt_d = "SELECT * FROM `file` WHERE u_id = $d_id";
                         $result_d = mq($stmt_d);
                         if (mnr($result_d) > 0) {
                             while ($row = mfa($result_d)) {
                                 $name = $row['name'];
-                                $id = $row['id'];
+                                $f_id = $row['id'];
                         ?>
-                                <option value=<?= $id ?> <?= (in_array($id, $num)) ? "selected" : "" ?>><?= $name ?></option>
+                                <option value=<?= $f_id ?> <?= (in_array($f_id, $num)) ? "selected" : "" ?>><?= $name ?></option>
 
                         <?php }
                         }

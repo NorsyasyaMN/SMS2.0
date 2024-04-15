@@ -14,9 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt = "INSERT INTO `user`(`p_id`, `name`, `email`, `pass`, `c_id`, `role`,`date`) VALUES ('$d_id','$name','$email','$pass','$c_id', '$role', '$date')";
         $result = mq("$stmt");
         if ($result) {
-            echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data saved successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-3 float-end" role="alert">Data saved successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         } else {
-            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error adding user.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-3" role="alert">Error adding user.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }
     }
 
@@ -30,12 +30,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $result = mq($stmt);
 
             if ($result) {
-                echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Succesfully deleted.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-3 float-end" role="alert">Succesfully deleted.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
             } else {
-                echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Error deleting document.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-3 float-end" role="alert">Error deleting document.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
             }
         } else {
-            echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">No user selected.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-3 float-end" role="alert">No user selected.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }
     }
 
@@ -82,6 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $result_y = mq("$stmt_y");
                         $count = 1;
                         if ($result_y) {
+                            if(mnr($result_y) > 0){
                             while ($row = mfa($result_y)) {
                                 $id = $row['id'];
                                 $name = $row['name'];
@@ -98,6 +99,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <?php
                                 $count++;
                             }
+                        }else{
+                            echo "<tr><td class='text-center' colspan='5'><p>No users added</p></td></tr>";
+                        }
                         }
                         ?>
                     </tbody>

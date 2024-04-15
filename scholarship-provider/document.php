@@ -17,19 +17,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $file_tmp = $file['tmp_name'];
         }
 
-        $target_dir = "files/";
+        $target_dir = "../files/";
         $target_file = $target_dir . $file_name;
 
         if (move_uploaded_file($file_tmp, $target_file)) {
             // File uploaded successfully, now insert into database
-            $result = mq("INSERT INTO `file`(`u_id`, `name`, `doc`, `date`) VALUES ('$d_id','$name','$target_file', '$date')");
+            $file_clean = str_replace("../", "", $target_file);
+            $result = mq("INSERT INTO `file`(`u_id`, `name`, `doc`, `date`) VALUES ('$d_id','$name','$file_clean', '$date')");
             if ($result) {
-                echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Data saved successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-3 float-end" role="alert">Data saved successfully.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
             } else {
-                echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error uploading file.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-3" role="alert">Error uploading file.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
             }
         } else {
-            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-4" role="alert">Error uploading data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';;
+            echo '<div class="alert alert-warning alert-dismissible fade show float-end col-sm-4 m-3" role="alert">Error uploading data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';;
         }
     }
 
@@ -43,12 +44,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $result = mq($stmt);
 
             if ($result) {
-                echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Succesfully deleted.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-3 float-end" role="alert">Succesfully deleted.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
             } else {
-                echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Error deleting document.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-3 float-end" role="alert">Error deleting document.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
             }
         } else {
-            echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">No document selected.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-3 float-end" role="alert">No document selected.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         }
     }
 
@@ -96,24 +97,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $stmt = "SELECT * FROM `file` WHERE u_id = '$d_id' $s_stmt";
                         $result = mq($stmt);
                         if ($result) {
-                            while ($row = mfa($result)) {
-                                $doc_id = $row['id'];
-                                $name = $row['name'];
-                                $file = $file_url . $row['doc'];
-                                $date = $row['date']; ?>
-                                <tr>
-                                    <td><?= $count ?></td>
-                                    <td><input class="document-check" type="checkbox" value="<?= $doc_id ?>" name="document[]"></td>
-                                    <td><?= $name ?></td>
-                                    <td class="d-none d-md-table-cell d-xl-table-cell"><?= $date ?></td>
-                                    <td><a class="btn btn-sm btn-primary" href="<?= $file ?>" target="_blank">Detail</a></td>
-                                </tr>
-                                <?php $count++;
-                            } ?><?php
+                            if (mnr($result) > 0) {
+                                while ($row = mfa($result)) {
+                                    $doc_id = $row['id'];
+                                    $name = $row['name'];
+                                    $file = $file_url . $row['doc'];
+                                    $date = $row['date']; ?>
+                                    <tr>
+                                        <td><?= $count ?></td>
+                                        <td><input class="document-check" type="checkbox" value="<?= $doc_id ?>" name="document[]"></td>
+                                        <td><?= $name ?></td>
+                                        <td class="d-none d-md-table-cell d-xl-table-cell"><?= $date ?></td>
+                                        <td><a class="btn btn-sm btn-primary" href="<?= $file ?>" target="_blank">Detail</a></td>
+                                    </tr>
+                        <?php
+                                    $count++;
+                                }
                             } else {
-                                die('Query execution failed: ' . mysqli_error($conn));
+                                echo "<tr><td class='text-center' colspan='5'><p>No document uploaded</p></td></tr>";
                             }
-                                ?>
+                        } else {
+                            die('Query execution failed: ' . mysqli_error($conn));
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>

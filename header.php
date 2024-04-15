@@ -46,10 +46,15 @@ while ($row = mfa($result)) {
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="<?= $current_url ?>css/bootstrap.min.css?ver=<?= $ver ?>" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"  />
     <!-- Template Stylesheet -->
     <link href="<?= $current_url ?>/css/style.css?ver=<?= $ver ?>" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<?= $current_url ?>css/virtual-select.min.css?ver=<?= $ver ?>">
+
+      <!-- Tinymice CDN -->
+      <script src="https://cdn.tiny.cloud/1/i1ce9mw87iqm1iez5quls4fsyr4rn8bqn1ygslug8ain5um8/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+
 </head>
 
 <body>

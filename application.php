@@ -41,13 +41,15 @@
                                     <td><?= $count ?></td>
                                     <td><?= $s_name ?></td>
                                     <td><?= $date ?></td>
-                                    <?php $btn = btnStatus($status)?>
-                                    <td><a class="btn btn-sm <?=$btn?>" href="<?= $current_url ?>application-details.php?s_id=<?=$s_id?>/<?= $id ?>"><?=$status?></a></td>
+                                    <?php $btn = btnStatus($status) ?>
+                                    <td><a class="btn btn-sm <?= $btn ?>" href="<?= $current_url ?>application-details.php?s_id=<?= $s_id ?>/<?= $id ?>"><?= $status ?></a></td>
                                 </tr>
 
                     <?php
                                 $count++;
                             }
+                        } else {
+                            echo "<tr><td class='text-center' colspan='5'><p>No application history </p></td></tr>";
                         }
                     }
                     ?>
@@ -74,16 +76,46 @@
                         <th scope="col" width="30">No</th>
                         <th scope="col">Scholarship</th>
                         <th scope="col">Date</th>
-                        <th scope="col" width="30">Status</th>
+                        <th scope="col" width="30">Details</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>MMU Scholarship</td>
-                        <td>2024-03-30</td>
-                        <td><a class="btn btn-sm btn-primary" href="#">Detail</a></td>
-                    </tr>
+                    <?php
+                    $stmt_s = "SELECT * FROM `highlight` WHERE u_id = '$d_id'";
+                    //echo $stmt_s;
+                    $result_s = mq($stmt_s);
+                    $count = 1;
+                    if ($result_s) {
+                        if (mnr($result_s) > 0) {
+                            while ($row = mfa($result_s)) {
+                                $s_id = $row['s_id'];
+                                $u_id = $row['u_id'];
+                                $date = $row['date'];
+
+
+                                $stmt_scholar = "SELECT * FROM `scholarship` WHERE id = '$s_id'";
+                                // echo $stmt_scholar;
+                                $result_scholar = mq($stmt_scholar);
+                                if ($result_scholar) {
+                                    while ($row = mfa($result_scholar)) {
+                                        $name = $row['scholar_name'];
+                    ?>
+                                        <tr>
+                                            <td><?= $count ?></td>
+                                            <td><?= $name ?></td>
+                                            <td><?= $date ?></td>
+                                            <td><a class="btn btn-sm btn-primary" href="<?= $current_url ?>scholarship-details.php?s_id=<?= $s_id ?>/<?= $id ?>">Detail</a></td>
+                                        </tr>
+                    <?php
+                                    }
+                                }
+                            }
+                            $count++;
+                        } else {
+                            echo "<tr><td class='text-center' colspan='5'><p>No bookmarked application</p></td></tr>";
+                        }
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>

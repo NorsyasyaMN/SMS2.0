@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (isset($_POST["highlight"])) {
 
+        $date_h = date("Y-m-d");
         $stmt_check = "SELECT * FROM highlight WHERE s_id = $s_id AND u_id = $d_id";
         $result_check = mq($stmt_check);
         if ($result_check) {
@@ -20,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $stmt_d = "DELETE FROM `highlight` WHERE s_id = $s_id AND u_id = $d_id";
                 $result_d = mq($stmt_d);
             } else {
-                $stmt_h = "INSERT INTO `highlight` (`s_id`, `u_id`) VALUES ('$s_id','$d_id')";
+                $stmt_h = "INSERT INTO `highlight` (`s_id`,`u_id`,`date`) VALUES ('$s_id','$d_id','$date_h')";
                 $result_h = mq($stmt_h);
                 if ($result_h) {
                     echo '<div class="alert alert-success alert-dismissible fade show col-sm-4 m-4 float-end" role="alert">Succesfully highlighted.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
@@ -97,6 +98,7 @@ if ($result_s) {
     }
 }
 ?>
+<div id="alert-container"></div>
 <div class="container-fluid pt-4 px-4">
     <h2>Scholarship Details</Details>
     </h2>
@@ -123,7 +125,7 @@ if ($result_s) {
                 <input type="hidden" name="highlight" value="<?= $s_id ?>">
                 <button id="starBtn"><i class="bi bi-star-fill bookmark <?= ($star === "star") ? "color-blue" : '' ?>" width="16" height="16"></i></button>
             </form>
-            <a class="ps-2" href="<?= $current_url ?>scholarship-application.php?s_id=<?= $s_id ?>/<?= $id ?>"><button class="btn btn-primary btn-sm follow w-auto">Apply Scholarship</button></a>
+            <a class="ps-2" href="<?= $current_url ?>scholarship-application.php?s_id=<?= $s_id ?>/<?= $id ?>" onclick="return checkRequirement('<?= $s_id ?>', '<?= $id ?>', '<?= $d_id ?>' )"><button class="btn btn-primary btn-sm follow w-auto">Apply Scholarship</button></a>
         </div>
     </div>
 </div>
@@ -132,7 +134,7 @@ if ($result_s) {
 <!-- Widgets Start -->
 <div class="container-fluid pt-4 px-4">
     <div class="row g-4">
-        <div class="col-sm-12 col-md-6 col-xl-6">
+        <div class="col-sm-12 col-md-12 col-xl-12">
             <div class="h-100 bg-light rounded p-4">
                 <div class="border-bottom py-2 mb-4">
                     <h5 class="mb-0">About Us</h5>
@@ -145,7 +147,22 @@ if ($result_s) {
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Field</h5>
-                        <p><?= $field ?></p>
+                        <?php
+                        if ($field == '') {
+                            echo "<p>none</p>";
+                        } else {
+                            $stmt_f = "SELECT * FROM `field` WHERE id IN ($field)";
+                            $result_f = mq($stmt_f);
+                            $name_field  = array();
+                            if ($result_f) {
+                                while ($row = mfa($result_f)) {
+                                    $name_field[] = $row['field'];
+                                }
+                                $combinedField = implode(", ", $name_field);
+                                echo "<p>$combinedField</p>";
+                            }
+                        }
+                        ?>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-6 py-2">
                         <h5>Level</h5>
@@ -192,7 +209,7 @@ if ($result_s) {
                 </div>
             </div>
         </div>
-        <div class="col-sm-12 col-md-6 col-xl-6">
+        <!-- <div class="col-sm-12 col-md-6 col-xl-6">
             <div class="h-100 bg-light rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-2 border-bottom py-2">
                     <h5 class="mb-0">Interview</h5>
@@ -239,7 +256,7 @@ if ($result_s) {
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="col-sm-12 col-md-12 col-xl-12">
             <div class="h-100 bg-light rounded p-4">
                 <div class="border-bottom py-2 mb-4">
@@ -284,21 +301,25 @@ if ($result_s) {
                     </thead>
                     <tbody>
                         <?php
-                        $count = 1;
-                        $stmt = "SELECT * FROM `file` WHERE id IN ($doc)";
-                        $result = mq($stmt);
-                        if ($result) {
-                            while ($row = mfa($result)) {
-                                $doc_id = $row['id'];
-                                $name = $row['name'];
-                                $file = $current_url . $row['doc']; ?>
-                                <tr>
-                                    <td><?= $count ?></td>
-                                    <td><?= $name ?></td>
-                                    <td><a class="btn btn-sm btn-primary" href="<?= $file ?>" target="_blank">View</a></td>
-                                </tr>
+                        if ($doc == '') {
+                            echo "<tr><td class='text-center' colspan='5'><p>No document uploaded</p></td></tr>";
+                        } else {
+                            $count = 1;
+                            $stmt = "SELECT * FROM `file` WHERE id IN ($doc)";
+                            $result = mq($stmt);
+                            if ($result) {
+                                while ($row = mfa($result)) {
+                                    $doc_id = $row['id'];
+                                    $name = $row['name'];
+                                    $file = $current_url . $row['doc']; ?>
+                                    <tr>
+                                        <td><?= $count ?></td>
+                                        <td><?= $name ?></td>
+                                        <td><a class="btn btn-sm btn-primary" href="<?= $file ?>" target="_blank">View</a></td>
+                                    </tr>
                         <?php
-                                $count++;
+                                    $count++;
+                                }
                             }
                         } ?>
                     </tbody>
@@ -312,6 +333,39 @@ if ($result_s) {
     document.getElementById('starBtn').addEventListener('click', function() {
         document.getElementById('starForm').submit();
     });
+</script>
+<script>
+    function checkRequirement(id_x, id_y, id_z) {
+        // Send an asynchronous request to the server to check the requirement
+        var xhr = new XMLHttpRequest();
+        var url = "check_requirement.php?id_x=" + id_x + "&id_y=" + id_z;
+        xhr.open("GET", url, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // Response received from server
+                if (xhr.responseText === "satisfied") {
+                    // Requirement satisfied, proceed with link action
+                    window.location.href = "http://localhost/SMS2.0/scholarship-application.php?s_id=" + id_x + "/" + id_y;
+                } else {
+                    // Requirement not satisfied, display Bootstrap alert message
+                    var alertContainer = document.getElementById("alert-container"); // Define alertContainer
+                    var alertDiv = document.createElement("div");
+                    alertDiv.classList.add("alert", "alert-warning", "alert-dismissible", "fade", "show", "col-sm-4", "m-4", "float-end");
+                    alertDiv.setAttribute("role", "alert");
+                    alertDiv.innerHTML = `
+                        Sorry, requirement is not satisfied 
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    `;
+                    
+                    alertContainer.appendChild(alertDiv);
+                }
+            }
+        };
+        xhr.send();
+
+        // Prevent the default link action
+        return false;
+    }
 </script>
 <!-- Widgets End -->
 <?php include_once("footer.php") ?>

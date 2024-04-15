@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         if (mnr($result_check) > 0) {
                             header('Location: index.php/' . $e_id);
                         } else {
-                            $stmt_a = "INSERT INTO `applicant`(`u_id`, `img`, `cover_img`, `bio`, `stud`, `location`) VALUES ('$id','','','','','')";
+                            $stmt_a = "INSERT INTO `applicant`(`u_id`, `img`, `cover_img`, `bio`, `stud`, `level`, `location`) VALUES ('$id','','','','','','')";
                             $result_a = mq($stmt_a);
                             if ($result_a) {
                                 header('Location: index.php/' . $e_id);
@@ -175,13 +175,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                         <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
 
                                         <div class="form-outline mb-4">
-                                            <input type="email" id="email" class="form-control form-control-lg" name="email_r" autofocus required />
                                             <label class="form-label" for="email">Email address</label>
+                                            <input type="email" id="email" class="form-control form-control-lg" name="email_r" autofocus required />
+
                                         </div>
 
                                         <div class="form-outline mb-4">
-                                            <input type="password" id="password" class="form-control form-control-lg" name="pass_r" required />
                                             <label class="form-label" for="password">Password</label>
+                                            <input type="password" id="password" class="form-control form-control-lg" name="pass_r" required />
+
                                         </div>
 
                                         <div class="pt-1 mb-4">

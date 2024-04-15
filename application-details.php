@@ -131,7 +131,7 @@ if($result){
             </div>
         </div>
         <div class="d-flex justify-content-between">
-            <a class="btn btn-sm btn-outline-dark w-auto" href="application.php">Back</a>
+            <a class="btn btn-sm btn-outline-dark w-auto" href="<?= $current_url ?>application.php/<?=$id?>">Back</a>
         </div>
     </form>
 </div>

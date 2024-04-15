@@ -2,7 +2,7 @@
 include_once("config.php");
 $ver = rand();
 $current_url = "http://localhost/SMS2.0/";
-
+// oninput="convertToUppercase(this)"
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -75,7 +75,7 @@ $current_url = "http://localhost/SMS2.0/";
                                                 <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
                                                     <label class="form-label" for="name">Username</label>
-                                                    <input type="text" id="uname" class="form-control" oninput="convertToUppercase(this)" name="uname" required />
+                                                    <input type="text" id="uname" class="form-control" name="uname" required />
                                                 </div>
                                             </div>
 
@@ -128,7 +128,7 @@ $current_url = "http://localhost/SMS2.0/";
                                                     I agree all statements in <a href="#!">Terms of service</a>
                                                 </label>
                                             </div>
-                                            <p class="mb-3 d-flex justify-content-center pb-lg-2" style="color: #393f81;">Already have an account? <a href="login.php" style="color: #393f81;"> Login here</a></p>
+                                            <p class="mb-3 d-flex justify-content-center pb-lg-2" style="color: #393f81;">Already have an account? <a href="login.php" style="color: #393f81;">Login here</a></p>
                                             <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                                                 <button type="submit" name="register" class="btn btn-dark btn-lg w-auto">Register</button>
                                             </div>

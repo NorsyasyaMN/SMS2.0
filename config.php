@@ -204,3 +204,14 @@ function btnStatus($status){
     return $btn;
 }
 
+function filter($x){
+    $array = explode(",", $x);
+    $like_conditions = array();
+    foreach ($array as $element) {
+        $like_conditions[] = "('%$element%')";
+    }
+    
+    $combined_conditions = implode(" OR ",  $like_conditions);
+    return $combined_conditions;
+}
+

@@ -9,6 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stud_r = $_POST["stud"];
     $phone_r = $_POST["phone"];
     $loc_r = $_POST["loc"];
+    $level_r = $_POST["level"];
     $status = 0;
 
     // Check if profile image is set
@@ -46,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $stmt_x = "UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r' WHERE id = $d_id ";
-    $stmt_y = "UPDATE `applicant` SET `bio`='$bio_r', `stud`='$stud_r', `location`='$loc_r' WHERE u_id = $d_id";
+    $stmt_y = "UPDATE `applicant` SET `bio`='$bio_r', `stud`='$stud_r', `level`='$level_r',`location`='$loc_r' WHERE u_id = $d_id";
     $result = mq($stmt_x);
     $result_s = mq($stmt_y);
     if ($result == TRUE && $result_s == TRUE) {
@@ -73,6 +74,7 @@ while ($row = mfa($result)) {
     $stud = $row['stud'];
     $phone = $row['num'];
     $location = $row['location'];
+    $level = $row['level'];
 }
 
 ?>
@@ -126,15 +128,49 @@ while ($row = mfa($result)) {
                 </div>
             </div>
             <div class="pb-3 row">
-                <label class="form-label col-sm-2">Bio:</label>
+                <label for="editor" class="form-label col-sm-2">Bio:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter bio" name="bio" value="<?= $bio ?>" required>
+                    <textarea id="editor" placeholder="Enter bio here" name="bio" required><?= ($bio == '') ? 'none' : $bio ?></textarea>
                 </div>
             </div>
             <div class="pb-3 row">
-                <label class="form-label col-sm-2">Studies:</label>
+                <label class="form-label col-sm-2">Field of Studies:</label>
                 <div class="col-sm-10">
-                    <input class="form-control" placeholder="Enter Studies" name="stud" value="<?= $stud ?>" required>
+                <select name="stud" class="form-select form-control bg-white">
+                        <option value="0" disabled <?= ($stud == '') ? "selected" : "" ?> >Select field of studies</option>
+                        <?php
+                        $stmt_f = "SELECT * FROM `field`";
+                        $result_f = mq($stmt_f);
+                        if (mnr($result_f) > 0) {
+                            while ($row = mfa($result_f)) {
+                                $name = $row['field'];
+                                $f_id = $row['id'];
+                        ?>
+                                 <option value=<?= $f_id ?> <?= ($f_id == $stud) ? "selected" : "" ?>><?= $name ?></option>
+                        <?php }
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
+            <div class="pb-3 row">
+                <label class="form-label col-sm-2">Level of Studies:</label>
+                <div class="col-sm-10">
+                    <select name="level" class="form-select form-control bg-white">
+                        <option value="0" disabled <?= ($level == '') ? "selected" : "" ?> >Select level of studies</option>
+                        <?php
+                        $stmt_l = "SELECT * FROM `level`";
+                        $result_l = mq($stmt_l);
+                        if (mnr($result_l) > 0) {
+                            while ($row = mfa($result_l)) {
+                                $name = $row['level'];
+                                $l_id = $row['id'];
+                        ?>
+                                 <option value=<?= $l_id ?> <?= ($l_id == $level) ? "selected" : "" ?>><?= $name ?></option>
+                        <?php }
+                        }
+                        ?>
+                    </select>
                 </div>
             </div>
             <div class="pb-3 row">

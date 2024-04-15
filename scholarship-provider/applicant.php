@@ -29,21 +29,25 @@
                     $result = mq($stmt);
                     $count = 1;
                     if ($result) {
-                        while ($row = mfa($result)) {
-                            $u_id = $row['id'];
-                            $name = $row['name'];
-                            $date = $row['date'];
-                            $status = $row['status'];
+                        if (mnr($result) > 0) {
+                            while ($row = mfa($result)) {
+                                $u_id = $row['id'];
+                                $name = $row['name'];
+                                $date = $row['date'];
+                                $status = $row['status'];
                     ?>
-                            <tr>
-                                <td><?=$count?></td>
-                                <td><?=$name?></td>
-                                <td><?=$date?></td>
-                                <?php $btn = btnStatus($status)?>
-                                <td><a class="btn btn-sm <?=$btn?>" href="<?= $current_url ?>applicant-details.php?u_id=<?=$u_id?>/<?= $id ?>"><?=$status?></a></td>
-                            </tr>
-                    <?php $count++; 
-                    }
+                                <tr>
+                                    <td><?= $count ?></td>
+                                    <td><?= $name ?></td>
+                                    <td><?= $date ?></td>
+                                    <?php $btn = btnStatus($status) ?>
+                                    <td><a class="btn btn-sm <?= $btn ?>" href="<?= $current_url ?>applicant-details.php?u_id=<?= $u_id ?>/<?= $id ?>"><?= $status ?></a></td>
+                                </tr>
+                    <?php $count++;
+                            }
+                        }else{
+                            echo "<tr><td class='text-center' colspan='5'><p>No applicant </p></td></tr>";
+                        }
                     }
                     ?>
                 </tbody>

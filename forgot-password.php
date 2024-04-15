@@ -2,7 +2,41 @@
 include_once("config.php");
 $ver = rand();
 $current_url = "http://localhost/SMS2.0/";
+$reset_link = "http://localhost/SMS2.0/reset-password.php";
+$alert = '';
 
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST["reset"])) {
+
+        $email = $_POST["email"];
+
+        $stmt_check = "SELECT * FROM register WHERE email = '$email'";
+        $result_check = mq($stmt_check);
+        if ($result_check) {
+            if (mnr($result_check) > 0) {
+                // Send Email
+                $to = "$email"; // User's email address
+                $subject = "Password Reset Request";
+                $message = "Hello,\n\n";
+                $message .= "You have requested to reset your password. Please click on the following link to reset your password:\n";
+                $message .= $reset_link;
+                $message .= "\n\nIf you did not request this, please ignore this email.\n";
+                $headers = "From: nmnorsyasya64gmail.com"; // Replace with your email address
+
+                // Send the email
+                $mail_sent = mail($to, $subject, $message, $headers);
+
+                if ($mail_sent) {
+                    $alert = '<div class="alert alert-success alert-dismissible fade show col-4" role="alert">Email is successfully sent!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                } else {
+                    $alert = '<div class="alert alert-danger alert-dismissible fade show col-4" role="alert">Email failed to sent!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                }
+            } else {
+                $alert = '<div class="alert alert-danger alert-dismissible fade show col-4" role="alert">Email is not yet registered, Please register your email.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            }
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +72,7 @@ $current_url = "http://localhost/SMS2.0/";
 </head>
 
 <body>
-    <div class="p-0" style="background-color: #9A616D;">
+    <div class="container min-vw-100 min-vh-100" style="background-color: #212b36;">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -46,22 +80,29 @@ $current_url = "http://localhost/SMS2.0/";
             </div>
         </div>
         <!-- Spinner End -->
-
-        <div class="container py-5 px-5">
-            <div class="row d-flex justify-content-center align-items-center">
-                <div class="col-lg-12 col-xl-12">
-                    <div class="card text-black" style="border-radius: 25px;">
-                        <div class="card-body p-md-5">
-                            <div class="row justify-content-center">
-
-                                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Register</p>
-                                <form class="mx-1 mx-md-4" method="post" action="login.php">
-                                    <div class="d-flex flex-row align-items-center mb-4">
-                                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                                        <div class="form-outline flex-fill mb-0">
-                                            <label class="form-label" for="name">Fullname</label>
-                                            <input type="text" id="name" class="form-control" name="name" required />
-                                        </div>
+        <div>
+            <div class="row">
+                    <?= $alert ?>
+                <div>
+                    <div class="col-12 col-md-8 col-lg-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="mb-4">
+                                    <h5>Forgot Password?</h5>
+                                    <p class="mb-2">Enter your registered email ID to reset the password
+                                    </p>
+                                </div>
+                                <form method="post" action="">
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" id="email" class="form-control" name="email" placeholder="Enter Your Email" required="">
+                                    </div>
+                                    <div class="mb-3 d-grid">
+                                        <button type="submit" name="reset" class="btn btn-dark w-auto">
+                                            Reset Password
+                                        </button>
+                                    </div>
+                                    <span>Don't have an account? <a href="register.php">sign in</a></span>
                                 </form>
                             </div>
                         </div>
@@ -69,7 +110,6 @@ $current_url = "http://localhost/SMS2.0/";
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </body>
 <!-- JavaScript Libraries -->

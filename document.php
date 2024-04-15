@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if (isset($_POST['search'])) {
-        
+
         $search = $_POST['name'];
         $s_stmt = "AND LOWER(name) LIKE LOWER('%$search%')";
     }
@@ -68,8 +68,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <form method="POST" action="">
         <div class="d-flex mb-4">
             <input class="form-control bg-transparent" type="text" placeholder="Search" name="name">
-            <button type="submit" name="search" class="btn btn-primary ms-2" >Search</button>
-        </div> 
+            <button type="submit" name="search" class="btn btn-primary ms-2">Search</button>
+        </div>
     </form>
     <div class="bg-light text-center rounded p-4">
         <form method="POST" action="">
@@ -96,24 +96,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $stmt = "SELECT * FROM `file` WHERE u_id = '$d_id' $s_stmt";
                         $result = mq($stmt);
                         if ($result) {
-                            while ($row = mfa($result)) {
-                                $doc_id = $row['id'];
-                                $name = $row['name'];
-                                $file = $current_url . $row['doc'];
-                                $date = $row['date']; ?>
-                                <tr>
-                                    <td><?= $count ?></td>
-                                    <td><input class="document-check" type="checkbox" value="<?= $doc_id ?>" name="document[]"></td>
-                                    <td><?= $name ?></td>
-                                    <td class="d-none d-md-table-cell d-xl-table-cell"><?= $date ?></td>
-                                    <td><a class="btn btn-sm btn-primary" href="<?= $file ?>" target="_blank">Detail</a></td>
-                                </tr>
-                                <?php $count++;
-                            } ?><?php
+                            if (mnr($result) > 0) {
+                                while ($row = mfa($result)) {
+                                    $doc_id = $row['id'];
+                                    $name = $row['name'];
+                                    $file = $current_url . $row['doc'];
+                                    $date = $row['date']; ?>
+                                    <tr>
+                                        <td><?= $count ?></td>
+                                        <td><input class="document-check" type="checkbox" value="<?= $doc_id ?>" name="document[]"></td>
+                                        <td><?= $name ?></td>
+                                        <td class="d-none d-md-table-cell d-xl-table-cell"><?= $date ?></td>
+                                        <td><a class="btn btn-sm btn-primary" href="<?= $file ?>" target="_blank">Detail</a></td>
+                                    </tr>
+                        <?php $count++;
+                                }
                             } else {
-                                die('Query execution failed: ' . mysqli_error($conn));
+                                echo "<tr><td class='text-center' colspan='5'><p>No document uploaded </p></td></tr>";
                             }
-                                ?>
+                        } else {
+                            die('Query execution failed: ' . mysqli_error($conn));
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>
