@@ -145,48 +145,37 @@ if ($result) {
             <div class="h-100 bg-light rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-2 border-bottom py-2">
                     <h5 class="mb-0">Interview</h5>
-                    <a href="">Show All</a>
                 </div>
-                <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="<?= $file_url ?>img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                    <div class="w-100 ms-3">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-0">Jhon Doe</h6>
-                            <small>15 minutes ago</small>
-                        </div>
-                        <span>Short message goes here...</span>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="<?= $file_url ?>img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                    <div class="w-100 ms-3">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-0">Jhon Doe</h6>
-                            <small>15 minutes ago</small>
-                        </div>
-                        <span>Short message goes here...</span>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="<?= $file_url ?>img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                    <div class="w-100 ms-3">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-0">Jhon Doe</h6>
-                            <small>15 minutes ago</small>
-                        </div>
-                        <span>Short message goes here...</span>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center pt-3">
-                    <img class="rounded-circle flex-shrink-0" src="<?= $file_url ?>img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                    <div class="w-100 ms-3">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-0">Jhon Doe</h6>
-                            <small>15 minutes ago</small>
-                        </div>
-                        <span>Short message goes here...</span>
-                    </div>
-                </div>
+                <?php
+                $stmt_i = "SELECT * FROM `application` INNER JOIN `applicant` ON application.u_id = applicant.u_id WHERE application.s_id = $d_id AND application.iv_date > CURDATE()";
+                $result_i = mq($stmt_i);
+                if ($result_i) {
+                    if (mnr($result_i) > 0) {
+                        while ($row = mfa($result_i)) {
+                            $iv_link = $row['iv_link'];
+                            $iv_date = $row['iv_date'];
+                            $img = $row['img'];
+                            $a_name = $row['name'];
+                ?>
+                            <div class="d-flex align-items-center border-bottom py-3">
+                                <img class="rounded-circle flex-shrink-0" src="<?= $file_url ?><?= $img ?>" alt="" style="width: 40px; height: 40px;">
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1"><?= $a_name ?></h6>
+                                    </div>
+                                    <p class="mb-0"><i class="fa fa-link me-2" aria-hidden="true"></i><?= $iv_link ?></p>
+                                    <p class="mb-0"><i class="fa fa-calendar me-2" aria-hidden="true"></i> <?= $iv_date ?></p>
+                                </div>
+                            </div>
+                <?php
+                        }
+                    } else {
+                        echo "<span>No interview listed</span>";
+                    }
+                } else {
+                    echo "<span>No interview listed</span>";
+                }
+                ?>
             </div>
         </div>
         <div class="col-sm-12 col-md-12 col-xl-12">

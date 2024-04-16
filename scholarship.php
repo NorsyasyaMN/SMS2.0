@@ -1,19 +1,17 @@
 <?php
 include_once("header.php");
 
-$stmt_lf = '';
-$stmt_cf = '';
-$s_stmt = '';
+// Initialize variables
+$stmt_lf = "";
+$stmt_cf = "";
+$s_stmt = "";
+$s_date = " WHERE date > CURDATE()";
 
 $cat_a = [];
 $where_clause = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // Initialize variables
-    $stmt_lf = "";
-    $stmt_cf = "";
-    $s_stmt = "";
 
     if (isset($_POST["filter"])) {
 
@@ -54,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Construct the WHERE clause
     $where_clause = '';
     if (!empty($where_clauses)) {
-        $where_clause = 'WHERE ' . implode(' AND ', $where_clauses);
+        $where_clause = 'AND ' . implode(' AND ', $where_clauses);
     }
 }
 ?>
@@ -73,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="row">
     <div class="col-xl-3 col-lg-3 col-md-4 mb-4">
         <form action="" method="post">
-            <div class="filter-section bg-light p-3">
+            <div class="filter-section bg-light p-3" style="border-radius:5px">
                 <h6>Filter by Category</h6>
                 <div class="level mb-3">
                     <h7>Level</h7>
@@ -119,68 +117,84 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <!-- Scholarship Card 1 -->
-    <div class="col-xl-9 col-lg-9 col-md-8 pt-3 bg-light">
+    <div class="col-xl-9 col-lg-9 col-md-8 pt-3 bg-light" style="border-radius:5px">
         <?php
-        $stmt_s = "SELECT * FROM `scholarship` $where_clause";
+        $stmt_s = "SELECT * FROM `scholarship` $s_date $where_clause";
         $result_s = mq($stmt_s);
         $currentDate = new DateTime();
         if ($result_s) {
-            while ($row = mfa($result_s)) {
-                $s_id = $row['id'];
-                $img = $row['img'];
-                $loc = $row['location'];
-                $sname = $row['scholar_name'];
-                $level = $row['level'];
-                $field = $row['field'];
-                $date = $row['date'];
-                // Calculate the difference between dates
-                $date2 = new DateTime($date);
-                $interval = $currentDate->diff($date2);
+            if (mnr($result_s) > 0) {
+                while ($row = mfa($result_s)) {
+                    $s_id = $row['id'];
+                    $img = $row['img'];
+                    $loc = $row['location'];
+                    $sname = $row['scholar_name'];
+                    $level = $row['level'];
+                    $field = $row['field'];
+                    $cat = $row['cat'];
+                    $date = $row['date'];
+                    // Calculate the difference between dates
+                    $date2 = new DateTime($date);
+                    $interval = $currentDate->diff($date2);
 
-                // Format the interval as desired
-                $dateDifference = $interval->format('%a days left'); ?>
-                <div class="single-scholar-items bg-dark-light mb-4">
-                    <div class="scholar-items">
-                        <div class="company-img">
-                            <a href="<?= $current_url ?>scholarship-details.php?s_id=<?= $s_id ?>/<?= $id ?>"><img src="<?= $current_url ?>/<?= $img ?>" style="width:auto; height:120px"></a>
+                    // Format the interval as desired
+                    $dateDifference = $interval->format('%a days left'); ?>
+                    <div class="single-scholar-items bg-dark-light mb-4">
+                        <div class="scholar-items">
+                            <div class="company-img">
+                                <a href="<?= $current_url ?>scholarship-details.php?s_id=<?= $s_id ?>/<?= $id ?>"><img src="<?= $current_url ?>/<?= $img ?>" style="width:auto; height:120px"></a>
+                            </div>
+                            <div class="scholar-tittle scholar-tittle2">
+                                <a href="<?= $current_url ?>scholarship-details.php?s_id=<?= $s_id ?>/<?= $id ?>">
+                                    <h4><?= $sname ?></h4>
+                                </a>
+                                <ul>
+                                    <li><i class="fas fa-map-marker-alt"></i><?= $loc ?></li>
+                                    <?php
+                                    $stmt_l = "SELECT * FROM `level` WHERE id IN ($level)";
+                                    $result_l = mq($stmt_l);
+                                    $name_level  = array();
+                                    if ($result_l) {
+                                        while ($row = mfa($result_l)) {
+                                            $name_level[] = $row['level'];
+                                        }
+                                        $combinedLevel = implode(", ", $name_level);
+                                        echo "<li><i class='bi bi-mortarboard-fill'></i>" . $combinedLevel . "</li>";
+                                    }
+
+                                    $stmt_f = "SELECT * FROM `field` WHERE id IN ($field)";
+                                    $result_f = mq($stmt_f);
+                                    $name_field  = array();
+                                    if ($result_f) {
+                                        while ($row = mfa($result_f)) {
+                                            $name_field[] = $row['field'];
+                                        }
+                                        $combinedField = implode(", ", $name_field);
+                                        echo " <li><i class='fa fa-university'></i>" . $combinedField . "</li>";
+                                    }
+
+                                    $stmt_c = "SELECT * FROM `cat` WHERE id IN ($cat)";
+                                    $result_c = mq($stmt_c);
+                                    $name_cat  = array();
+                                    if ($result_c) {
+                                        while ($row = mfa($result_c)) {
+                                            $name_cat[] = $row['cat'];
+                                        }
+                                        $combinedCat = implode(", ", $name_cat);
+                                        echo " <li><i class='bi bi-book-half'></i>" . $combinedCat . "</li>";
+                                    }
+                                    ?>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="scholar-tittle scholar-tittle2">
-                            <a href="<?= $current_url ?>scholarship-details.php?s_id=<?= $s_id ?>/<?= $id ?>">
-                                <h4><?= $sname ?></h4>
-                            </a>
-                            <ul>
-                                <li><i class="fas fa-map-marker-alt"></i><?= $loc ?></li>
-                                <?php
-                                $stmt_l = "SELECT * FROM `level` WHERE id IN ($level)";
-                                $result_l = mq($stmt_l);
-                                $name_level  = array();
-                                if ($result_l) {
-                                    while ($row = mfa($result_l)) {
-                                        $name_level[] = $row['level'];
-                                    }
-                                    $combinedLevel = implode(", ", $name_level);
-                                    echo "<li><i class='bi bi-mortarboard-fill'></i>" . $combinedLevel . "</li>";
-                                }
-
-                                $stmt_f = "SELECT * FROM `field` WHERE id IN ($field)";
-                                $result_f = mq($stmt_f);
-                                $name_field  = array();
-                                if ($result_f) {
-                                    while ($row = mfa($result_f)) {
-                                        $name_field[] = $row['field'];
-                                    }
-                                    $combinedField = implode(", ", $name_field);
-                                    echo " <li><i class='bi bi-book-half'></i>" . $combinedField . "</li>";
-                                }
-                                ?>
-                            </ul>
+                        <div class="items-link items-link2 f-right">
+                            <a href="<?= $current_url ?>scholarship-details.php?s_id=<?= $s_id ?>/<?= $id ?>"><?= $dateDifference ?></a>
                         </div>
                     </div>
-                    <div class="items-link items-link2 f-right">
-                        <a href="<?= $current_url ?>scholarship-details.php?s_id=<?= $s_id ?>/<?= $id ?>"><?= $dateDifference ?></a>
-                    </div>
-                </div>
         <?php }
+            } else {
+                echo "<p class='text-center'>No scholarship display</p>";
+            }
         }
         ?>
     </div>

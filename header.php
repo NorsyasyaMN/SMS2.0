@@ -91,13 +91,13 @@ while ($row = mfa($result)) {
                             <a href="<?= $current_url ?>index.php/<?= $id ?>" class="nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= $current_url ?>application.php/<?= $id ?>" class="nav-link"><i class="fa fa-th me-2"></i>Application History</a>
+                            <a href="<?= $current_url ?>application.php/<?= $id ?>" class="nav-link"><i class="fa fa-history me-2"></i>Application History</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= $current_url ?>document.php/<?= $id ?>" class="nav-link"><i class="fa fa-keyboard me-2"></i>Document</a>
+                            <a href="<?= $current_url ?>document.php/<?= $id ?>" class="nav-link"><i class="fa fa-file me-2"></i>Document</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= $current_url ?>scholarship.php/<?= $id ?>" class="nav-link"><i class="fa fa-table me-2"></i>Scholarship</a>
+                            <a href="<?= $current_url ?>scholarship.php/<?= $id ?>" class="nav-link"><i class="fa fa-building me-2"></i>Scholarship</a>
                         </li>
                     </ul>
                 </div>

@@ -7,6 +7,8 @@ if (isset($_GET['id_x']) && isset($_GET['id_y'])) {
     $id = $_GET['id_y'];
 
     // Initialize requirement status
+    $levelSatisfied = false;
+    $fieldSatisfied = false;
     $requirementSatisfied = false;
 
     // Perform your database query here using $s_id and $id
@@ -15,6 +17,7 @@ if (isset($_GET['id_x']) && isset($_GET['id_y'])) {
     if ($result && mnr($result) > 0) {
         while ($row = mfa($result)) {
             $num_level = explode(',', $row['level']);
+            $num_field = explode(',', $row['field']);
         }
     }
 
@@ -24,10 +27,18 @@ if (isset($_GET['id_x']) && isset($_GET['id_y'])) {
     if ($result_a && mnr($result_a) > 0) {
         while ($row_a = mfa($result_a)) {
             $level_a = $row_a['level'];
+            $field_a = $row_a['stud'];
         }
         if (in_array($level_a, $num_level)) {
+            $levelSatisfied = true;
+        }
+        if (in_array($field_a, $num_field)) {
+            $fieldSatisfied = true;
+        }
+        if( $levelSatisfied && $fieldSatisfied){
             $requirementSatisfied = true;
         }
+        
     }
 
 

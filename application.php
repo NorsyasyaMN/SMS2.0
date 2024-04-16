@@ -1,15 +1,32 @@
-<?php include_once("header.php") ?>
+<?php include_once("header.php");
+
+$stmt_a = '';
+$stmt_b = '';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if (isset($_POST["scholar_s"])) {
+        $scholar = $_POST["scholar"];
+        $stmt_a = "AND LOWER(scholar_name) LIKE LOWER('%$scholar%')";
+    }
+
+    if (isset($_POST["star_s"])) {
+        $star = $_POST["star"];
+        $stmt_a = "AND LOWER(scholar_name) LIKE LOWER('%$star%')";
+    }
+}
+?>
 <div class="container-fluid pt-4 px-4">
     <h2>Application History</h2>
 </div>
-
 <!-- Widgets Start -->
 
 <div class="container-fluid pt-4 px-4">
-    <div class="d-flex mb-4">
-        <input class="form-control bg-transparent" type="text" placeholder="Search">
-        <button type="button" class="btn btn-primary ms-2">Search</button>
-    </div>
+    <form method="POST" action="">
+        <div class="d-flex mb-4">
+            <input class="form-control bg-transparent" name="scholar" type="text" placeholder="Search name of scholarship">
+            <button type="submit" name="scholar_s" class="btn btn-primary ms-2">Search</button>
+        </div>
+    </form>
     <div class="bg-light text-center rounded p-4">
         <div class="d-flex align-items-center justify-content-between mb-4">
             <h4 class="mb-0">Student Application</h4>
@@ -27,7 +44,7 @@
                 <tbody>
                     <?
                     $count = 1;
-                    $stmt = "SELECT * FROM `scholarship` INNER JOIN `application` ON scholarship.u_id = application.s_id WHERE application.u_id = $d_id";
+                    $stmt = "SELECT * FROM `scholarship` INNER JOIN `application` ON scholarship.u_id = application.s_id WHERE application.u_id = $d_id $stmt_a";
                     $result = mq($stmt);
                     if ($result) {
                         if (mnr($result) > 0) {
@@ -61,10 +78,12 @@
 
 
 <div class="container-fluid pt-4 px-4">
-    <div class="d-flex mb-4">
-        <input class="form-control bg-transparent" type="text" placeholder="Search">
-        <button type="button" class="btn btn-primary ms-2">Search</button>
-    </div>
+    <form method="POST" action="">
+        <div class="d-flex mb-4">
+            <input class="form-control bg-transparent" type="text" name="star" placeholder="Search name of highlight scholarship">
+            <button type="submit" name="star_s" class="btn btn-primary ms-2">Search</button>
+        </div>
+    </form>
     <div class="bg-light text-center rounded p-4">
         <div class="d-flex align-items-center justify-content-between mb-4">
             <h4 class="mb-0">Star Scholarship</h4>
@@ -81,7 +100,7 @@
                 </thead>
                 <tbody>
                     <?php
-                    $stmt_s = "SELECT * FROM `highlight` WHERE u_id = '$d_id'";
+                    $stmt_s = "SELECT * FROM `highlight` WHERE u_id = '$d_id' $stmt_b";
                     //echo $stmt_s;
                     $result_s = mq($stmt_s);
                     $count = 1;

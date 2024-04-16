@@ -87,15 +87,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 }
                 // Set session variable and redirect the user
             } else {
-                $stmt_x = "SELECT * FROM `user` INNER JOIN `register` ON user.p_id = register.id WHERE user.email = '$email' AND user.pass = '$pass'";
+                $stmt_x = "SELECT user.id, user.p_id FROM `user` INNER JOIN `register` ON user.p_id = register.id WHERE user.email = '$email' AND user.pass = '$pass'";
                 $result_x = mq($stmt_x);
                 if ($result_x) {
                     if (mnr($result_x) > 0) {
                         while ($row = mfa($result_x)) {
                             $p_id = $row['p_id'];
+                            $c_id = $row['id'];
                         }
                         $ep_id = encode($p_id);
-                        header('Location: scholarship-provider/scholar.php/' . $ep_id);
+                        header('Location: scholarship-provider/scholar.php?p_id=' . $c_id .'/' . $ep_id);
                     } else {
                         $alert = '<div class="alert alert-danger alert-dismissible fade show float-end col-4" role="alert">Wrong credentials<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
                     }
