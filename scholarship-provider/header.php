@@ -31,12 +31,15 @@ if (isset($_GET["p_id"])) {
 
     echo $s_id;
 
-    $d_none = '';
+    $display = "";
     $stmt_chk = "SELECT * FROM `user` WHERE id = '$s_id' AND role = 'Clerk'";
     $result_chk = mq($stmt_chk);
     if ($result_chk) {
         if (mnr($result_chk) > 0) {
-            $d_none = "d-none";
+            $display = "d-block";
+        }
+        else{
+            $display = "d-none";
         }
     }
 }
@@ -94,7 +97,7 @@ if (isset($_GET["p_id"])) {
 
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
-            <nav class="navbar">
+            <nav class="navbar <?=$display?>">
                 <a href="<?= $current_url ?>scholar.php/<?= $id ?>" class="navbar-brand mx-4 mb-3 d-flex justify-content-between align-items-center">
                     <img src="<?= $file_url ?>img/scholar.png" style="width:auto; height:50px">
                     <h3 class="text-primary mb-0 ms-2">SMS</h3>
@@ -111,21 +114,26 @@ if (isset($_GET["p_id"])) {
                     </div>
                 </div>
                 <div class="w-100">
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav <?=$display?>">
                         <li class="nav-item active">
-                            <a href="<?= $current_url ?>scholar.php/<?= $id ?>" class="nav-link <?=$d_none?>"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                            <a href="<?= $current_url ?>scholar.php/<?= $id ?>" class="nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= $current_url ?>applicant.php/<?= $id ?>" class="nav-link"><i class="fa fa-th me-2"></i>Applicants List</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= $current_url ?>document.php/<?= $id ?>" class="nav-link <?=$d_none?>"><i class="fa fa-file me-2"></i>Document</a>
+                            <a href="<?= $current_url ?>document.php/<?= $id ?>" class="nav-link"><i class="fa fa-file me-2"></i>Document</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= $current_url ?>user.php/<?= $id ?>" class="nav-link <?=$d_none?>"><i class="fa fa-users me-2"></i>Users</a>
+                            <a href="<?= $current_url ?>user.php/<?= $id ?>" class="nav-link"><i class="fa fa-users me-2"></i>Users</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= $current_url ?>setting.php/<?= $id ?>" class="nav-link <?=$d_none?>"><i class="fa fa-cogs me-2"></i>Setting</a>
+                            <a href="<?= $current_url ?>setting.php/<?= $id ?>" class="nav-link"><i class="fa fa-cogs me-2"></i>Setting</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav <?=$d_none?>">
+                        <li class="nav-item">
+                            <a href="<?= $current_url ?>applicant.php/<?= $id ?>" class="nav-link"><i class="fa fa-th me-2"></i>Applicants List</a>
                         </li>
                     </ul>
                 </div>
