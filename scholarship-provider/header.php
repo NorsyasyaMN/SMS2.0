@@ -22,6 +22,12 @@ if ($result) {
     die('Query execution failed: ' . mysqli_error($conn));
 }
 
+$display = "d-none";
+$display_p = "d-none";
+
+global $display;
+global $display_p;
+
 if (isset($_GET["p_id"])) {
     $id_number = $_GET["p_id"];
     $id_parts = explode('/', $id_number);
@@ -29,19 +35,17 @@ if (isset($_GET["p_id"])) {
     // Extract the first part which contains the number
     $s_id = $id_parts[0];
 
-    echo $s_id;
+    global $s_id;
 
-    $display = "";
     $stmt_chk = "SELECT * FROM `user` WHERE id = '$s_id' AND role = 'Clerk'";
     $result_chk = mq($stmt_chk);
     if ($result_chk) {
         if (mnr($result_chk) > 0) {
             $display = "d-block";
         }
-        else{
-            $display = "d-none";
-        }
     }
+} else {
+    $display_p = "d-block";
 }
 
 
@@ -97,7 +101,7 @@ if (isset($_GET["p_id"])) {
 
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
-            <nav class="navbar <?=$display?>">
+            <nav class="navbar">
                 <a href="<?= $current_url ?>scholar.php/<?= $id ?>" class="navbar-brand mx-4 mb-3 d-flex justify-content-between align-items-center">
                     <img src="<?= $file_url ?>img/scholar.png" style="width:auto; height:50px">
                     <h3 class="text-primary mb-0 ms-2">SMS</h3>
@@ -114,7 +118,7 @@ if (isset($_GET["p_id"])) {
                     </div>
                 </div>
                 <div class="w-100">
-                    <ul class="navbar-nav <?=$display?>">
+                    <ul class="navbar-nav <?= $display_p ?>">
                         <li class="nav-item active">
                             <a href="<?= $current_url ?>scholar.php/<?= $id ?>" class="nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         </li>
@@ -131,9 +135,12 @@ if (isset($_GET["p_id"])) {
                             <a href="<?= $current_url ?>setting.php/<?= $id ?>" class="nav-link"><i class="fa fa-cogs me-2"></i>Setting</a>
                         </li>
                     </ul>
-                    <ul class="navbar-nav <?=$d_none?>">
+                    <ul class="navbar-nav <?= $display ?>">
+                        <li class="nav-item active">
+                            <a href="<?= $current_url ?>scholar.php?p_id=<?= $s_id ?>/<?= $id ?>" class="nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                        </li>
                         <li class="nav-item">
-                            <a href="<?= $current_url ?>applicant.php/<?= $id ?>" class="nav-link"><i class="fa fa-th me-2"></i>Applicants List</a>
+                            <a href="<?= $current_url ?>applicant.php?p_id=<?= $s_id ?>/<?= $id ?>" class="nav-link"><i class="fa fa-th me-2"></i>Applicants List</a>
                         </li>
                     </ul>
                 </div>
@@ -179,7 +186,7 @@ if (isset($_GET["p_id"])) {
                             <span class="d-none d-lg-inline-flex"><?= $uname ?></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-darkblue border-0 rounded-0 rounded-bottom m-0">
-                            <a href="<?= $current_url ?>scholar.php/<?= $id ?>" class="dropdown-item <?=$d_none?>">My Profile</a>
+                            <a href="<?= $current_url ?>scholar.php/<?= $id ?>" class="dropdown-item <?= $display_p ?>">My Profile</a>
                             <!-- <a href="#" class="dropdown-item">Settings</a> -->
                             <a href="<?= $file_url ?>login.php" onclick="<?php session_destroy(); ?>" class="dropdown-item">Log Out</a>
                         </div>

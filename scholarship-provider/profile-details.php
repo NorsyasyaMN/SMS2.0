@@ -3,6 +3,7 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $name_r = $_POST["name"];
+    $license = $_POST["license"];
     $oname_r = $_POST["o_name"];
     $sname_r = $_POST["s_name"];
     $bio_r = $_POST["bio"];
@@ -90,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $stmt_x = "UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r' WHERE id = $d_id ";
-    $stmt_y = "UPDATE `scholarship` SET `org_name`= '$oname_r',`scholar_name`='$sname_r',`bio`='$bio_r',`location`='$loc_r',`field`='$field_r',`level`='$level_r', cat = '$cat_r',`criteria`='$criteria',`high`='$high',`award`='$award',`doc`='$doc', `date` = '$date' WHERE u_id = $d_id";
+    $stmt_y = "UPDATE `scholarship` SET `license` = '$license',`org_name`= '$oname_r',`scholar_name`='$sname_r',`bio`='$bio_r',`location`='$loc_r',`field`='$field_r',`level`='$level_r', cat = '$cat_r',`criteria`='$criteria',`high`='$high',`award`='$award',`doc`='$doc', `date` = '$date' WHERE u_id = $d_id";
     $result = mq($stmt_x);
     $result_s = mq($stmt_y);
     if ($result == TRUE && $result_s == TRUE) {
@@ -116,6 +117,7 @@ while ($row = mfa($result)) {
     $phone = $row['num'];
     $profileImg = $row['img'];
     $headerImg = $row['cover_img'];
+    $license  = $row['license'];
     $org_name = $row['org_name'];
     $scholar_name = $row['scholar_name'];
     $bio = $row['bio'];
@@ -165,6 +167,26 @@ while ($row = mfa($result)) {
                         <p>Drag & drop your file here or <label for="file-input" class="text-primary">browse</label>.</p>
                         <input type="file" name="headerImage" id="headerImage" accept="image/*">
                     </div>
+                </div>
+            </div>
+            <div class="pb-3 row">
+                <label class="form-label col-sm-2">Organization License:</label>
+                <div class="col-sm-10">
+                    <select class="form-select form-control bg-white" name="license">
+                    <option value="" disabled <?= ($license == '') ? "selected" : "" ?> >Select document</option>
+                        <?php
+                        $stmt = "SELECT * FROM `file` WHERE u_id = '$d_id'";
+                        $result = mq($stmt);
+                        if ($result) {
+                            while ($row = mfa($result)) {
+                                $doc_id = $row['id'];
+                                $name = $row['name'];
+                        ?>
+                                <option value="<?= $doc_id ?>" <?= ($doc_id == $license) ? "selected" : "" ?>><?= $name ?></option>
+                        <?php
+                            }
+                        } ?>
+                    </select>
                 </div>
             </div>
         </div>

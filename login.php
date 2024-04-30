@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         if (mnr($result_check) > 0) {
                             header('Location: scholarship-provider/scholar.php/' . $e_id);
                         } else {
-                            $stmt_s = "INSERT INTO `scholarship`(`u_id`, `img`, `cover_img`, `org_name`, `scholar_name`, `bio`, `location`, `field`, `level`, `criteria`, `img1`, `high`, `award`, `img2`, `doc`) VALUES ('$id','','','','','','','','','','','','','','')";
+                            $stmt_s = "INSERT INTO `scholarship`(`u_id`, `img`, `cover_img`, `license`, `org_name`, `scholar_name`, `bio`, `location`, `field`, `level`, `criteria`, `img1`, `high`, `award`, `img2`, `doc`, `date`, `verify`) VALUES ('$id','','','','','','','','','','','','','','','','','0')";
                             $result_s = mq($stmt_s);
                             if ($result_s) {
                                 header('Location: scholarship-provider/scholar.php/' . $e_id);

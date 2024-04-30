@@ -41,7 +41,6 @@ include_once("header.php");
                 <div class="col-sm-10">
                     <select name="role" class="form-select form-control">
                         <option selected>Choose...</option>
-                        <option value="Administrator">Administrator</option>
                         <option value="Clerk">Clerk</option>
                     </select>
                 </div>

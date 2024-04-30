@@ -26,6 +26,14 @@ if ($result) {
     die('Query execution failed: ' . mysqli_error($conn));
 }
 ?>
+
+<style>
+    ol,
+    ul {
+        padding-left: 20px;
+        list-style-type: disc;
+    }
+</style>
 <div class="container-fluid pt-4 px-4">
     <h2>Scholarship Details</Details>
     </h2>
@@ -47,7 +55,7 @@ if ($result) {
             <h4 class="mb-0"><?= $scholar_name ?></h4>
             <span class="text-muted d-block mb-2"><?= $email ?></span>
         </div>
-        <div>
+        <div class="<?= $display_p ?>">
             <a href="<?= $current_url ?>profile-details.php/<?= $id ?>"><button class="btn btn-primary btn-sm follow w-auto">Edit Scholarship</button></a>
         </div>
     </div>

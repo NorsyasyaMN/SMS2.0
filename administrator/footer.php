@@ -1,16 +1,15 @@
     <!-- Footer Start -->
-    <?$ver = rand();?>
     <div class="container-fluid pt-4 px-4">
         <div class="bg-light rounded-top p-4">
             <div class="row">
                 <div class="col-12 col-sm-6 text-center text-sm-start">
-                    &copy; <a href="#">Your Site Name</a>, All Right Reserved.
+                    &copy; <a href="#">SMS2.0</a>, All Right Reserved.
                 </div>
                 <div class="col-12 col-sm-6 text-center text-sm-end">
                     <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                    Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                    Designed By <a href="https://github.com/NorsyasyaMN" target="_blank">Norsyasya MN</a>
                     </br>
-                    Distributed By <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                    Distributed By <a class="border-bottom" href="#" target="_blank">NorsyasyaMN</a>
                 </div>
             </div>
         </div>
@@ -25,19 +24,18 @@
     </div>
 
     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../lib/chart/chart.min.js"></script>
-    <script src="../lib/easing/easing.min.js"></script>
-    <script src="../lib/waypoints/waypoints.min.js"></script>
-    <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="../lib/tempusdominus/js/moment.min.js"></script>
-    <script src="../lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="../lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="<?= $file_url ?>lib/chart/chart.min.js"></script>
+    <script src="<?= $file_url ?>lib/easing/easing.min.js"></script>
+    <script src="<?= $file_url ?>lib/waypoints/waypoints.min.js"></script>
+    <script src="<?= $file_url ?>lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="<?= $file_url ?>lib/tempusdominus/js/moment.min.js"></script>
+    <script src="<?= $file_url ?>lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="<?= $file_url ?>lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="<?= $file_url ?>js/bootstrap-multiselect.js"></script>
+    <script src="<?= $file_url ?>js/main.js?ver=<?= $ver ?>"></script>
 
-    <!-- Template Javascript -->
-    <script src="../js/main.js?ver<?=$ver?>"></script>
-</body>
+    </body>
 
-</html>
+    </html>

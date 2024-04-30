@@ -1,6 +1,9 @@
 <?php
+session_start();
+include_once("../config.php");
 $ver = rand();
-$current_url = "http://localhost/SMS2.0/administrator/"
+$current_url = "http://localhost/SMS2.0/administrator/";
+$file_url = "http://localhost/SMS2.0/";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +16,7 @@ $current_url = "http://localhost/SMS2.0/administrator/"
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <!-- <link href="../img/favicon.ico" rel="icon"> -->
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,16 +28,19 @@ $current_url = "http://localhost/SMS2.0/administrator/"
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="../lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-
-
+    <link href="<?= $file_url ?>lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="<?= $file_url ?>lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="../css/bootstrap.min.css?ver=<?= $ver ?>" rel="stylesheet">
+    <link href="<?= $file_url ?>css/bootstrap.min.css?ver=<?= $ver ?>" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="../css/style.css?ver=<?= $ver ?>" rel="stylesheet">
+    <link href="<?= $file_url ?>css/style.css?ver=<?= $ver ?>" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<?= $file_url ?>css/virtual-select.min.css?ver=<?= $ver ?>">
+
+    <!-- Tinymice CDN -->
+    <script src="https://cdn.tiny.cloud/1/i1ce9mw87iqm1iez5quls4fsyr4rn8bqn1ygslug8ain5um8/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
 </head>
 
 <body>
@@ -95,6 +101,17 @@ $current_url = "http://localhost/SMS2.0/administrator/"
                             </a>
                             <hr class="dropdown-divider">
                             <a href="#" class="dropdown-item text-center">See all notifications</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src="<?= $file_url ?>/uploads/user.jpg" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex">Administrator</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-darkblue border-0 rounded-0 rounded-bottom m-0">
+                            <!-- <a href="<?= $current_url ?>scholar.php/<?= $id ?>" class="dropdown-item <?= $display_p ?>">My Profile</a> -->
+                            <!-- <a href="#" class="dropdown-item">Settings</a> -->
+                            <a href="<?= $file_url ?>login.php" onclick="<?php session_destroy(); ?>" class="dropdown-item">Log Out</a>
                         </div>
                     </div>
                 </div>

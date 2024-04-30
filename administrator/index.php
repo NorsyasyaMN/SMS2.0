@@ -1,4 +1,5 @@
-<? include_once("header.php") ?>
+<?php include_once("header.php");
+?>
 <div class="container-fluid pt-4 px-4">
     <h2>Registered Scholarship</h2>
 </div>
@@ -24,36 +25,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Ali Bin Abu</td>
-                        <td>MUMU College</td>
-                        <td><a class="btn btn-sm btn-success" href="scholarship-details.php">Approved</a></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Samad Bin Yaakob</td>
-                        <td>Taylor College</td>
-                        <td><a class="btn btn-sm btn-warning" href="">Pending</a></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Natasha Binti Said</td>
-                        <td>SeGi College</td>
-                        <td><a class="btn btn-sm btn-warning" href="">Pending</a></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Wawa Binti Zainal</td>
-                        <td>MUMU College</td>
-                        <td><a class="btn btn-sm btn-warning" href="">Pending</a></td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Ahmad Bin Abu</td>
-                        <td>MUMU College</td>
-                        <td><a class="btn btn-sm btn-warning" href="">Pending</a></td>
-                    </tr>
+                    <?php
+                    $count = 1;
+                    $stmt = "SELECT * FROM `scholarship` INNER JOIN `register` ON scholarship.u_id = register.id";
+                    $result = mq($stmt);
+                    if ($result) {
+                        while ($row = mfa($result)) {
+                            $id = $row['u_id'];
+                            $name = $row['name'];
+                            $scholar_name = $row['scholar_name'];
+                            $verify = $row['verify'];
+                            $btn = btnStatus($verify); ?>
+                            <tr>
+                                <td><?= $count ?></td>
+                                <td><?=$name?></td>
+                                <td><?=$scholar_name?></td>
+                                <td><a class="btn btn-sm <?=$btn?>" href="scholarship-details.php?id=<?=$id?>"><?=$verify?></a></td>
+                            </tr>
+                    <?php
+                            $count++;
+                        }
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>
@@ -76,4 +69,4 @@
 </div>
 
 <!-- Widgets End -->
-<? include_once("footer.php") ?>
+<?php include_once("footer.php") ?>

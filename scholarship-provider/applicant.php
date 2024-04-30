@@ -79,7 +79,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                             <td><?= $name ?></td>
                                             <td><?= $date ?></td>
                                             <?php $btn = btnStatus($status) ?>
-                                            <td><a class="btn btn-sm <?= $btn ?>" href="<?= $current_url ?>applicant-details.php?u_id=<?= $u_id ?>/<?= $id ?>"><?= $status ?></a></td>
+                                            <td class="<?=$display_p?>"><a class="btn btn-sm <?= $btn?>" href="<?= $current_url ?>applicant-details.php?u_id=<?= $u_id ?>/<?= $id ?>"><?= $status ?></a></td>
+                                            <td class="<?=$display?>"><a class="btn btn-sm <?= $btn?>" href="<?= $current_url ?>applicant-details.php?u_id=<?= $u_id ?>&p_id=<?=$s_id?>/<?= $id ?>"><?= $status ?></a></td>
                                         </tr>
                             <?php $count++;
                                     }

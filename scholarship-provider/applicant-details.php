@@ -1,11 +1,22 @@
 <?php
 include_once("header.php");
 
+if (isset($_GET["p_id"]) && isset($_GET["u_id"])) {
+    $u_id = $_GET["u_id"];
+    $pid_number = $_GET["p_id"];
+    $id_parts = explode('/', $pid_number);
+
+    // $array_as_string = implode(', ', $id_parts);
+
+    // echo $array_as_string;
+    // Extract the first part which contains the number
+    $p_id = $id_parts[0];
+}
+
 if (isset($_GET["u_id"])) {
     $id_number = $_GET["u_id"];
     $id_parts = explode('/', $id_number);
 
-    // Extract the first part which contains the number
     $u_id = $id_parts[0];
 }
 
@@ -66,7 +77,7 @@ if ($result) {
                     <p>Update some personal information. The data will never be publicly available.</p>
                 </div>
                 <div>
-                    <? $btn = ($status == 'Approved') ? "btn-success" : (($status == 'Shortlisted') ? "btn-info" : (($status == 'Pending') ? "btn-warning"  : "btn-danger")); ?>
+                    <?php $btn = btnStatus($status) ?>
                     <button type="button" class="btn <?= $btn ?> ms-2"><?= $status ?></button>
                 </div>
             </div>
@@ -127,7 +138,7 @@ if ($result) {
                             <div class="col-sm-10">
                                 <div class="d-flex text-center">
                                     <a class="btn btn-sm btn-primary w-auto me-2" href="<?= $file ?>" target="_blank">View</a>
-                                    <a class="btn btn-sm btn-primary w-auto" href="<?= $file ?>" download="filename.pdf">Download</a>
+                                    <a class="btn btn-sm btn-primary w-auto" href="<?= $file ?>" download="<?= $name_d ?>.pdf">Download</a>
                                 </div>
                             </div>
                         </div>
@@ -143,7 +154,7 @@ if ($result) {
                         <option value="Approved" <?= ($status == 'Approved') ? "selected" : "" ?>>Approved</option>
                         <option value="Shortlisted" <?= ($status == 'Shortlisted') ? "selected" : "" ?>>Shortlisted</option>
                         <option value="Pending" <?= ($status == 'Pending') ? "selected" : "" ?>>Pending</option>
-                        <option value="Rejected"  <?= ($status == 'Rejected') ? "selected" : "" ?>>Rejected</option>
+                        <option value="Rejected" <?= ($status == 'Rejected') ? "selected" : "" ?>>Rejected</option>
                     </select>
                 </div>
             </div>
@@ -173,8 +184,12 @@ if ($result) {
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between <?=$display_p?>">
                 <a class="btn btn-sm btn-outline-dark w-auto" href="<?= $current_url ?>applicant.php/<?= $id ?>">Cancel</a>
+                <button class="btn btn-sm btn-primary w-auto" type="submit" name="submit">Save changes</button>
+            </div>
+            <div class="d-flex justify-content-between <?=$display?> ">
+                <a class="btn btn-sm btn-outline-dark w-auto" href="<?= $current_url ?>applicant.php?p_id=<?=$s_id?>/<?= $id ?>">Cancel</a>
                 <button class="btn btn-sm btn-primary w-auto" type="submit" name="submit">Save changes</button>
             </div>
         </div>
