@@ -10,6 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phone_r = $_POST["phone"];
     $loc_r = $_POST["loc"];
     $level_r = $_POST["level"];
+    $letter = $_POST["letter"];
     $status = 0;
 
     // Check if profile image is set
@@ -47,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $stmt_x = "UPDATE `register` SET `name`='$name_r', `email`='$email_r', `num`='$phone_r' WHERE id = $d_id ";
-    $stmt_y = "UPDATE `applicant` SET `bio`='$bio_r', `stud`='$stud_r', `level`='$level_r',`location`='$loc_r' WHERE u_id = $d_id";
+    $stmt_y = "UPDATE `applicant` SET `bio`='$bio_r', `stud`='$stud_r', `level`='$level_r',`location`='$loc_r', `letter`='$letter' WHERE u_id = $d_id";
     $result = mq($stmt_x);
     $result_s = mq($stmt_y);
     if ($result == TRUE && $result_s == TRUE) {
@@ -74,6 +75,7 @@ while ($row = mfa($result)) {
     $stud = $row['stud'];
     $phone = $row['num'];
     $location = $row['location'];
+    $letter = $row['letter'];
     $level = $row['level'];
 }
 
@@ -170,6 +172,26 @@ while ($row = mfa($result)) {
                         <?php }
                         }
                         ?>
+                    </select>
+                </div>
+            </div>
+            <div class="pb-3 row">
+                <label class="form-label col-sm-2">Confirmation Letter:</label>
+                <div class="col-sm-10">
+                    <select class="form-select form-control bg-white" name="letter">
+                    <option value="" disabled <?= ($letter == '') ? "selected" : "" ?> >Select document</option>
+                        <?php
+                        $stmt = "SELECT * FROM `file` WHERE u_id = '$d_id'";
+                        $result = mq($stmt);
+                        if ($result) {
+                            while ($row = mfa($result)) {
+                                $doc_id = $row['id'];
+                                $name = $row['name'];
+                        ?>
+                                <option value="<?= $doc_id ?>" <?= ($doc_id == $letter) ? "selected" : "" ?>><?= $name ?></option>
+                        <?php
+                            }
+                        } ?>
                     </select>
                 </div>
             </div>

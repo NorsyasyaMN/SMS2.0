@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         if (mnr($result_check) > 0) {
                             header('Location: index.php/' . $e_id);
                         } else {
-                            $stmt_a = "INSERT INTO `applicant`(`u_id`, `img`, `cover_img`, `bio`, `stud`, `level`, `location`) VALUES ('$id','','','','','','')";
+                            $stmt_a = "INSERT INTO `applicant`(`u_id`, `img`, `cover_img`, `bio`, `stud`, `level`, `location`, `letter`, `verify`) VALUES ('$id','','','','','','','','Pending')";
                             $result_a = mq($stmt_a);
                             if ($result_a) {
                                 header('Location: index.php/' . $e_id);
@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         if (mnr($result_check) > 0) {
                             header('Location: scholarship-provider/scholar.php/' . $e_id);
                         } else {
-                            $stmt_s = "INSERT INTO `scholarship`(`u_id`, `img`, `cover_img`, `license`, `org_name`, `scholar_name`, `bio`, `location`, `field`, `level`, `criteria`, `img1`, `high`, `award`, `img2`, `doc`, `date`, `verify`) VALUES ('$id','','','','','','','','','','','','','','','','','0')";
+                            $stmt_s = "INSERT INTO `scholarship`(`u_id`, `img`, `cover_img`, `license`, `org_name`, `scholar_name`, `bio`, `location`, `field`, `level`, `criteria`, `img1`, `high`, `award`, `img2`, `doc`, `date`, `verify`) VALUES ('$id','','','','','','','','','','','','','','','','','Pending')";
                             $result_s = mq($stmt_s);
                             if ($result_s) {
                                 header('Location: scholarship-provider/scholar.php/' . $e_id);
