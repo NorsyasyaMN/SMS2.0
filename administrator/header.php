@@ -66,7 +66,7 @@ $file_url = "http://localhost/SMS2.0/";
                             <a href="<?= $current_url ?>index.php" class="nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= $current_url ?>applicant.php" class="nav-link"><i class="fa fa-th me-2"></i>Applicant List</a>
+                            <a href="<?= $current_url ?>applicant.php" class="nav-link"><i class="fa fa-user-graduate me-2"></i>Applicant List</a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= $current_url ?>scholarship.php" class="nav-link"><i class="fa fa-building me-2"></i>Scholarship List</a>

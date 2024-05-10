@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </tr>
                 </thead>
                 <tbody>
-                    <?
+                    <?php
                     $count = 1;
                     $stmt = "SELECT * FROM `scholarship` INNER JOIN `application` ON scholarship.u_id = application.s_id WHERE application.u_id = $d_id $stmt_a";
                     $result = mq($stmt);

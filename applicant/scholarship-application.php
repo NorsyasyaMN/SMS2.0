@@ -108,7 +108,7 @@ if ($result) {
     </form>
 </div>
 <!-- Widgets End -->
-<script type="text/javascript" src="<?= $current_url ?>js/virtual-select.min.js"></script>
+<script type="text/javascript" src="<?= $file_url ?>js/virtual-select.min.js"></script>
 <script type="text/javascript">
     VirtualSelect.init({
         ele: '#multipleSelect'

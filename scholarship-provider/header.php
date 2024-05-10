@@ -5,7 +5,7 @@ $ver = rand();
 $current_url = "http://localhost/SMS2.0/scholarship-provider/";
 $file_url = "http://localhost/SMS2.0/";
 
-$id = userSID();
+$id = userSID('scholarship-provider');
 $d_id = decode($id);
 global $d_id;
 global $id;
@@ -123,7 +123,7 @@ if (isset($_GET["p_id"])) {
                             <a href="<?= $current_url ?>scholar.php/<?= $id ?>" class="nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= $current_url ?>applicant.php/<?= $id ?>" class="nav-link"><i class="fa fa-th me-2"></i>Applicants List</a>
+                            <a href="<?= $current_url ?>applicant.php/<?= $id ?>" class="nav-link"><i class="fa fa-user-graduate me-2"></i>Applicants List</a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= $current_url ?>document.php/<?= $id ?>" class="nav-link"><i class="fa fa-file me-2"></i>Document</a>

@@ -136,6 +136,7 @@ while ($row = mfa($result)) {
     $num_c = explode(',', $cat);
     $num_f = explode(',', $field);
     $date = $row['date'];
+    $verify = $row['verify'];
 }
 ?>
 <div class="container-fluid pt-4 px-4">
@@ -147,8 +148,16 @@ while ($row = mfa($result)) {
     <form action="" method="post" enctype="multipart/form-data">
         <!-- General Settings -->
         <div class="mb-3 bg-light rounded p-4">
-            <h5>Applicant Information</h5>
-            <p>Update some personal information. The data will never be publicly available.</p>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h5>Applicant Information</h5>
+                    <p>Update some personal information. The data will never be publicly available.</p>
+                </div>
+                <div>
+                    <?php $btn = btnStatus($verify) ?>
+                    <button type="button" class="btn <?= $btn ?> ms-2"><?= $verify ?></button>
+                </div>
+            </div>
             <hr>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Profile Photo:</label>
@@ -173,7 +182,7 @@ while ($row = mfa($result)) {
                 <label class="form-label col-sm-2">Organization License:</label>
                 <div class="col-sm-10">
                     <select class="form-select form-control bg-white" name="license">
-                    <option value="" disabled <?= ($license == '') ? "selected" : "" ?> >Select document</option>
+                        <option value="" disabled <?= ($license == '') ? "selected" : "" ?>>Select document</option>
                         <?php
                         $stmt = "SELECT * FROM `file` WHERE u_id = '$d_id'";
                         $result = mq($stmt);

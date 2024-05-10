@@ -1,5 +1,5 @@
 <?php
-require_once('config.php');
+require_once('../config.php');
 
 if (isset($_GET['id_x']) && isset($_GET['id_y'])) {
     // Sanitize and assign values
@@ -9,6 +9,7 @@ if (isset($_GET['id_x']) && isset($_GET['id_y'])) {
     // Initialize requirement status
     $levelSatisfied = false;
     $fieldSatisfied = false;
+    $verified = false;
     $requirementSatisfied = false;
 
     // Perform your database query here using $s_id and $id
@@ -28,6 +29,8 @@ if (isset($_GET['id_x']) && isset($_GET['id_y'])) {
         while ($row_a = mfa($result_a)) {
             $level_a = $row_a['level'];
             $field_a = $row_a['stud'];
+            $verify = $row_a['verify'];
+
         }
         if (in_array($level_a, $num_level)) {
             $levelSatisfied = true;
@@ -36,8 +39,11 @@ if (isset($_GET['id_x']) && isset($_GET['id_y'])) {
             $fieldSatisfied = true;
         }
         if( $levelSatisfied && $fieldSatisfied){
-            $requirementSatisfied = true;
+            if($verify = 'Approved'){
+                $requirementSatisfied = true;
+            }
         }
+        
         
     }
 

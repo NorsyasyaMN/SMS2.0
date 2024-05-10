@@ -131,7 +131,7 @@ while ($row = mfa($result)) {
                     </select>
                 </div>
             </div>
-            <div class="pb-3 row">
+            <!-- <div class="pb-3 row">
                 <legend class="col-form-label col-sm-2 pt-0">Disable Content</legend>
                 <div class="col-sm-10">
                     <div class="form-check">
@@ -141,7 +141,7 @@ while ($row = mfa($result)) {
                         </label>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="d-flex justify-content-between">
                 <a class="btn btn-sm btn-outline-dark w-auto" href="index.php">Cancel</a>
                 <button class="btn btn-sm btn-primary w-auto" type="submit" name="submit">Save changes</button>

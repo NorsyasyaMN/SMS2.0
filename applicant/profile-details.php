@@ -77,6 +77,7 @@ while ($row = mfa($result)) {
     $location = $row['location'];
     $letter = $row['letter'];
     $level = $row['level'];
+    $verify = $row['verify'];
 }
 
 ?>
@@ -89,8 +90,16 @@ while ($row = mfa($result)) {
     <form action="" method="post" enctype="multipart/form-data">
         <!-- General Settings -->
         <div class="mb-3 bg-light rounded p-4">
-            <h5>Applicant Information</h5>
-            <p>Update some personal information. The data will never be publicly available.</p>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h5>Applicant Information</h5>
+                    <p>Update some personal information. The data will never be publicly available.</p>
+                </div>
+                <div>
+                    <?php $btn = btnStatus($verify) ?>
+                    <button type="button" class="btn <?= $btn ?> ms-2"><?= $verify ?></button>
+                </div>
+            </div>
             <hr>
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Profile Photo:</label>
@@ -138,8 +147,8 @@ while ($row = mfa($result)) {
             <div class="pb-3 row">
                 <label class="form-label col-sm-2">Field of Studies:</label>
                 <div class="col-sm-10">
-                <select name="stud" class="form-select form-control bg-white">
-                        <option value="0" disabled <?= ($stud == '') ? "selected" : "" ?> >Select field of studies</option>
+                    <select name="stud" class="form-select form-control bg-white">
+                        <option value="0" disabled <?= ($stud == '') ? "selected" : "" ?>>Select field of studies</option>
                         <?php
                         $stmt_f = "SELECT * FROM `field`";
                         $result_f = mq($stmt_f);
@@ -148,7 +157,7 @@ while ($row = mfa($result)) {
                                 $name = $row['field'];
                                 $f_id = $row['id'];
                         ?>
-                                 <option value=<?= $f_id ?> <?= ($f_id == $stud) ? "selected" : "" ?>><?= $name ?></option>
+                                <option value=<?= $f_id ?> <?= ($f_id == $stud) ? "selected" : "" ?>><?= $name ?></option>
                         <?php }
                         }
                         ?>
@@ -159,7 +168,7 @@ while ($row = mfa($result)) {
                 <label class="form-label col-sm-2">Level of Studies:</label>
                 <div class="col-sm-10">
                     <select name="level" class="form-select form-control bg-white">
-                        <option value="0" disabled <?= ($level == '') ? "selected" : "" ?> >Select level of studies</option>
+                        <option value="0" disabled <?= ($level == '') ? "selected" : "" ?>>Select level of studies</option>
                         <?php
                         $stmt_l = "SELECT * FROM `level`";
                         $result_l = mq($stmt_l);
@@ -168,7 +177,7 @@ while ($row = mfa($result)) {
                                 $name = $row['level'];
                                 $l_id = $row['id'];
                         ?>
-                                 <option value=<?= $l_id ?> <?= ($l_id == $level) ? "selected" : "" ?>><?= $name ?></option>
+                                <option value=<?= $l_id ?> <?= ($l_id == $level) ? "selected" : "" ?>><?= $name ?></option>
                         <?php }
                         }
                         ?>
@@ -179,7 +188,7 @@ while ($row = mfa($result)) {
                 <label class="form-label col-sm-2">Confirmation Letter:</label>
                 <div class="col-sm-10">
                     <select class="form-select form-control bg-white" name="letter">
-                    <option value="" disabled <?= ($letter == '') ? "selected" : "" ?> >Select document</option>
+                        <option value="" disabled <?= ($letter == '') ? "selected" : "" ?>>Select document</option>
                         <?php
                         $stmt = "SELECT * FROM `file` WHERE u_id = '$d_id'";
                         $result = mq($stmt);

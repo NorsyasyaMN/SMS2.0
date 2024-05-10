@@ -1,11 +1,24 @@
 <?php
 include_once("header.php");
+// if (isset($_GET["p_id"]) && isset($_GET["u_id"])) {
+//     $u_id = $_GET["u_id"];
+//     $pid_number = $_GET["p_id"];
+//     $id_parts = explode('/', $pid_number);
+
+//     // $array_as_string = implode(', ', $id_parts);
+
+//     // echo $array_as_string;
+//     // Extract the first part which contains the number
+//     $p_id = $id_parts[0];
+// }
+
 if (isset($_GET["s_id"])) {
     $id_number = $_GET["s_id"];
     $id_parts = explode('/', $id_number);
 
     // Extract the first part which contains the number
     $s_id = $id_parts[0];
+    
 }
 
 
@@ -98,6 +111,14 @@ if ($result_s) {
     }
 }
 ?>
+
+<style>
+    ol,
+    ul {
+        padding-left: 20px;
+        list-style-type: disc;
+    }
+</style>
 <div id="alert-container"></div>
 <div class="container-fluid pt-4 px-4">
     <h2>Scholarship Details</Details>
@@ -107,11 +128,11 @@ if ($result_s) {
 <div class="container-fluid pt-3 px-4">
     <div>
         <div class="upper">
-            <img src="<?= $current_url ?><?= $headerImg ?>" class="img-fluid">
+            <img src="<?= $file_url ?><?= $headerImg ?>" class="img-fluid">
         </div>
         <div class="user">
             <div class="profile">
-                <img src="<?= $current_url ?><?= $profileImg ?>" class="rounded-circle" width="80">
+                <img src="<?= $file_url ?><?= $profileImg ?>" class="rounded-circle" width="80">
             </div>
         </div>
     </div>
@@ -271,10 +292,10 @@ if ($result_s) {
                         </ul>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6">
-                        <img class="img-fluid" src="<?= $current_url ?>/<?= $img1 ?>">
+                        <img class="img-fluid" src="<?= $file_url ?>/<?= $img1 ?>">
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6">
-                        <img class="img-fluid" src="<?= $current_url ?>/<?= $img2 ?>">
+                        <img class="img-fluid" src="<?= $file_url ?>/<?= $img2 ?>">
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6">
                         <div class="pb-3">
@@ -345,7 +366,7 @@ if ($result_s) {
                 // Response received from server
                 if (xhr.responseText === "satisfied") {
                     // Requirement satisfied, proceed with link action
-                    window.location.href = "http://localhost/SMS2.0/scholarship-application.php?s_id=" + id_x + "/" + id_y;
+                    window.location.href = "http://localhost/SMS2.0/applicant/scholarship-application.php?s_id=" + id_x + "/" + id_y;
                 } else {
                     // Requirement not satisfied, display Bootstrap alert message
                     var alertContainer = document.getElementById("alert-container"); // Define alertContainer

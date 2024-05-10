@@ -5,7 +5,7 @@ include_once("header.php");
 $stmt_lf = "";
 $stmt_cf = "";
 $s_stmt = "";
-$s_date = " WHERE date > CURDATE()";
+$s_date = " WHERE `date` > CURDATE() AND `verify` = 'Approved'";
 
 $cat_a = [];
 $where_clause = '';
@@ -142,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="single-scholar-items bg-dark-light mb-4">
                         <div class="scholar-items">
                             <div class="company-img">
-                                <a href="<?= $current_url ?>scholarship-details.php?s_id=<?= $s_id ?>/<?= $id ?>"><img src="<?= $current_url ?>/<?= $img ?>" style="width:auto; height:120px"></a>
+                                <a href="<?= $current_url ?>scholarship-details.php?s_id=<?= $s_id ?>/<?= $id ?>"><img src="<?= $file_url ?>/<?= $img ?>" style="width:auto; height:120px"></a>
                             </div>
                             <div class="scholar-tittle scholar-tittle2">
                                 <a href="<?= $current_url ?>scholarship-details.php?s_id=<?= $s_id ?>/<?= $id ?>">
@@ -198,7 +198,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         ?>
     </div>
-    <script type="text/javascript" src="<?= $current_url ?>js/virtual-select.min.js"></script>
+    <script type="text/javascript" src="<?= $file_url ?>js/virtual-select.min.js"></script>
     <script type="text/javascript">
         VirtualSelect.init({
             ele: '#multipleSelect'

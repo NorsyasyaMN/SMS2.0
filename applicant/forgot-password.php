@@ -1,7 +1,7 @@
 <?php
-include_once("config.php");
+include_once("../config.php");
 $ver = rand();
-$current_url = "http://localhost/SMS2.0/";
+$current_url = "http://localhost/SMS2.0/applicant/";
 $reset_link = "http://localhost/SMS2.0/reset-password.php";
 $alert = '';
 

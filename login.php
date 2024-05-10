@@ -59,12 +59,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $result_check = mq($stmt_check);
                     if ($result_check) {
                         if (mnr($result_check) > 0) {
-                            header('Location: index.php/' . $e_id);
+                            header('Location: applicant/applicant.php/' . $e_id);
                         } else {
                             $stmt_a = "INSERT INTO `applicant`(`u_id`, `img`, `cover_img`, `bio`, `stud`, `level`, `location`, `letter`, `verify`) VALUES ('$id','','','','','','','','Pending')";
                             $result_a = mq($stmt_a);
                             if ($result_a) {
-                                header('Location: index.php/' . $e_id);
+                                header('Location: applicant/applicant.php/' . $e_id);
                             }
                         }
                     }

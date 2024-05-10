@@ -27,11 +27,11 @@ if ($result) {
 <div class="container-fluid pt-3 px-4">
     <div>
         <div class="upper">
-            <img src="<?= $current_url ?>/<?= ($headerImg == '') ? 'uploads/default.webp' : $headerImg; ?>" class="img-fluid">
+            <img src="<?= $file_url ?>/<?= ($headerImg == '') ? 'uploads/default.webp' : $headerImg; ?>" class="img-fluid">
         </div>
         <div class="user">
             <div class="profile">
-                <img src="<?= $current_url ?>/<?= ($profileImg == '') ? 'uploads/user.jpg' : $profileImg; ?>" class="rounded-circle" width="80">
+                <img src="<?= $file_url ?>/<?= ($profileImg == '') ? 'uploads/user.jpg' : $profileImg; ?>" class="rounded-circle" width="80">
             </div>
         </div>
     </div>

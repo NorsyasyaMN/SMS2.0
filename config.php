@@ -80,21 +80,21 @@ function userID()
         // Get the second-to-last part of the URL path
         $filename = isset($path_parts[count($path_parts) - 1]) ? $path_parts[count($path_parts) - 1] : null;
 
-       // Remove the script name (index.php) from the URL path
-       $url_without_script = str_replace('SMS2.0/' . $filename . '/', '', $current_url);
+        // Remove the script name (index.php) from the URL path
+        $url_without_script = str_replace('SMS2.0/' . $filename . '/', '', $current_url);
 
-       // Get the URL path segments
-       $segments = explode('/', trim($url_without_script, '/'));
+        // Get the URL path segments
+        $segments = explode('/', trim($url_without_script, '/'));
 
-       // Extract the value from the URL path
-       $value = isset($segments[0]) ? $segments[0] : null;
+        // Extract the value from the URL path
+        $value = isset($segments[0]) ? $segments[0] : null;
 
-       // echo $url_without_script;
-       return $value;
+        // echo $url_without_script;
+        return $value;
     }
 }
 
-function userSID()
+function userSID($folder)
 {
     $current_url = $_SERVER['REQUEST_URI'];
 
@@ -113,7 +113,7 @@ function userSID()
         $filename = isset($path_parts[count($path_parts)]) ? $path_parts[count($path_parts)] : null;
 
         // Remove the script name (index.php) from the URL path
-        $url_without_script = str_replace('SMS2.0/scholarship-provider/' . $filename . '/', '', $current_url);
+        $url_without_script = str_replace('SMS2.0/' . $folder . '/' . $filename . '/', '', $current_url);
 
         // Get the URL path segments
         $segments = explode('/', trim($url_without_script, '/'));
@@ -136,17 +136,17 @@ function userSID()
         // Get the second-to-last part of the URL path
         $filename = isset($path_parts[count($path_parts) - 1]) ? $path_parts[count($path_parts) - 1] : null;
 
-       // Remove the script name (index.php) from the URL path
-       $url_without_script = str_replace('SMS2.0/scholarship-provider/' . $filename . '/', '', $current_url);
+        // Remove the script name (index.php) from the URL path
+        $url_without_script = str_replace('SMS2.0/' . $folder . '/' . $filename . '/', '', $current_url);
 
-       // Get the URL path segments
-       $segments = explode('/', trim($url_without_script, '/'));
+        // Get the URL path segments
+        $segments = explode('/', trim($url_without_script, '/'));
 
-       // Extract the value from the URL path
-       $values = isset($segments[0]) ? $segments[0] : null;
+        // Extract the value from the URL path
+        $values = isset($segments[0]) ? $segments[0] : null;
 
-       // echo $url_without_script;
-       return $values;
+        // echo $url_without_script;
+        return $values;
     }
 }
 
@@ -190,7 +190,8 @@ function uploadPhotoScholar($photo)
     }
 }
 
-function btnStatus($status){
+function btnStatus($status)
+{
     if ($status == 'Approved') {
         $btn = "btn-success";
     } elseif ($status == 'Shortlisted') {
@@ -204,14 +205,14 @@ function btnStatus($status){
     return $btn;
 }
 
-function filter($x){
+function filter($x)
+{
     $array = explode(",", $x);
     $like_conditions = array();
     foreach ($array as $element) {
         $like_conditions[] = "('%$element%')";
     }
-    
+
     $combined_conditions = implode(" OR ",  $like_conditions);
     return $combined_conditions;
 }
-
